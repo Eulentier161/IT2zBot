@@ -14,7 +14,8 @@ from util.util import Utils
 
 
 class AdminCog(commands.Cog):
-    '''various administrative commands'''
+    """various administrative commands"""
+
     def __init__(self, bot):
         self.bot = bot
         self._last_result = None
@@ -441,10 +442,9 @@ class AdminCog(commands.Cog):
         await channel.send("first lmao 😎")
         await ctx.send(f"created new channel: {channel.mention}")
 
-
     @commands.command("prune")
     @commands.has_guild_permissions(administrator=True)
-    async def prune_cmd(self, ctx, amount = None):
+    async def prune_cmd(self, ctx, amount=None):
         try:
             amount = int(amount)
         except:

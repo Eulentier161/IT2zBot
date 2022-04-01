@@ -21,8 +21,3 @@ class Utils(object):
     @staticmethod
     async def get_dm_channel(user: User) -> DMChannel:
         return user.dm_channel if user.dm_channel else await user.create_dm()
-        # if user.dm_channel:
-        #     return user.dm_channel
-        # else:
-        #     channel = await user.create_dm()
-        #     return channel
