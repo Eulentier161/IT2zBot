@@ -29,10 +29,16 @@ class InfoCog(commands.Cog):
         message: discord.Message = await channel.fetch_message(959547365512065036)
         try:
             matches = re.findall(r"field:.*?{(.+?)}", inp, re.DOTALL)
+            if not matches:
+                raise Exception("no matches found for regex: \\field:.*?{(.+?)}\\i")
             embed = discord.Embed(title="Aktuelle Aufgaben", color=0x008000)
             for match in matches:
                 name = re.findall(r"name:(.+?)value:", match, re.DOTALL)[0]
+                if not name:
+                    raise Exception("no name found with regex: \\name:(.+?)value:\\i")
                 value = re.findall(r"value:(.+)$", match, re.DOTALL)[0]
+                if not value:
+                    raise Exception("no value found with regex: \\value:(.+)$\\i")
                 embed.add_field(name=name, value=value, inline=False)
             await message.edit(embed=embed)
         except Exception as e:
