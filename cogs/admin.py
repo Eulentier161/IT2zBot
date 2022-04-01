@@ -105,11 +105,12 @@ class AdminCog(commands.Cog):
                 self._last_result = ret
                 await ctx.send(f"```py\n{value}{ret}\n```")
 
-    @commands.command("gitpull")
+    @commands.command(name="gitpull", hidden=True)
     @commands.is_owner()
-    async def gitpull_cmd(self, *args, **kwargs):
+    async def _gitpull_cmd(self, *args, **kwargs):
         project_dir = Utils.get_project_root()
         os.system(f"git -C {project_dir} pull")
+        await self.bot.close()
 
     @commands.command("ban")
     @commands.has_guild_permissions(ban_members=True)
@@ -310,6 +311,10 @@ class AdminCog(commands.Cog):
     @commands.command("addemote")
     @commands.has_guild_permissions(manage_emojis=True)
     async def addemote_cmd(self, ctx, emote: discord.PartialEmoji, name=None):
+        """
+        adds an emote to the current server\n
+        only works with existing discord emotes
+        """
         if name == None:
             await ctx.message.add_reaction("❌")
 
@@ -340,8 +345,10 @@ class AdminCog(commands.Cog):
         if channel != ctx.message.channel:
             try:
                 channel = await TextChannelConverter().convert(ctx, channel)
-            except:
+            except Exception as e:
                 await ctx.message.add_reaction("❌")
+                dm_channel = await Utils.get_dm_channel(ctx.author)
+                await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
                 return
 
         # do the actual lock
@@ -363,8 +370,10 @@ class AdminCog(commands.Cog):
         if channel != ctx.message.channel:
             try:
                 channel = await TextChannelConverter().convert(ctx, channel)
-            except:
+            except Exception as e:
                 await ctx.message.add_reaction("❌")
+                dm_channel = await Utils.get_dm_channel(ctx.author)
+                await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
                 return
 
         permission = channel.overwrites_for(ctx.guild.default_role)
@@ -387,8 +396,10 @@ class AdminCog(commands.Cog):
                 channel = ctx.message.channel
                 await channel.edit(slowmode_delay=int(duration))
             await ctx.message.add_reaction("☑️")
-        except:
+        except Exception as e:
             await ctx.message.add_reaction("❌")
+            dm_channel = await Utils.get_dm_channel(ctx.author)
+            await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
 
     @commands.command(aliases=["roleclr", "rolecolour", "rolecolor"])
     @commands.has_guild_permissions(manage_roles=True)
@@ -399,8 +410,10 @@ class AdminCog(commands.Cog):
 
         try:
             role = await Converter.convert_role(ctx, role)
-        except:
+        except Exception as e:
             await ctx.message.add_reaction("❌")
+            dm_channel = await Utils.get_dm_channel(ctx.author)
+            await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
             return
 
         if color == "default":
@@ -420,8 +433,9 @@ class AdminCog(commands.Cog):
         else:
             try:
                 channel = await Converter.convert_textchannel(ctx, channel)
-            except Exception as aya:
-                await ctx.channel.send(aya)
+            except Exception as e:
+                dm_channel = await Utils.get_dm_channel(ctx.author)
+                await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
                 return
 
         await channel.delete()
@@ -447,7 +461,8 @@ class AdminCog(commands.Cog):
     async def prune_cmd(self, ctx, amount=None):
         try:
             amount = int(amount)
-        except:
-            await ctx.send("supply a number")
+        except Exception as e:
+            dm_channel = await Utils.get_dm_channel(ctx.author)
+            await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
             return
         await ctx.channel.purge(limit=amount)
