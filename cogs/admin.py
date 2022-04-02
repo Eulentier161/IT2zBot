@@ -1,9 +1,9 @@
 import io
+import os
 import re
 import textwrap
 import traceback
 from contextlib import redirect_stdout
-import os
 
 import config
 import discord
@@ -43,7 +43,7 @@ class AdminCog(commands.Cog):
                 return True
             else:
                 return False
-        except:
+        except Exception:
             return True
 
     @commands.command(pass_context=True, hidden=True, name="eval")
@@ -88,14 +88,14 @@ class AdminCog(commands.Cog):
         try:
             with redirect_stdout(stdout):
                 ret = await func()
-        except Exception as e:
+        except Exception:
             value = stdout.getvalue()
             await ctx.send(f"```py\n{value}{traceback.format_exc()}\n```")
         else:
             value = stdout.getvalue()
             try:
                 await ctx.message.add_reaction("\u2705")
-            except:
+            except Exception:
                 pass
 
             if ret is None:
@@ -107,7 +107,7 @@ class AdminCog(commands.Cog):
 
     @commands.command(name="gitpull", hidden=True)
     @commands.is_owner()
-    async def _gitpull_cmd(self, *args, **kwargs):
+    async def _gitpull_cmd(self):
         project_dir = Utils.get_project_root()
         os.system(f"git -C {project_dir} pull")
         await self.bot.close()
@@ -122,7 +122,7 @@ class AdminCog(commands.Cog):
             try:
                 user = await self.bot.fetch_user(int(string_for_mention))
                 users.append(user)
-            except:
+            except Exception:
                 pass
 
         response_confirm = ""
@@ -135,7 +135,7 @@ class AdminCog(commands.Cog):
                 try:
                     await ctx.guild.ban(user)
                     response_confirm += f" `{user.name}#{user.discriminator}`"
-                except:
+                except Exception:
                     pass
 
         if response_confirm:
@@ -159,7 +159,7 @@ class AdminCog(commands.Cog):
                 try:
                     await ctx.guild.unban(user)
                     response_confirm += f" `{user.name}#{user.discriminator}`"
-                except:
+                except Exception:
                     pass
 
         if response_confirm:
@@ -187,7 +187,7 @@ class AdminCog(commands.Cog):
                 try:
                     await ctx.guild.kick(user)
                     response_confirm += f" `{user.name}#{user.discriminator}`"
-                except:
+                except Exception:
                     pass
 
         if response_confirm:
@@ -202,7 +202,7 @@ class AdminCog(commands.Cog):
     async def setnick_cmd(self, ctx, member, *, nick=None):
 
         member = await Converter.convert_member(ctx, member)
-        if member == None:
+        if not member:
             await ctx.message.add_reaction("❌")
             return
 
@@ -246,12 +246,12 @@ class AdminCog(commands.Cog):
     async def setrole_cmd(self, ctx, user, *, role):
 
         user = await Converter.convert_member(ctx, user)
-        if user == None:
+        if not user:
             await ctx.message.add_reaction("❌")
             return
 
         role = await Converter.convert_role(ctx, role)
-        if role == None:
+        if not role:
             await ctx.message.add_reaction("❌")
             return
 
@@ -267,12 +267,12 @@ class AdminCog(commands.Cog):
     async def removerole_cmd(self, ctx, user, *, role):
 
         user = await Converter.convert_member(ctx, user)
-        if user == None:
+        if not user:
             await ctx.message.add_reaction("❌")
             return
 
         role = await Converter.convert_role(ctx, role)
-        if role == None:
+        if not role:
             await ctx.message.add_reaction("❌")
             return
 
@@ -286,7 +286,7 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["createrole", "cr"])
     @commands.has_guild_permissions(manage_roles=True)
     async def createrole_cmd(self, ctx, *, role=None):
-        if role == None:
+        if not role:
             await ctx.message.add_reaction("❌")
             return
 
@@ -296,12 +296,12 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["deleterole", "dr"])
     @commands.has_guild_permissions(manage_roles=True)
     async def deleterole_cmd(self, ctx, *, role=None):
-        if role == None:
+        if not role:
             await ctx.message.add_reaction("❌")
             return
 
         role = await Converter.convert_role(ctx, role)
-        if role == None:
+        if not role:
             await ctx.message.add_reaction("❌")
             return
 
@@ -315,7 +315,7 @@ class AdminCog(commands.Cog):
         adds an emote to the current server\n
         only works with existing discord emotes
         """
-        if name == None:
+        if not name:
             await ctx.message.add_reaction("❌")
 
         emote = emote.url_as()
@@ -326,7 +326,7 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["removeemote", "rmemote"])
     @commands.has_guild_permissions(manage_emojis=True)
     async def removeemote_cmd(self, ctx, emote: discord.Emoji):
-        if emote == None:
+        if not emote:
             await ctx.message.add_reaction("❌")
             return
 
@@ -338,7 +338,7 @@ class AdminCog(commands.Cog):
     async def lock_cmd(self, ctx, channel=None):
 
         # if user didnt input an argument, default to current channel
-        if channel == None:
+        if not channel:
             channel = ctx.message.channel
 
         # if channel isnt current channel try to convert the argument to a channel object
@@ -348,7 +348,9 @@ class AdminCog(commands.Cog):
             except Exception as e:
                 await ctx.message.add_reaction("❌")
                 dm_channel = await Utils.get_dm_channel(ctx.author)
-                await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
+                await dm_channel.send(
+                    f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
+                )
                 return
 
         # do the actual lock
@@ -364,7 +366,7 @@ class AdminCog(commands.Cog):
     @commands.has_guild_permissions(manage_guild=True)
     async def unlock_cmd(self, ctx, channel=None):
 
-        if channel == None:
+        if not channel:
             channel = ctx.message.channel
 
         if channel != ctx.message.channel:
@@ -373,7 +375,9 @@ class AdminCog(commands.Cog):
             except Exception as e:
                 await ctx.message.add_reaction("❌")
                 dm_channel = await Utils.get_dm_channel(ctx.author)
-                await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
+                await dm_channel.send(
+                    f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
+                )
                 return
 
         permission = channel.overwrites_for(ctx.guild.default_role)
@@ -399,12 +403,14 @@ class AdminCog(commands.Cog):
         except Exception as e:
             await ctx.message.add_reaction("❌")
             dm_channel = await Utils.get_dm_channel(ctx.author)
-            await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
+            await dm_channel.send(
+                f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
+            )
 
     @commands.command(aliases=["roleclr", "rolecolour", "rolecolor"])
     @commands.has_guild_permissions(manage_roles=True)
     async def roleclr_cmd(self, ctx, role, color=None):
-        if color == None:
+        if not color:
             await ctx.message.add_reaction("❌")
             return
 
@@ -413,7 +419,9 @@ class AdminCog(commands.Cog):
         except Exception as e:
             await ctx.message.add_reaction("❌")
             dm_channel = await Utils.get_dm_channel(ctx.author)
-            await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
+            await dm_channel.send(
+                f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
+            )
             return
 
         if color == "default":
@@ -428,26 +436,28 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["deletetextchannel", "dtch"])
     @commands.has_guild_permissions(manage_channels=True)
     async def deletetextchannel_cmd(self, ctx, *, channel=None):
-        if channel == None:
+        if not channel:
             channel = ctx.channel
         else:
             try:
                 channel = await Converter.convert_textchannel(ctx, channel)
             except Exception as e:
                 dm_channel = await Utils.get_dm_channel(ctx.author)
-                await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
+                await dm_channel.send(
+                    f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
+                )
                 return
 
         await channel.delete()
         try:
             await ctx.message.add_reaction("☑️")
-        except:
+        except Exception:
             pass
 
     @commands.command(aliases=["createtextchannel", "ctch"])
     @commands.has_guild_permissions(manage_channels=True)
     async def createtextchannel_cmd(self, ctx, *, name=None):
-        if name == None:
+        if not name:
             await ctx.message.add_reaction("❌")
             return
 
@@ -463,6 +473,8 @@ class AdminCog(commands.Cog):
             amount = int(amount)
         except Exception as e:
             dm_channel = await Utils.get_dm_channel(ctx.author)
-            await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
+            await dm_channel.send(
+                f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
+            )
             return
         await ctx.channel.purge(limit=amount)

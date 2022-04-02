@@ -7,13 +7,14 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-discord = "^1.7.3"
+"discord.py" = "^1.7.3"
 pyaml = "^21.10.1"
 python-dotenv = "^0.20.0"
-uvloop = "^0.16.0"
+uvloop = {version = "^0.16.0", markers = 'sys_platform != "win32"'}
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
+pylint = "^2.13.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

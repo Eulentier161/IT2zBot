@@ -25,7 +25,11 @@ class InfoCog(commands.Cog):
     @commands.command(aliases=["aktuelle_aufgaben", "current_tasks"])
     async def current_tasks_cmd(self, ctx, *, inp: str):
         guild: discord.Guild = await self.bot.fetch_guild(958611525541720064)
-        channel: discord.TextChannel = [channel for channel in await guild.fetch_channels() if channel.id == 959429833425825812][0]
+        channel: discord.TextChannel = [
+            channel
+            for channel in await guild.fetch_channels()
+            if channel.id == 959429833425825812
+        ][0]
         message: discord.Message = await channel.fetch_message(959547365512065036)
         try:
             matches = re.findall(r"field:.*?{(.+?)}", inp, re.DOTALL)

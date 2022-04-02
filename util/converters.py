@@ -1,16 +1,17 @@
 import re
+import discord
 
 
 class Converter:
     @staticmethod
-    async def convert_member(ctx, member):
+    async def convert_member(ctx, member) -> discord.Member:
 
         # lookup by ID/mention
         string_for_mention = re.sub("<|!|@|>", "", member)
         try:
             item = ctx.guild.get_member(int(string_for_mention))
             return item
-        except:
+        except Exception:
             pass
 
         # lookup by name#discrim
@@ -25,7 +26,7 @@ class Converter:
 
         # lookup by nickname
         for item in ctx.guild.members:
-            if item.nick != None:
+            if item.nick:
                 if item.nick.lower() == member.lower():
                     return item
 
@@ -37,7 +38,7 @@ class Converter:
         try:
             item = ctx.guild.get_role(int(string_for_mention))
             return item
-        except:
+        except Exception:
             pass
 
         for item in ctx.guild.roles:
@@ -52,7 +53,7 @@ class Converter:
         try:
             item = ctx.guild.get_channel(int(string_mor_mention))
             return item
-        except:
+        except Exception:
             pass
 
         for item in ctx.guild.channels:
