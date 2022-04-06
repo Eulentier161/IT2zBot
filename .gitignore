@@ -132,3 +132,4 @@ dmypy.json
 .vscode/
 config.yaml
 poetry.lock
+sqlite.db

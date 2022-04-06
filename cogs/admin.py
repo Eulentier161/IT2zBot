@@ -348,9 +348,7 @@ class AdminCog(commands.Cog):
             except Exception as e:
                 await ctx.message.add_reaction("❌")
                 dm_channel = await Utils.get_dm_channel(ctx.author)
-                await dm_channel.send(
-                    f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
-                )
+                await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
                 return
 
         # do the actual lock
@@ -375,9 +373,7 @@ class AdminCog(commands.Cog):
             except Exception as e:
                 await ctx.message.add_reaction("❌")
                 dm_channel = await Utils.get_dm_channel(ctx.author)
-                await dm_channel.send(
-                    f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
-                )
+                await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
                 return
 
         permission = channel.overwrites_for(ctx.guild.default_role)
@@ -403,9 +399,7 @@ class AdminCog(commands.Cog):
         except Exception as e:
             await ctx.message.add_reaction("❌")
             dm_channel = await Utils.get_dm_channel(ctx.author)
-            await dm_channel.send(
-                f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
-            )
+            await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
 
     @commands.command(aliases=["roleclr", "rolecolour", "rolecolor"])
     @commands.has_guild_permissions(manage_roles=True)
@@ -419,15 +413,13 @@ class AdminCog(commands.Cog):
         except Exception as e:
             await ctx.message.add_reaction("❌")
             dm_channel = await Utils.get_dm_channel(ctx.author)
-            await dm_channel.send(
-                f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
-            )
+            await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
             return
 
         if color == "default":
             color = discord.Colour.default()
         else:
-            rgb = tuple(int(color[i : i + 2], 16) for i in (0, 2, 4))
+            rgb = tuple(int(color[i: i + 2], 16) for i in (0, 2, 4))
             color = discord.Colour.from_rgb(rgb[0], rgb[1], rgb[2])
 
         await role.edit(color=color)
@@ -443,9 +435,7 @@ class AdminCog(commands.Cog):
                 channel = await Converter.convert_textchannel(ctx, channel)
             except Exception as e:
                 dm_channel = await Utils.get_dm_channel(ctx.author)
-                await dm_channel.send(
-                    f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
-                )
+                await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
                 return
 
         await channel.delete()
@@ -473,8 +463,6 @@ class AdminCog(commands.Cog):
             amount = int(amount)
         except Exception as e:
             dm_channel = await Utils.get_dm_channel(ctx.author)
-            await dm_channel.send(
-                f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```"
-            )
+            await dm_channel.send(f"Error in command: {ctx.message.jump_url}\n```py\n{e}\n```")
             return
         await ctx.channel.purge(limit=amount)
