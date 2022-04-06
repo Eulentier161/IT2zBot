@@ -41,6 +41,7 @@ class InfoCog(commands.Cog):
         embed = discord.Embed(title=title, description=details, color=0x008000)
         msg: discord.Message = await channel.send(embed=embed)
         self.db.create_tasks_entry(str(msg.id), title, details)
+        await ctx.message.add_reaction("☑️")
 
     @commands.command("delete_task")
     async def delete_task_cmd(self, ctx, message_id: str = None):
@@ -57,6 +58,7 @@ class InfoCog(commands.Cog):
 
         self.db.mark_task_deleted(msg.id)
         await msg.delete()
+        await ctx.message.add_reaction("☑️")
 
     @commands.command("edit_task")
     async def edit_task_cmd(self, ctx, message_id: str = None, *, inp: str = None):
@@ -93,3 +95,4 @@ class InfoCog(commands.Cog):
 
         await msg.edit(embed=embed)
         self.db.update_task(msg_id=msg.id, **kwargs)
+        await ctx.message.add_reaction("☑️")
