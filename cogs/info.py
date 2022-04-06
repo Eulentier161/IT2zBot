@@ -7,6 +7,10 @@ from util.db import Database
 
 
 class InfoCog(commands.Cog):
+    """
+    various info related commands
+    """
+
     def __init__(self, bot):
         self.bot: discord.Client = bot
         self.db = Database()
@@ -14,6 +18,9 @@ class InfoCog(commands.Cog):
 
     @commands.command(aliases=["collab", "collaborate"])
     async def collab_cmd(self, ctx):
+        """
+        get info about how you can improve the bot
+        """
         desc = (
             "[This bot](https://github.com/Eulentier161/IT2zBot) is public on [GitHub](https://github.com).\n"
             + "Fork -> edit -> create a Pull Request, if you'd like to improve the bot.\nThis is supposed to be a community project. <3"
@@ -23,6 +30,9 @@ class InfoCog(commands.Cog):
 
     @commands.command("create_task")
     async def create_new_task_cmd(self, ctx, *, inp: str = None):
+        """
+        create a new task and store it in the database; this will be broadcasted to the current-tasks channel
+        """
         try:
             title, details = map(lambda s: s.strip(), inp.split("--title")[1].split("--details"))
         except (ValueError, IndexError):
@@ -34,6 +44,9 @@ class InfoCog(commands.Cog):
 
     @commands.command("delete_task")
     async def delete_task_cmd(self, ctx, message_id: str = None):
+        """
+        delete a task from the current-tasks channel
+        """
         channel: discord.TextChannel = await self.bot.fetch_channel(self.task_channel_id)
         try:
             msg: discord.Message = await channel.fetch_message(int(message_id))
@@ -47,6 +60,9 @@ class InfoCog(commands.Cog):
 
     @commands.command("edit_task")
     async def edit_task_cmd(self, ctx, message_id: str = None, *, inp: str = None):
+        """
+        edit a currently active task
+        """
         kwargs = {}
         title = None
         details = None

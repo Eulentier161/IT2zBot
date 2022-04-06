@@ -5,15 +5,22 @@ from util.util import Utils
 
 
 class SelfmanagementCog(commands.Cog):
+    """
+    commands to manage yourself
+    """
+
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command("setclr")
     async def setcolor_cmd(self, ctx, color_hex: str = None):
+        """
+        assign a custom color-role to yourself or change your color
+        """
         if not color_hex:
             return
         try:
-            color = discord.Color.from_rgb(*[int(color_hex[i: i + 2], 16) for i in (0, 2, 4)])
+            color = discord.Color.from_rgb(*[int(color_hex[i : i + 2], 16) for i in (0, 2, 4)])
         except Exception as e:
             await ctx.message.add_reaction("❌")
             dm_channel = await Utils.get_dm_channel(ctx.author)

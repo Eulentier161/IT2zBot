@@ -115,7 +115,10 @@ class AdminCog(commands.Cog):
     @commands.command("ban")
     @commands.has_guild_permissions(ban_members=True)
     async def ban_cmd(self, ctx, *_users):
-
+        """
+        bans one or a list of users\n
+        requires "ban_members" permissions
+        """
         users = []
         for user in _users:
             string_for_mention = re.sub("<|!|@|>", "", user)
@@ -148,7 +151,10 @@ class AdminCog(commands.Cog):
     @commands.command("unban")
     @commands.has_guild_permissions(ban_members=True)
     async def unban_cmd(self, ctx, *users: discord.User):
-
+        """
+        unbans one or many users\n
+        requires "ban_members" permissions
+        """
         response_confirm = ""
         response_deny = ""
 
@@ -172,7 +178,10 @@ class AdminCog(commands.Cog):
     @commands.command("kick")
     @commands.has_guild_permissions(kick_members=True)
     async def kick_cmd(self, ctx, *users):
-
+        """
+        kicks one or many members from the guild\n
+        requires "kick_members" permissions
+        """
         users_converted = []
         for user in users:
             user = await Converter.convert_member(ctx, user)
@@ -200,7 +209,10 @@ class AdminCog(commands.Cog):
     @commands.command("setnick")
     @commands.has_guild_permissions(manage_nicknames=True)
     async def setnick_cmd(self, ctx, member, *, nick=None):
-
+        """
+        sets the guild nickname of a member\n
+        requires "manage_nicknames" permissions
+        """
         member = await Converter.convert_member(ctx, member)
         if not member:
             await ctx.message.add_reaction("❌")
@@ -216,7 +228,10 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["setchannelname", "schn"])
     @commands.has_guild_permissions(manage_channels=True)
     async def setchannelname_cmd(self, ctx, *, name=None):
-
+        """
+        sets the channelname of a channel\n
+        requires "manage_channels" permissions
+        """
         if name.startswith("<#"):
             channelid = name.partition("<#")[2].partition(">")[0]
             channel = self.bot.get_channel(int(channelid))
@@ -230,7 +245,10 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["setchanneltopic", "scht"])
     @commands.has_guild_permissions(manage_channels=True)
     async def setchanneltopic_cmd(self, ctx, *, topic=None):
-
+        """
+        sets the channeltopic of a channel\n
+        requires "manage_channels" permissions
+        """
         if topic.startswith("<#"):
             channelid = topic.partition("<#")[2].partition(">")[0]
             channel = self.bot.get_channel(int(channelid))
@@ -244,7 +262,10 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["setrole", "sr"])
     @commands.has_guild_permissions(manage_roles=True)
     async def setrole_cmd(self, ctx, user, *, role):
-
+        """
+        adds the role to a member\n
+        requires "manage_roles" permissions
+        """
         user = await Converter.convert_member(ctx, user)
         if not user:
             await ctx.message.add_reaction("❌")
@@ -265,7 +286,10 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["removerole", "rr"])
     @commands.has_guild_permissions(manage_roles=True)
     async def removerole_cmd(self, ctx, user, *, role):
-
+        """
+        removes the role from a member\n
+        requires "manage_roles" permissions
+        """
         user = await Converter.convert_member(ctx, user)
         if not user:
             await ctx.message.add_reaction("❌")
@@ -286,6 +310,10 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["createrole", "cr"])
     @commands.has_guild_permissions(manage_roles=True)
     async def createrole_cmd(self, ctx, *, role=None):
+        """
+        creates a role\n
+        requires "manage_roles" permissions
+        """
         if not role:
             await ctx.message.add_reaction("❌")
             return
@@ -296,6 +324,10 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["deleterole", "dr"])
     @commands.has_guild_permissions(manage_roles=True)
     async def deleterole_cmd(self, ctx, *, role=None):
+        """
+        deletes a role\n
+        requires "manage_roles" permissions
+        """
         if not role:
             await ctx.message.add_reaction("❌")
             return
@@ -313,7 +345,8 @@ class AdminCog(commands.Cog):
     async def addemote_cmd(self, ctx, emote: discord.PartialEmoji, name=None):
         """
         adds an emote to the current server\n
-        only works with existing discord emotes
+        only works with existing discord emotes\n
+        requires "manage_emojis" permissions
         """
         if not name:
             await ctx.message.add_reaction("❌")
@@ -326,6 +359,10 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["removeemote", "rmemote"])
     @commands.has_guild_permissions(manage_emojis=True)
     async def removeemote_cmd(self, ctx, emote: discord.Emoji):
+        """
+        removes an emote\n
+        requires "manage_emojis" permissions
+        """
         if not emote:
             await ctx.message.add_reaction("❌")
             return
@@ -336,7 +373,10 @@ class AdminCog(commands.Cog):
     @commands.command("lock")
     @commands.has_guild_permissions(manage_guild=True)
     async def lock_cmd(self, ctx, channel=None):
-
+        """
+        locks a textchannel\n
+        requires "manage_guild" permissions
+        """
         # if user didnt input an argument, default to current channel
         if not channel:
             channel = ctx.message.channel
@@ -363,7 +403,10 @@ class AdminCog(commands.Cog):
     @commands.command("unlock")
     @commands.has_guild_permissions(manage_guild=True)
     async def unlock_cmd(self, ctx, channel=None):
-
+        """
+        unlocks a textchannel\n
+        requires "manage_guild" permissions
+        """
         if not channel:
             channel = ctx.message.channel
 
@@ -386,7 +429,10 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["setslowmode", "slowmode"])
     @commands.has_guild_permissions(manage_channels=True)
     async def setslowmode_cmd(self, ctx, *, duration=None):
-
+        """
+        sets slowmode in a textchannel\n
+        requires "manage_channels" permissions
+        """
         try:
             if duration.startswith("<#"):
                 channelid = duration.partition("<#")[2].partition(">")[0]
@@ -404,6 +450,10 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["roleclr", "rolecolour", "rolecolor"])
     @commands.has_guild_permissions(manage_roles=True)
     async def roleclr_cmd(self, ctx, role, color=None):
+        """
+        sets the color of <role>\n
+        requires "manage_roles" permissions
+        """
         if not color:
             await ctx.message.add_reaction("❌")
             return
@@ -419,7 +469,7 @@ class AdminCog(commands.Cog):
         if color == "default":
             color = discord.Colour.default()
         else:
-            rgb = tuple(int(color[i: i + 2], 16) for i in (0, 2, 4))
+            rgb = tuple(int(color[i : i + 2], 16) for i in (0, 2, 4))
             color = discord.Colour.from_rgb(rgb[0], rgb[1], rgb[2])
 
         await role.edit(color=color)
@@ -428,6 +478,10 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["deletetextchannel", "dtch"])
     @commands.has_guild_permissions(manage_channels=True)
     async def deletetextchannel_cmd(self, ctx, *, channel=None):
+        """
+        deletes a channel\n
+        requires "manage_channels" permissions
+        """
         if not channel:
             channel = ctx.channel
         else:
@@ -447,6 +501,10 @@ class AdminCog(commands.Cog):
     @commands.command(aliases=["createtextchannel", "ctch"])
     @commands.has_guild_permissions(manage_channels=True)
     async def createtextchannel_cmd(self, ctx, *, name=None):
+        """
+        creates a new textchannel\n
+        requires "manage_channels" permissions
+        """
         if not name:
             await ctx.message.add_reaction("❌")
             return
@@ -459,6 +517,10 @@ class AdminCog(commands.Cog):
     @commands.command("prune")
     @commands.has_guild_permissions(administrator=True)
     async def prune_cmd(self, ctx, amount=None):
+        """
+        prunes the last n messages from the current channel\n
+        requires "administrator" permissions
+        """
         try:
             amount = int(amount)
         except Exception as e:
