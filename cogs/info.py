@@ -1,12 +1,16 @@
-from util.util import Utils
 import re
+
 import discord
+from config import Config
 from discord.ext import commands
+from util.db import Database
 
 
 class InfoCog(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
+        self.bot: discord.Client = bot
+        self.db = Database()
+        self.task_channel_id = Config.instance().get_tasks_channel()
 
     @commands.command(aliases=["collab", "collaborate"])
     async def collab_cmd(self, ctx):
@@ -14,37 +18,62 @@ class InfoCog(commands.Cog):
             "[This bot](https://github.com/Eulentier161/IT2zBot) is public on [GitHub](https://github.com).\n"
             + "Fork -> edit -> create a Pull Request, if you'd like to improve the bot.\nThis is supposed to be a community project. <3"
         )
-        embed = discord.Embed(
-            title="Collaborate",
-            url="https://github.com/Eulentier161/IT2zBot",
-            description=desc,
-            color=0x039307,
-        )
+        embed = discord.Embed(title="Collaborate", url="https://github.com/Eulentier161/IT2zBot", description=desc, color=0x039307)
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=["aktuelle_aufgaben", "current_tasks"])
-    async def current_tasks_cmd(self, ctx, *, inp: str):
-        guild: discord.Guild = await self.bot.fetch_guild(958611525541720064)
-        channel: discord.TextChannel = [
-            channel
-            for channel in await guild.fetch_channels()
-            if channel.id == 959429833425825812
-        ][0]
-        message: discord.Message = await channel.fetch_message(959547365512065036)
+    @commands.command("create_task")
+    async def create_new_task_cmd(self, ctx, *, inp: str = None):
         try:
-            matches = re.findall(r"field:.*?{(.+?)}", inp, re.DOTALL)
-            if not matches:
-                raise Exception("no matches found for regex: \\field:.*?{(.+?)}\\i")
-            embed = discord.Embed(title="Aktuelle Aufgaben", color=0x008000)
-            for match in matches:
-                name = re.findall(r"name:(.+?)value:", match, re.DOTALL)[0]
-                if not name:
-                    raise Exception("no name found with regex: \\name:(.+?)value:\\i")
-                value = re.findall(r"value:(.+)$", match, re.DOTALL)[0]
-                if not value:
-                    raise Exception("no value found with regex: \\value:(.+)$\\i")
-                embed.add_field(name=name, value=value, inline=False)
-            await message.edit(embed=embed)
-        except Exception as e:
-            author_dm = await Utils.get_dm_channel(ctx.author)
-            await author_dm.send(f"```py\n{e}\n```")
+            title, details = map(lambda s: s.strip(), inp.split("--title")[1].split("--details"))
+        except (ValueError, IndexError):
+            return await ctx.send("malformed input arguments. `?create_new_task --title my title --description my description`")
+        channel: discord.TextChannel = await self.bot.fetch_channel(self.task_channel_id)
+        embed = discord.Embed(title=title, description=details, color=0x008000)
+        msg: discord.Message = await channel.send(embed=embed)
+        self.db.create_tasks_entry(str(msg.id), title, details)
+
+    @commands.command("delete_task")
+    async def delete_task_cmd(self, ctx, message_id: str = None):
+        channel: discord.TextChannel = await self.bot.fetch_channel(self.task_channel_id)
+        try:
+            msg: discord.Message = await channel.fetch_message(int(message_id))
+        except ValueError:
+            return await ctx.send(f"parameter `message_id` has to be a number")
+        except discord.NotFound:
+            return await ctx.send(f"`message_id={int(message_id)}` not found")
+
+        self.db.mark_task_deleted(msg.id)
+        await msg.delete()
+
+    @commands.command("edit_task")
+    async def edit_task_cmd(self, ctx, message_id: str = None, *, inp: str = None):
+        kwargs = {}
+        title = None
+        details = None
+        try:
+            if "--title" in inp:
+                title = inp.split("--title")[1]
+                if "--details" in title:
+                    title = title.split("--details")[0]
+                kwargs["title"] = title
+            if "--details" in inp:
+                details = inp.split("--details")[1]
+                kwargs["details"] = details
+        except (ValueError, IndexError):
+            return await ctx.send("malformed input arguments.")
+        channel: discord.TextChannel = await self.bot.fetch_channel(self.task_channel_id)
+        try:
+            msg: discord.Message = await channel.fetch_message(int(message_id))
+        except ValueError:
+            return await ctx.send(f"parameter `message_id` has to be a number")
+        except discord.NotFound:
+            return await ctx.send(f"`message_id={int(message_id)}` not found")
+
+        task = self.db.get_active_task(msg.id)
+        embed = discord.Embed(title=title if title else task["title"], description=details if details else task["details"], color=0x008000)
+
+        if not kwargs:
+            return
+
+        await msg.edit(embed=embed)
+        self.db.update_task(msg_id=msg.id, **kwargs)
