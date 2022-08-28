@@ -1,3 +1,4 @@
+#!./.venv/bin/python
 import discord
 import yaml
 from discord.ext import commands
