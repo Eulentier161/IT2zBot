@@ -11,6 +11,7 @@ authors = ["Eulentier161 <eulentier161@gmail.com>"]
 python = "^3.10"
 "discord.py" = "^2.0.1"
 pyaml = "^21.10.1"
+httpx = "^0.23.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"

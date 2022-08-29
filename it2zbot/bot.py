@@ -2,7 +2,7 @@
 import discord
 import yaml
 from discord.ext import commands
-from cogs import custom_reactions, self_management
+from cogs import custom_reactions, self_management, misc
 
 with open("config.yaml") as f:
     cfg = yaml.safe_load(f)
@@ -19,6 +19,7 @@ class MyBot(commands.Bot):
     async def setup_hook(self):
         await self.add_cog(custom_reactions.CustomReactions(self))
         await self.add_cog(self_management.SelfManagement(self))
+        await self.add_cog(misc.MiscCog(self))
         self.tree.copy_global_to(guild=MY_GUILD)
         await self.tree.sync(guild=MY_GUILD)
 
