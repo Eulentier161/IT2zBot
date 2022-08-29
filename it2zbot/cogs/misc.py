@@ -11,7 +11,7 @@ class MiscCog(commands.Cog):
 
     @app_commands.command(name="joke")
     @app_commands.describe(category="joke category")
-    async def my_command(self, interaction: discord.Interaction, category: Literal["Any", "Misc", "Programming", "Dark", "Pun", "Spooky", "Christmas"]):
+    async def joke_command(self, interaction: discord.Interaction, category: Literal["Any", "Misc", "Programming", "Dark", "Pun", "Spooky", "Christmas"]):
         """get a random joke"""
         async with httpx.AsyncClient() as httpx_client:
             res: dict = (await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}")).json()

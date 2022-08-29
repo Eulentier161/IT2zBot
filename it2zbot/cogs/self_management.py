@@ -8,13 +8,25 @@ class SelfManagement(commands.GroupCog, name="self_management"):
         self.bot = bot
         super().__init__()
 
-    @app_commands.command(name="setcolor")
-    async def setcolor_cmd(self, interaction: discord.Interaction, color_hex: str):
+    @app_commands.command(name="set_custom_color")
+    async def set_custom_color_command(self, interaction: discord.Interaction, color: str):
         """assign a custom color-role to yourself or change your color"""
         try:
-            color = discord.Colour.from_rgb(*[int(color_hex[i : i + 2], 16) for i in (0, 2, 4)])
+            color = discord.Colour.from_str(color)
         except ValueError:
-            return await interaction.response.send_message("invalid hex-color", ephemeral=True)
+            return await interaction.response.send_message(
+                "\n".join(
+                    [
+                        "color must be in one of the following format",
+                        "- `0x<hex>`",
+                        "- `#<hex>`",
+                        "- `0x#<hex>`",
+                        "- `rgb(<number>, <number>, <number>)`",
+                        "Like CSS, `<number>` can be either 0-255 or 0-100% and `<hex>` can be either a 6 digit hex number or a 3 digit hex shortcut (e.g. #fff).",
+                    ]
+                ),
+                ephemeral=True,
+            )
         uid = str(interaction.user.id)
         existing_roles = await interaction.guild.fetch_roles()
         if uid in [role.name for role in existing_roles]:
@@ -24,6 +36,18 @@ class SelfManagement(commands.GroupCog, name="self_management"):
                 role = await role.edit(colour=color, reason="color role")
                 break
         else:
-            new_role = await interaction.guild.create_role(name=uid, colour=color, reason="color role")
-            await interaction.user.add_roles(new_role)
+            role = await interaction.guild.create_role(name=uid, colour=color, reason="color role")
+            await interaction.user.add_roles(role)
         await interaction.response.send_message(role.mention)
+
+    @app_commands.command(name="delete_custom_color")
+    async def delete_custom_color_command(self, interaction: discord.Interaction):
+        uid = str(interaction.user.id)
+        existing_roles = await interaction.guild.fetch_roles()
+        if not uid in [role.name for role in existing_roles]:
+            return await interaction.response.send_message("You dont have a custom color", ephemeral=True)
+        for role in existing_roles:
+            if role.name == uid:
+                await role.delete()
+                return await interaction.response.send_message("Your custom color has been deleted", ephemeral=True)
+        await interaction.response.send_message("something went wrong")
