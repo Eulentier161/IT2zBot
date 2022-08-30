@@ -1,3 +1,4 @@
+from typing import Literal
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -42,6 +43,7 @@ class SelfManagement(commands.GroupCog, name="self_management"):
 
     @app_commands.command(name="delete_custom_color")
     async def delete_custom_color_command(self, interaction: discord.Interaction):
+        """delete your custom color role from the guild"""
         uid = str(interaction.user.id)
         existing_roles = await interaction.guild.fetch_roles()
         if not uid in [role.name for role in existing_roles]:
@@ -49,5 +51,5 @@ class SelfManagement(commands.GroupCog, name="self_management"):
         for role in existing_roles:
             if role.name == uid:
                 await role.delete()
-                return await interaction.response.send_message("Your custom color has been deleted", ephemeral=True)
+                return await interaction.response.send_message("Your custom color has been deleted")
         await interaction.response.send_message("something went wrong")
