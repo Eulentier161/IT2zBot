@@ -1,10 +1,11 @@
+import sqlite3
 from datetime import datetime, timedelta
 from typing import Literal
+
 import discord
 import httpx
 from discord import app_commands
 from discord.ext import commands, tasks
-import sqlite3
 
 
 class MiscCog(commands.Cog):
@@ -109,3 +110,11 @@ class MiscCog(commands.Cog):
     @remind_exceeded.before_loop
     async def before_remind_exceeded(self):
         await self.bot.wait_until_ready()
+
+    @app_commands.command(name="shorten")
+    async def shorten_cmd(self, interaction: discord.Interaction, url: str, slug: str):
+        async with httpx.AsyncClient() as client:
+            res = await client.post("http://localhost:3002/api", json={"slug": slug, "destination": url})
+        if res.status_code != 200:
+            return await interaction.response.send_message(res.json()["message"])
+        return await interaction.response.send_message(f"https://eule.wtf/{slug}")
