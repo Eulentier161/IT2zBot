@@ -116,7 +116,7 @@ class MiscCog(commands.Cog):
     async def shorten_cmd(self, interaction: discord.Interaction, url: str, slug: str):
         """shorten a url with the worlds famous eule.wtf TM service"""
         async with httpx.AsyncClient() as client:
-            res = await client.post("http://localhost:3002/api", json={"slug": slug, "destination": url})
+            res = await client.post("http://localhost:5678/api", json={"slug": slug, "destination": url})
         if res.status_code != 200:
             return await interaction.response.send_message(res.json()["message"])
         return await interaction.response.send_message(f"https://eule.wtf/{slug}")
