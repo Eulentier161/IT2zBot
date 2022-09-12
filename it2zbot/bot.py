@@ -6,7 +6,7 @@ from cogs import custom_reactions, self_management, misc
 
 with open("config.yaml") as f:
     cfg = yaml.safe_load(f)
-    # MY_GUILD = discord.Object(cfg["guild"])
+    MY_GUILD = discord.Object(cfg["guild"])
     TOKEN = cfg["token"]
     ADMINS = cfg["admins"]
 

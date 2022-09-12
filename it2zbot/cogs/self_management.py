@@ -3,14 +3,13 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-
+@app_commands.guild_only()
 class SelfManagement(commands.GroupCog, name="self_management"):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         super().__init__()
 
     @app_commands.command(name="set_custom_color")
-    @app_commands.guild_only()
     async def set_custom_color_command(self, interaction: discord.Interaction, color: str):
         """assign a custom color-role to yourself or change your color"""
         try:
@@ -43,7 +42,6 @@ class SelfManagement(commands.GroupCog, name="self_management"):
         await interaction.response.send_message(role.mention)
 
     @app_commands.command(name="delete_custom_color")
-    @app_commands.guild_only()
     async def delete_custom_color_command(self, interaction: discord.Interaction):
         """delete your custom color role from the guild"""
         uid = str(interaction.user.id)
