@@ -68,7 +68,7 @@ class MiscCog(commands.Cog):
     async def remind_me_command(
         self,
         interaction: discord.Interaction,
-        who: discord.Member,
+        who: discord.User,
         amount: app_commands.Range[int, 1, 365],
         unit: Literal["Minutes", "Hours", "Days"],
         message: app_commands.Range[str, 1, 1000],

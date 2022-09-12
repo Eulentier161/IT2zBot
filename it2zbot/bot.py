@@ -6,7 +6,7 @@ from cogs import custom_reactions, self_management, misc
 
 with open("config.yaml") as f:
     cfg = yaml.safe_load(f)
-    MY_GUILD = discord.Object(cfg["guild"])
+    # MY_GUILD = discord.Object(cfg["guild"])
     TOKEN = cfg["token"]
     ADMINS = cfg["admins"]
 
@@ -20,8 +20,10 @@ class MyBot(commands.Bot):
         await self.add_cog(custom_reactions.CustomReactions(self))
         await self.add_cog(self_management.SelfManagement(self))
         await self.add_cog(misc.MiscCog(self))
-        self.tree.copy_global_to(guild=MY_GUILD)
-        await self.tree.sync(guild=MY_GUILD)
+        # self.tree.copy_global_to(guild=MY_GUILD)
+        await self.tree.sync(
+            # guild=MY_GUILD
+        )
 
 
 bot = MyBot(command_prefix=".", intents=discord.Intents.all())
