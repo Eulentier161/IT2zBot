@@ -1,8 +1,12 @@
 #!./.venv/bin/python
 import discord
+import uvloop
 import yaml
 from discord.ext import commands
-from cogs import custom_reactions, self_management, misc
+
+from cogs import custom_reactions, misc, self_management
+
+uvloop.install()
 
 with open("config.yaml") as f:
     cfg = yaml.safe_load(f)
