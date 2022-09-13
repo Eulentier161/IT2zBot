@@ -120,3 +120,17 @@ class MiscCog(commands.Cog):
         if res.status_code != 200:
             return await interaction.response.send_message(res.json()["message"])
         return await interaction.response.send_message(res.json()["url"])
+
+    @commands.Cog.listener("on_message")
+    async def preview_linked_message(self, message: discord.Message):
+        if message.author == self.bot.user:
+            return
+
+        if (
+            not message.content.count("/") == 6
+            or not message.content.startswith("https://discord.com/channels/")
+            or not all([id.isdigit() for id in message.content.split("/")[-3:]])
+        ):
+            return  # doesnt look like a discord message link
+
+        guild_id, channel_id, message_id = [id for id in message.content.split("/")[-3:]]
