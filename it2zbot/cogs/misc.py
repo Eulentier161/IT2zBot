@@ -20,8 +20,7 @@ class MiscCog(commands.Cog):
                     time DATETIME,
                     message VARCHAR(1000),
                     og_message_url VARCHAR(100)
-                );
-                """
+                );"""
             )
         self.bot = bot
         self.remind_exceeded.start()
@@ -89,7 +88,12 @@ class MiscCog(commands.Cog):
         jump_url = (await interaction.original_response()).jump_url
         with sqlite3.connect("bot.db") as connection:
             connection.execute(
-                f"INSERT INTO reminder (user, channel, time, message, og_message_url) VALUES ('{user_id}', '{channel_id}', '{date}', '{message}', '{jump_url}')"
+                f"""
+                INSERT INTO reminder (
+                    user, channel, time, message, og_message_url
+                ) VALUES (
+                    '{user_id}', '{channel_id}', '{date}', '{message}', '{jump_url}'
+                )"""
             )
 
     @tasks.loop(minutes=1)
