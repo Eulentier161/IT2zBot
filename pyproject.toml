@@ -2,7 +2,7 @@
 line-length = 160
 
 [tool.poetry]
-name = "IT2zBot2"
+name = "IT2zBot"
 version = "0.1.0"
 description = ""
 authors = ["Eulentier161 <eulentier161@gmail.com>"]
