@@ -4,3 +4,4 @@ __pycache__/
 bot.db
 config.yaml
 poetry.lock
+*.pem

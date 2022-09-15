@@ -3,6 +3,7 @@ import sqlite3
 import discord
 from discord import app_commands
 from discord.ext import commands
+from utils import get_config
 
 
 class CustomReactions(commands.GroupCog, name="custom_reactions"):
@@ -19,6 +20,7 @@ class CustomReactions(commands.GroupCog, name="custom_reactions"):
                 """
             )
         self.bot = bot
+        self.admins = get_config()["admins"]
         super().__init__()
 
     @commands.Cog.listener("on_message")
@@ -71,7 +73,7 @@ class CustomReactions(commands.GroupCog, name="custom_reactions"):
         with sqlite3.connect("bot.db") as connection:
             if not (res := connection.execute(f"SELECT id, author FROM custom_reaction WHERE trigger = '{trigger}';").fetchone()):
                 return await interaction.response.send_message(f"there is no custom reaction with `{trigger=}`", ephemeral=True)
-            if not interaction.user.id == int(res[1]) and interaction.user.id not in self.bot.admins:
+            if not interaction.user.id == int(res[1]) and interaction.user.id not in self.admins:
                 return await interaction.response.send_message(
                     "you cant delete this reaction. only a bot-admin or the user who created this reaction may delete it", ephemeral=True
                 )
