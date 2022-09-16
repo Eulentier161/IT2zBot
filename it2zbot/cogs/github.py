@@ -19,7 +19,7 @@ class Issue(discord.ui.Modal, title="Issue"):
         res = httpx.post(
             "https://api.github.com/repos/eulentier161/it2zbot/issues",
             headers={"Authorization": f"Bearer {utils.get_access_token()}"},
-            json={"title": self.issue_title.value, "body": self.issue_body.value},
+            json={"title": self.issue_title.value, "body": self.issue_body.value + "\n\n" + interaction.user.name + f" ({interaction.user.id})"},
         ).json()
         await interaction.response.send_message(f"Thanks for your feedback! {res['html_url']}", ephemeral=False)
 
