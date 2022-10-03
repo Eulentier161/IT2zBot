@@ -1,3 +1,4 @@
+import math
 import sqlite3
 
 import discord
@@ -59,13 +60,76 @@ class CustomReactions(commands.GroupCog, name="custom_reactions"):
     @app_commands.command(name="list")
     async def list_custom_reactions(self, interaction: discord.Interaction):
         """list all custom reactions"""
+
+        def select(connection, page):
+            return [
+                {"id": row[0], "trigger": row[1]}
+                for row in connection.execute(f"SELECT id, trigger FROM custom_reaction ORDER BY id LIMIT {(page-1)*10}, 10;").fetchall()
+            ]
+
+        class PreviousButton(discord.ui.Button):
+            def __init__(self):
+                super().__init__(label="⬅️", style=discord.ButtonStyle.gray, disabled=True)
+
+            async def callback(self, interaction: discord.Interaction):
+                view: ListView = self.view
+                page = view.handle_prev_button()
+                with sqlite3.connect("bot.db") as connection:
+                    custom_reactions = select(connection, page=page)
+                embed = discord.Embed(
+                    title="Custom Reactions", description="\n".join([f"{reaction['id']}. **{reaction['trigger']}**" for reaction in custom_reactions])
+                )
+                embed.set_footer(text=f"page {view.page}/{view.last_page}")
+                await interaction.response.edit_message(embed=embed, view=view)
+
+        class NextButton(discord.ui.Button):
+            def __init__(self, disabled):
+                super().__init__(label="➡️", style=discord.ButtonStyle.gray, disabled=disabled)
+
+            async def callback(self, interaction: discord.Interaction):
+                view: ListView = self.view
+                page = view.handle_next_button()
+                with sqlite3.connect("bot.db") as connection:
+                    custom_reactions = select(connection, page=page)
+                embed = discord.Embed(
+                    title="Custom Reactions", description="\n".join([f"{reaction['id']}. **{reaction['trigger']}**" for reaction in custom_reactions])
+                )
+                embed.set_footer(text=f"page {view.page}/{view.last_page}")
+                await interaction.response.edit_message(embed=embed, view=view)
+
+        class ListView(discord.ui.View):
+            def __init__(self, last_page):
+                super().__init__()
+                self.page = 1
+                self.last_page = last_page
+                self.prev_button = PreviousButton()
+                self.next_button = NextButton(disabled=last_page <= 1)
+                self.add_item(self.prev_button)
+                self.add_item(self.next_button)
+
+            def handle_button_disabled(self):
+                self.next_button.disabled = self.page >= self.last_page
+                self.prev_button.disabled = self.page <= 1
+
+            def handle_next_button(self):
+                self.page += 1
+                self.handle_button_disabled()
+                return self.page
+
+            def handle_prev_button(self):
+                self.page -= 1
+                self.handle_button_disabled()
+                return self.page
+
         # TODO: this will break if the response body reaches discords message length limit
         with sqlite3.connect("bot.db") as connection:
-            custom_reactions = [{"id": row[0], "trigger": row[1]} for row in connection.execute("SELECT id, trigger FROM custom_reaction;").fetchall()]
+            last_page = max(1, math.ceil(connection.execute("SELECT COUNT(*) FROM custom_reaction;").fetchone()[0] / 10))
+            custom_reactions = select(connection, page=1)
         embed = discord.Embed(
             title="Custom Reactions", description="\n".join([f"{reaction['id']}. **{reaction['trigger']}**" for reaction in custom_reactions])
         )
-        await interaction.response.send_message(embed=embed)
+        embed.set_footer(text=f"page 1/{last_page}")
+        await interaction.response.send_message(embed=embed, view=ListView(last_page))
 
     @app_commands.command(name="delete")
     async def delete_custom_reactions(self, interaction: discord.Interaction, trigger: str):
