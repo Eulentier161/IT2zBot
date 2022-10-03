@@ -34,7 +34,7 @@ class MiscCog(commands.Cog):
     ):
         """get a random joke"""
         async with httpx.AsyncClient() as httpx_client:
-            res: dict = (await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}")).json()
+            res: dict = (await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}?blacklistFlags=racist,sexist,political")).json()
 
         if (type := res.get("type", None)) == "single":
             await interaction.response.send_message(f"{res['joke']}")
