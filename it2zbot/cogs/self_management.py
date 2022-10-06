@@ -1,7 +1,7 @@
-from typing import Literal
 import discord
 from discord import app_commands
 from discord.ext import commands
+
 
 @app_commands.guild_only()
 class SelfManagement(commands.GroupCog, name="self_management"):

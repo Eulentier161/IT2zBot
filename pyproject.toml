@@ -2,7 +2,7 @@
 line-length = 160
 
 [tool.poetry]
-name = "IT2zBot2"
+name = "IT2zBot"
 version = "0.1.0"
 description = ""
 authors = ["Eulentier161 <eulentier161@gmail.com>"]
@@ -13,6 +13,7 @@ python = "^3.10"
 pyaml = "^21.10.1"
 httpx = "^0.23.0"
 uvloop = "^0.16.0"
+PyJWT = {version = "^2.4.0", extras = ["crypto"]}
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
