@@ -64,4 +64,8 @@ class MiscCog(commands.Cog):
         ):
             return  # doesnt look like a discord message link
 
-        guild_id, channel_id, message_id = [id for id in message.content.split("/")[-3:]]
+        channel_id, message_id = [id for id in message.content.split("/")[-2:]]
+        linked_message = await (await self.bot.fetch_channel(channel_id)).fetch_message(message_id)
+        files = [await attachment.to_file() for attachment in linked_message.attachments]
+
+        await message.reply(linked_message.content, embeds=linked_message.embeds, files=files)
