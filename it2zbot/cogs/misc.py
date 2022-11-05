@@ -69,3 +69,7 @@ class MiscCog(commands.Cog):
         files = [await attachment.to_file() for attachment in linked_message.attachments]
 
         await message.reply(linked_message.content, embeds=linked_message.embeds, files=files)
+
+    @app_commands.command(name="avatar")
+    async def avatar_cmd(self, interaction: discord.Interaction, user: discord.User):
+        await interaction.response.send_message(file=(await user.display_avatar.to_file()))
