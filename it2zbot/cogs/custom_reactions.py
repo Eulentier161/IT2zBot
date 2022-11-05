@@ -29,8 +29,11 @@ class CustomReactions(commands.GroupCog, name="custom_reactions"):
         if message.author == self.bot.user:
             return
         with sqlite3.connect("bot.db") as connection:
-            if res := connection.execute(f"SELECT response FROM custom_reaction WHERE trigger = '{message.content}';").fetchone():
-                await message.reply(res[0], mention_author=False)
+            try:
+                if res := connection.execute(f"SELECT response FROM custom_reaction WHERE trigger = '{message.content}';").fetchone():
+                    await message.reply(res[0], mention_author=False)
+            except sqlite3.OperationalError:
+                pass
 
     @app_commands.command(name="create")
     @app_commands.describe(trigger="text that triggers this custom reaction", response="response for this custom reaction")
