@@ -3,7 +3,7 @@ import discord
 import uvloop
 from discord.ext import commands
 
-from cogs import custom_reactions, github, misc, reminder, self_management
+from cogs import custom_reactions, github, misc, reminder, self_management, calendar
 from utils import get_config
 
 uvloop.install()
@@ -20,6 +20,7 @@ class MyBot(commands.Bot):
         await self.add_cog(misc.MiscCog(self))
         await self.add_cog(github.Github(self))
         await self.add_cog(reminder.ReminderCog(self))
+        await self.add_cog(calendar.CalendarCog(self))
 
         if self.config["prod"]:
             await self.tree.sync()
