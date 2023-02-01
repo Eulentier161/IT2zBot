@@ -1,3 +1,4 @@
+import sqlite3
 from typing import Literal
 
 import discord
@@ -8,7 +9,22 @@ from discord.ext import commands
 
 class MiscCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
+        with sqlite3.connect("bot.db") as connection:
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS quotes (
+                    author  VARCHAR(25),
+                    message VARCHAR(25),
+                    channel VARCHAR(25),
+                    guild   VARCHAR(25),
+                    content VARCHAR(2000),
+                    PRIMARY KEY (author, message, channel, guild)
+                );
+                """
+            )
         self.bot = bot
+        self.quote_ctx_menu = app_commands.ContextMenu(name="quote", callback=self.quote)
+        self.bot.tree.add_command(self.quote_ctx_menu)
 
     @app_commands.command(name="joke")
     @app_commands.describe(category="joke category")
@@ -73,3 +89,40 @@ class MiscCog(commands.Cog):
     @app_commands.command(name="avatar")
     async def avatar_cmd(self, interaction: discord.Interaction, user: discord.User):
         await interaction.response.send_message(file=(await user.display_avatar.to_file()))
+
+    async def cog_unload(self) -> None:
+        self.bot.tree.remove_command(self.quote_ctx_menu.name, type=self.quote_ctx_menu.type)
+
+    async def quote(self, interaction: discord.Interaction, message: discord.Message):
+        try:
+            with sqlite3.connect("bot.db") as connection:
+                connection.execute(
+                    f"""
+                    INSERT INTO quotes (
+                        author,
+                        message,
+                        channel,
+                        guild,
+                        content
+                    ) VALUES (
+                        '{message.author.id}',
+                        '{message.id}',
+                        '{message.channel.id}',
+                        '{message.guild.id}',
+                        '{message.content}'
+                    );
+                    """
+                )
+        except sqlite3.IntegrityError:
+            return await interaction.response.send_message(f"this message has already been saved as quote")
+        await interaction.response.send_message(f"added quote from {message.author.name} for [this message]({message.jump_url})")
+
+    @app_commands.command(name="quote")
+    async def get_quote(self, interaction: discord.Interaction):
+        """get a random quote"""
+        with sqlite3.connect("bot.db") as connection:
+            user_id, message_id, channel_id, _, content = connection.execute("SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;").fetchone()
+        jump_url = (await (await self.bot.fetch_channel(int(channel_id))).fetch_message(int(message_id))).jump_url
+        user_name = (await self.bot.fetch_user(int(user_id))).name
+        embed = discord.Embed(url=jump_url, description=content, title=user_name, color=0x7a00ff)
+        await interaction.response.send_message(embed=embed)

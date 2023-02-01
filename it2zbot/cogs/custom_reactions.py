@@ -13,9 +13,9 @@ class CustomReactions(commands.GroupCog, name="custom_reactions"):
             connection.execute(
                 """
                 CREATE TABLE IF NOT EXISTS custom_reaction (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    author VARCHAR(25),
-                    trigger VARCHAR(100) UNIQUE,
+                    id       INTEGER       PRIMARY KEY AUTOINCREMENT,
+                    author   VARCHAR(25),
+                    trigger  VARCHAR(100)  UNIQUE,
                     response VARCHAR(2000)
                 );
                 """
