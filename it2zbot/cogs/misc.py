@@ -1,5 +1,6 @@
 import sqlite3
 from typing import Literal
+import random
 
 import discord
 import httpx
@@ -124,5 +125,13 @@ class MiscCog(commands.Cog):
             user_id, message_id, channel_id, _, content = connection.execute("SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;").fetchone()
         jump_url = (await (await self.bot.fetch_channel(int(channel_id))).fetch_message(int(message_id))).jump_url
         user_name = (await self.bot.fetch_user(int(user_id))).name
-        embed = discord.Embed(url=jump_url, description=content, title=user_name, color=0x7a00ff)
+        embed = discord.Embed(url=jump_url, description=content, title=user_name, color=0x7A00FF)
         await interaction.response.send_message(embed=embed)
+
+    @commands.Cog.listener("on_message")
+    async def trigger_custom_reaction(self, message: discord.Message):
+        if message.author == self.bot.user:
+            return
+            
+        if random.random() < 0.01:
+            await message.add_reaction("🐸")
