@@ -1,9 +1,8 @@
 #!./.venv/bin/python
 import discord
 import uvloop
+from cogs import admin, calendar, custom_reactions, github, misc, reminder, rsi, self_management
 from discord.ext import commands
-
-from cogs import custom_reactions, github, misc, reminder, self_management, calendar, admin
 from utils import get_config
 
 uvloop.install()
@@ -22,6 +21,7 @@ class MyBot(commands.Bot):
         await self.add_cog(reminder.ReminderCog(self))
         await self.add_cog(calendar.CalendarCog(self))
         await self.add_cog(admin.AdminCog(self))
+        await self.add_cog(rsi.RSICog(self))
 
         if self.config["prod"]:
             await self.tree.sync()
