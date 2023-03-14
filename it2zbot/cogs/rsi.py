@@ -48,9 +48,8 @@ class RSICog(commands.GroupCog, name="rsi"):
         title = soup.select_one("title").text.strip()
         desc = soup.select_one('meta[name="description"]').attrs["content"]
         systems = []
-        clr = (  # lol
-            self.colors[(c := next(iter(set(soup.select_one('div[class~="global-status"]').attrs.get("class")) & set(self.colors.keys())), None))] if c else 0x0
-        )  # lmao
+        clr = next(iter(set(soup.select_one('div[class~="global-status"]').attrs.get("class")) & set(self.colors.keys())), None)
+        clr = self.colors[clr] if clr else 0x0
 
         for system in _systems:
             s_title = system.select_one('div[class~="system-title"]').text.strip()
