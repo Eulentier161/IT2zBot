@@ -69,4 +69,4 @@ class RSICog(commands.GroupCog, name="rsi"):
         for system in server_status.systems:
             embed.add_field(name=system.title, value=system.status, inline=False)
 
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, ephemeral=True)

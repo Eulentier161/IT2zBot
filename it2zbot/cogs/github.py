@@ -2,7 +2,8 @@ import discord
 import httpx
 from discord import app_commands
 from discord.ext import commands
-import utils
+
+from it2zbot import utils
 
 
 class Issue(discord.ui.Modal, title="Issue"):

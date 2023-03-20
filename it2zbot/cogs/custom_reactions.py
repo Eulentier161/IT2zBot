@@ -4,7 +4,8 @@ import sqlite3
 import discord
 from discord import app_commands
 from discord.ext import commands
-from utils import get_config
+
+from it2zbot.utils import get_config
 
 
 class CustomReactions(commands.GroupCog, name="custom_reactions"):
@@ -64,7 +65,7 @@ class CustomReactions(commands.GroupCog, name="custom_reactions"):
     async def list_custom_reactions(self, interaction: discord.Interaction):
         """list all custom reactions"""
 
-        def select(connection, page):
+        def select(connection: sqlite3.Connection, page: int) -> list[dict]:
             return [
                 {"id": row[0], "trigger": row[1]}
                 for row in connection.execute(f"SELECT id, trigger FROM custom_reaction ORDER BY id LIMIT {(page-1)*10}, 10;").fetchall()
@@ -101,7 +102,7 @@ class CustomReactions(commands.GroupCog, name="custom_reactions"):
                 await interaction.response.edit_message(embed=embed, view=view)
 
         class ListView(discord.ui.View):
-            def __init__(self, last_page):
+            def __init__(self, last_page: int):
                 super().__init__()
                 self.page = 1
                 self.last_page = last_page
@@ -132,7 +133,7 @@ class CustomReactions(commands.GroupCog, name="custom_reactions"):
             title="Custom Reactions", description="\n".join([f"{reaction['id']}. **{reaction['trigger']}**" for reaction in custom_reactions])
         )
         embed.set_footer(text=f"page 1/{last_page}")
-        await interaction.response.send_message(embed=embed, view=ListView(last_page))
+        await interaction.response.send_message(embed=embed, view=ListView(last_page), ephemeral=True)
 
     @app_commands.command(name="delete")
     async def delete_custom_reactions(self, interaction: discord.Interaction, trigger: str):

@@ -1,9 +1,10 @@
 #!./.venv/bin/python
 import discord
 import uvloop
-from cogs import admin, calendar, custom_reactions, github, misc, reminder, rsi, self_management
 from discord.ext import commands
-from utils import get_config
+
+from it2zbot.cogs import admin, calendar, custom_reactions, github, misc, reminder, rsi, self_management
+from it2zbot.utils import get_config
 
 uvloop.install()
 
@@ -31,7 +32,11 @@ class MyBot(commands.Bot):
             await self.tree.sync(guild=my_guild)
 
 
-if __name__ == "__main__":
+def main():
     config = get_config()
     bot = MyBot(config, discord.Intents.all())
     bot.run(config["token"])
+
+
+if __name__ == "__main__":
+    main()

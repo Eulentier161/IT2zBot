@@ -4,8 +4,9 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from httpx import TimeoutException
-from icsparser import CalendarParser
-from utils import get_config
+
+from it2zbot.icsparser import CalendarParser
+from it2zbot.utils import get_config
 
 
 class CalendarCog(commands.GroupCog, name="calendar"):
@@ -79,4 +80,4 @@ class CalendarCog(commands.GroupCog, name="calendar"):
 
             await interaction.followup.send(embed=embeds[0], view=ListView(len(embeds))) if len(embeds) else await interaction.followup.send("None")
         except Exception:
-            await interaction.followup.send("something went wrong")
+            await interaction.followup.send("something went wrong", ephemeral=True)

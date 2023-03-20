@@ -13,11 +13,14 @@ python = "^3.10"
 pyaml = "^21.10.1"
 httpx = "^0.23.0"
 uvloop = "^0.16.0"
-PyJWT = {version = "^2.4.0", extras = ["crypto"]}
+PyJWT = { version = "^2.4.0", extras = ["crypto"] }
 beautifulsoup4 = "^4.11.2"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
+
+[tool.poetry.scripts]
+it2zbot = "it2zbot.bot:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

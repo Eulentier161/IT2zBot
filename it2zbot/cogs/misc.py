@@ -43,7 +43,7 @@ class MiscCog(commands.Cog):
         elif type == "twopart":
             await interaction.response.send_message(f"{res['setup']}\n\n||{res['delivery']}||")
         else:
-            await interaction.response.send_message(f"something went wrong ¯\\_(ツ)_/¯")
+            await interaction.response.send_message(f"something went wrong ¯\\_(ツ)_/¯", ephemeral=True)
 
     @app_commands.command(name="button")
     async def button_command(self, interaction: discord.Interaction):
@@ -66,8 +66,8 @@ class MiscCog(commands.Cog):
         async with httpx.AsyncClient() as client:
             res = await client.post("https://eule.wtf/api", json={"slug": slug, "destination": url})
         if res.status_code != 200:
-            return await interaction.response.send_message(res.json()["message"])
-        return await interaction.response.send_message(res.json()["url"])
+            return await interaction.response.send_message(res.json()["message"], ephemeral=True)
+        return await interaction.response.send_message(res.json()["url"], ephemeral=True)
 
     @commands.Cog.listener("on_message")
     async def preview_linked_message(self, message: discord.Message):
@@ -89,12 +89,14 @@ class MiscCog(commands.Cog):
 
     @app_commands.command(name="avatar")
     async def avatar_cmd(self, interaction: discord.Interaction, user: discord.User):
-        await interaction.response.send_message(file=(await user.display_avatar.to_file()))
+        await interaction.response.send_message(file=(await user.display_avatar.to_file()), ephemeral=True)
 
     async def cog_unload(self) -> None:
         self.bot.tree.remove_command(self.quote_ctx_menu.name, type=self.quote_ctx_menu.type)
 
     async def quote(self, interaction: discord.Interaction, message: discord.Message):
+        if not message.content.strip():
+            return await interaction.response.send_message("the message does not contain plain text and is discarded", ephemeral=True)
         try:
             with sqlite3.connect("bot.db") as connection:
                 connection.execute(
@@ -132,6 +134,6 @@ class MiscCog(commands.Cog):
     async def trigger_custom_reaction(self, message: discord.Message):
         if message.author == self.bot.user:
             return
-            
+
         if random.random() < 0.01:
             await message.add_reaction("🐸")

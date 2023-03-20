@@ -1,9 +1,10 @@
+import io
+import textwrap
+import traceback
+from contextlib import redirect_stdout
+
 import discord
 from discord.ext import commands
-import traceback
-import io
-from contextlib import redirect_stdout
-import textwrap
 
 
 class AdminCog(commands.Cog):
@@ -11,7 +12,7 @@ class AdminCog(commands.Cog):
         self.bot = bot
         self._last_result = None
 
-    def cleanup_code(self, content):
+    def cleanup_code(self, content: str) -> str:
         """Automatically removes code blocks from the code."""
         # remove ```py\n```
         if content.startswith("```") and content.endswith("```"):
@@ -19,7 +20,7 @@ class AdminCog(commands.Cog):
 
     @commands.command(pass_context=True, hidden=True, name="eval")
     @commands.is_owner()
-    async def _eval(self, ctx, *, body: str):
+    async def _eval(self, ctx: commands.Context, *, body: str):
         """Evaluates a code"""
 
         if isinstance(ctx.channel, discord.DMChannel):

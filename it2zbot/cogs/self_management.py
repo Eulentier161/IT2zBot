@@ -39,7 +39,7 @@ class SelfManagement(commands.GroupCog, name="self_management"):
         else:
             role = await interaction.guild.create_role(name=uid, colour=color, reason="color role")
             await interaction.user.add_roles(role)
-        await interaction.response.send_message(role.mention)
+        await interaction.response.send_message(role.mention, ephemeral=True)
 
     @app_commands.command(name="delete_custom_color")
     async def delete_custom_color_command(self, interaction: discord.Interaction):
@@ -51,5 +51,5 @@ class SelfManagement(commands.GroupCog, name="self_management"):
         for role in existing_roles:
             if role.name == uid:
                 await role.delete()
-                return await interaction.response.send_message("Your custom color has been deleted")
-        await interaction.response.send_message("something went wrong")
+                return await interaction.response.send_message("Your custom color has been deleted", ephemeral=True)
+        await interaction.response.send_message("something went wrong", ephemeral=True)
