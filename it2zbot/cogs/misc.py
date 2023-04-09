@@ -131,9 +131,13 @@ class MiscCog(commands.Cog):
         await interaction.response.send_message(embed=embed)
 
     @commands.Cog.listener("on_message")
-    async def trigger_custom_reaction(self, message: discord.Message):
+    async def trigger_animal_reaction(self, message: discord.Message):
         if message.author == self.bot.user:
             return
 
-        if random.random() < 0.01:
-            await message.add_reaction("🐸")
+        emojis = ["🐸", "🦝"]
+        random.shuffle(emojis)
+
+        reactions = [emoji for emoji in emojis if random.random() < 0.01]
+        for reaction in reactions:
+            await message.add_reaction(reaction)
