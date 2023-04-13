@@ -8,7 +8,7 @@ from discord.ext import commands
 from it2zbot.utils import get_config
 
 
-class CustomReactions(commands.GroupCog, name="custom_reactions"):
+class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
     def __init__(self, bot: commands.Bot) -> None:
         with sqlite3.connect("bot.db") as connection:
             connection.execute(

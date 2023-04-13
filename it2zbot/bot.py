@@ -3,7 +3,16 @@ import discord
 import uvloop
 from discord.ext import commands
 
-from it2zbot.cogs import admin, calendar, custom_reactions, github, misc, reminder, rsi, self_management
+from it2zbot.cogs import (
+    AdminCog,
+    CalendarCog,
+    CustomReactionsCog,
+    GithubCog,
+    MiscCog,
+    ReminderCog,
+    RSICog,
+    SelfManagementCog,
+)
 from it2zbot.utils import get_config
 
 uvloop.install()
@@ -15,14 +24,14 @@ class MyBot(commands.Bot):
         super().__init__(command_prefix=config["command_prefix"], intents=intents)
 
     async def setup_hook(self):
-        await self.add_cog(custom_reactions.CustomReactions(self))
-        await self.add_cog(self_management.SelfManagement(self))
-        await self.add_cog(misc.MiscCog(self))
-        await self.add_cog(github.Github(self))
-        await self.add_cog(reminder.ReminderCog(self))
-        await self.add_cog(calendar.CalendarCog(self))
-        await self.add_cog(admin.AdminCog(self))
-        await self.add_cog(rsi.RSICog(self))
+        await self.add_cog(CustomReactionsCog(self))
+        await self.add_cog(SelfManagementCog(self))
+        await self.add_cog(MiscCog(self))
+        await self.add_cog(GithubCog(self))
+        await self.add_cog(ReminderCog(self))
+        await self.add_cog(CalendarCog(self))
+        await self.add_cog(AdminCog(self))
+        await self.add_cog(RSICog(self))
 
         if self.config["prod"]:
             await self.tree.sync()

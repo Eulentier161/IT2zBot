@@ -12,7 +12,7 @@ python = "^3.10"
 "discord.py" = "^2.0.1"
 pyaml = "^21.10.1"
 httpx = "^0.23.0"
-uvloop = "^0.16.0"
+uvloop = "^0.17.0"
 PyJWT = { version = "^2.4.0", extras = ["crypto"] }
 beautifulsoup4 = "^4.11.2"
 

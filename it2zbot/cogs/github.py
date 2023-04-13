@@ -28,7 +28,7 @@ class Issue(discord.ui.Modal, title="Issue"):
         await interaction.response.send_message("Oops! Something went wrong.", ephemeral=True)
 
 
-class Github(commands.GroupCog, name="github"):
+class GithubCog(commands.GroupCog, name="github"):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         super().__init__()
