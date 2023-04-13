@@ -26,6 +26,7 @@ class MiscCog(commands.Cog):
         self.bot = bot
         self.quote_ctx_menu = app_commands.ContextMenu(name="quote", callback=self.quote)
         self.bot.tree.add_command(self.quote_ctx_menu)
+        self.randomize_role_color.start()
 
     @app_commands.command(name="joke")
     @app_commands.describe(category="joke category")
@@ -150,6 +151,9 @@ class MiscCog(commands.Cog):
         for reaction in reactions:
             await message.add_reaction(reaction)
 
+    def cog_unload(self):
+        self.randomize_role_color.cancel()
+
     @tasks.loop(minutes=1.0)
     async def randomize_role_color(self):
         try:
@@ -158,3 +162,7 @@ class MiscCog(commands.Cog):
             await role.edit(color=discord.colour.Colour.from_rgb(*[random.randint(0, 255) for _ in range(3)]))
         except:
             pass
+
+    @randomize_role_color.before_loop
+    async def before_randomize_role_color(self):
+        await self.bot.wait_until_ready()
