@@ -24,14 +24,17 @@ class MyBot(commands.Bot):
         super().__init__(command_prefix=config["command_prefix"], intents=intents)
 
     async def setup_hook(self):
-        await self.add_cog(CustomReactionsCog(self))
-        await self.add_cog(SelfManagementCog(self))
-        await self.add_cog(MiscCog(self))
-        await self.add_cog(GithubCog(self))
-        await self.add_cog(ReminderCog(self))
-        await self.add_cog(CalendarCog(self))
-        await self.add_cog(AdminCog(self))
-        await self.add_cog(RSICog(self))
+        for cog in [
+            AdminCog,
+            CalendarCog,
+            CustomReactionsCog,
+            GithubCog,
+            MiscCog,
+            ReminderCog,
+            RSICog,
+            SelfManagementCog,
+        ]:
+            await self.add_cog(cog(self))
 
         if self.config["prod"]:
             await self.tree.sync()
