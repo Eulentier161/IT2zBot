@@ -5,7 +5,7 @@ import random
 import discord
 import httpx
 from discord import app_commands
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 
 class MiscCog(commands.Cog):
@@ -36,7 +36,9 @@ class MiscCog(commands.Cog):
     ):
         """get a random joke"""
         async with httpx.AsyncClient() as httpx_client:
-            res: dict = (await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}?blacklistFlags=racist,sexist,political")).json()
+            res: dict = (
+                await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}?blacklistFlags=racist,sexist,political")
+            ).json()
 
         if (type := res.get("type", None)) == "single":
             await interaction.response.send_message(f"{res['joke']}")
@@ -96,7 +98,9 @@ class MiscCog(commands.Cog):
 
     async def quote(self, interaction: discord.Interaction, message: discord.Message):
         if not message.content.strip():
-            return await interaction.response.send_message("the message does not contain plain text and is discarded", ephemeral=True)
+            return await interaction.response.send_message(
+                "the message does not contain plain text and is discarded", ephemeral=True
+            )
         try:
             with sqlite3.connect("bot.db") as connection:
                 connection.execute(
@@ -118,13 +122,17 @@ class MiscCog(commands.Cog):
                 )
         except sqlite3.IntegrityError:
             return await interaction.response.send_message(f"this message has already been saved as quote")
-        await interaction.response.send_message(f"added quote from {message.author.name} for [this message]({message.jump_url})")
+        await interaction.response.send_message(
+            f"added quote from {message.author.name} for [this message]({message.jump_url})"
+        )
 
     @app_commands.command(name="quote")
     async def get_quote(self, interaction: discord.Interaction):
         """get a random quote"""
         with sqlite3.connect("bot.db") as connection:
-            user_id, message_id, channel_id, _, content = connection.execute("SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;").fetchone()
+            user_id, message_id, channel_id, _, content = connection.execute(
+                "SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;"
+            ).fetchone()
         jump_url = (await (await self.bot.fetch_channel(int(channel_id))).fetch_message(int(message_id))).jump_url
         user_name = (await self.bot.fetch_user(int(user_id))).name
         embed = discord.Embed(url=jump_url, description=content, title=user_name, color=0x7A00FF)
@@ -141,3 +149,12 @@ class MiscCog(commands.Cog):
         reactions = [emoji for emoji in emojis if random.random() < 0.01]
         for reaction in reactions:
             await message.add_reaction(reaction)
+
+    @tasks.loop(minutes=1.0)
+    async def randomize_role_color(self):
+        try:
+            guild = self.bot.get_guild(958611525541720064)
+            role = guild.get_role(1027636884731596911)
+            await role.edit(color=discord.colour.Colour.from_rgb(*[random.randint(0, 255) for _ in range(3)]))
+        except:
+            pass
