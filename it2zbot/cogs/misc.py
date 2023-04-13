@@ -154,7 +154,7 @@ class MiscCog(commands.Cog):
     def cog_unload(self):
         self.randomize_role_color.cancel()
 
-    @tasks.loop(minutes=1.0)
+    @tasks.loop(minutes=5.0)
     async def randomize_role_color(self):
         try:
             guild = self.bot.get_guild(958611525541720064)
