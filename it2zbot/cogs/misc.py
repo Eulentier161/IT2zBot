@@ -166,3 +166,10 @@ class MiscCog(commands.Cog):
     @randomize_role_color.before_loop
     async def before_randomize_role_color(self):
         await self.bot.wait_until_ready()
+        
+    @app_commands.command(name="say")
+    @app_commands.default_permissions(manage_messages=True)
+    @app_commands.checks.has_permissions(manage_messages=True)
+    async def say_command(self, interaction: discord.Interaction, channel: discord.TextChannel, message: str):
+        await channel.send(message)
+        await interaction.response.send_message("✅", ephemeral=True)
