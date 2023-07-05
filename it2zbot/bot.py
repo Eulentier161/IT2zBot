@@ -3,16 +3,7 @@ import discord
 import uvloop
 from discord.ext import commands
 
-from it2zbot.cogs import (
-    AdminCog,
-    CalendarCog,
-    CustomReactionsCog,
-    GithubCog,
-    MiscCog,
-    ReminderCog,
-    RSICog,
-    SelfManagementCog,
-)
+from it2zbot.cogs import AdminCog, CalendarCog, CustomReactionsCog, GithubCog, MiscCog, ReminderCog, RSICog, SelfManagementCog, ChannelCog
 from it2zbot.utils import get_config
 
 uvloop.install()
@@ -24,16 +15,7 @@ class MyBot(commands.Bot):
         super().__init__(command_prefix=config["command_prefix"], intents=intents)
 
     async def setup_hook(self):
-        for cog in [
-            AdminCog,
-            CalendarCog,
-            CustomReactionsCog,
-            GithubCog,
-            MiscCog,
-            ReminderCog,
-            RSICog,
-            SelfManagementCog,
-        ]:
+        for cog in [AdminCog, CalendarCog, CustomReactionsCog, GithubCog, MiscCog, ReminderCog, RSICog, SelfManagementCog, ChannelCog]:
             await self.add_cog(cog(self))
 
         if self.config["prod"]:

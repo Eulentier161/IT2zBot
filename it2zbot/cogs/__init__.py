@@ -6,3 +6,4 @@ from it2zbot.cogs.misc import MiscCog
 from it2zbot.cogs.reminder import ReminderCog
 from it2zbot.cogs.rsi import RSICog
 from it2zbot.cogs.self_management import SelfManagementCog
+from it2zbot.cogs.channel import ChannelCog
