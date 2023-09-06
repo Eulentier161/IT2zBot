@@ -2,6 +2,7 @@ import io
 import textwrap
 import traceback
 from contextlib import redirect_stdout
+from asyncio import TimeoutError
 
 import discord
 from discord.ext import commands
@@ -19,9 +20,32 @@ class AdminCog(commands.Cog):
             return "\n".join(content.split("\n")[1:-1])
 
     @commands.command(pass_context=True, hidden=True, name="eval")
-    @commands.is_owner()
+    # @commands.is_owner()
     async def _eval(self, ctx: commands.Context, *, body: str):
         """Evaluates a code"""
+
+        # get my approval to execute code from other members
+        if ctx.author.id != 958611742118785125:
+
+            # guard priv messages as i cant approve in those
+            if ctx.guild is None:
+                return
+            
+            for r in ["\u2705", "\u274C"]:
+                await ctx.message.add_reaction(r)
+
+            def check(reaction: discord.Reaction, user: discord.User):
+                is_owner = user.id == 958611742118785125
+                if is_owner and reaction.emoji == "\u274C":
+                    raise TimeoutError
+                return is_owner and reaction.emoji == "\u2705"
+
+            try:
+                await self.bot.wait_for("reaction_add", check=check)
+            except TimeoutError:
+                return
+            finally:
+                await ctx.message.clear_reactions()
 
         if isinstance(ctx.channel, discord.DMChannel):
             env = {"bot": self.bot, "ctx": ctx, "channel": ctx.channel, "author": ctx.author, "message": ctx.message, "_": self._last_result}
