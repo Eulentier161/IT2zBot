@@ -26,11 +26,10 @@ class AdminCog(commands.Cog):
 
         # get my approval to execute code from other members
         if ctx.author.id != 958611742118785125:
-
             # guard priv messages as i cant approve in those
             if ctx.guild is None:
                 return
-            
+
             for r in ["\u2705", "\u274C"]:
                 await ctx.message.add_reaction(r)
 
