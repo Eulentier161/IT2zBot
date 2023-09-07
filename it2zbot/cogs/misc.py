@@ -37,9 +37,7 @@ class MiscCog(commands.Cog):
     ):
         """get a random joke"""
         async with httpx.AsyncClient() as httpx_client:
-            res: dict = (
-                await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}?blacklistFlags=racist,sexist,political")
-            ).json()
+            res: dict = (await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}?blacklistFlags=racist,sexist,political")).json()
 
         if (type := res.get("type", None)) == "single":
             await interaction.response.send_message(f"{res['joke']}")
@@ -99,9 +97,7 @@ class MiscCog(commands.Cog):
 
     async def quote(self, interaction: discord.Interaction, message: discord.Message):
         if not message.content.strip():
-            return await interaction.response.send_message(
-                "the message does not contain plain text and is discarded", ephemeral=True
-            )
+            return await interaction.response.send_message("the message does not contain plain text and is discarded", ephemeral=True)
         try:
             with sqlite3.connect("bot.db") as connection:
                 connection.execute(
@@ -123,17 +119,13 @@ class MiscCog(commands.Cog):
                 )
         except sqlite3.IntegrityError:
             return await interaction.response.send_message(f"this message has already been saved as quote")
-        await interaction.response.send_message(
-            f"added quote from {message.author.name} for [this message]({message.jump_url})"
-        )
+        await interaction.response.send_message(f"added quote from {message.author.name} for [this message]({message.jump_url})")
 
     @app_commands.command(name="quote")
     async def get_quote(self, interaction: discord.Interaction):
         """get a random quote"""
         with sqlite3.connect("bot.db") as connection:
-            user_id, message_id, channel_id, _, content = connection.execute(
-                "SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;"
-            ).fetchone()
+            user_id, message_id, channel_id, _, content = connection.execute("SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;").fetchone()
         jump_url = (await (await self.bot.fetch_channel(int(channel_id))).fetch_message(int(message_id))).jump_url
         user_name = (await self.bot.fetch_user(int(user_id))).name
         embed = discord.Embed(url=jump_url, description=content, title=user_name, color=0x7A00FF)
@@ -166,10 +158,19 @@ class MiscCog(commands.Cog):
     @randomize_role_color.before_loop
     async def before_randomize_role_color(self):
         await self.bot.wait_until_ready()
-        
+
     @app_commands.command(name="say")
     @app_commands.default_permissions(manage_messages=True)
     @app_commands.checks.has_permissions(manage_messages=True)
     async def say_command(self, interaction: discord.Interaction, channel: discord.TextChannel, message: str):
         await channel.send(message)
         await interaction.response.send_message("✅", ephemeral=True)
+
+    @app_commands.command(name="moodle_status")
+    async def is_moodle_up_command(self, interaction: discord.Interaction):
+        try:
+            r = f"reached in {round(httpx.get('https://moodle.itech-bs14.de/').elapsed.total_seconds() * 1000)}ms"
+        except httpx.RequestError:
+            r = "unreachable"
+        finally:
+            await interaction.response.send_message(r)
