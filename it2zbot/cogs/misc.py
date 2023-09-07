@@ -165,3 +165,12 @@ class MiscCog(commands.Cog):
     async def say_command(self, interaction: discord.Interaction, channel: discord.TextChannel, message: str):
         await channel.send(message)
         await interaction.response.send_message("✅", ephemeral=True)
+
+    @app_commands.command(name="moodle_status")
+    async def is_moodle_up_command(self, interaction: discord.Interaction):
+        try:
+            r = f"reached in {round(httpx.get('https://moodle.itech-bs14.de/').elapsed.total_seconds() * 1000)}ms"
+        except httpx.RequestError:
+            r = "unreachable"
+        finally:
+            await interaction.response.send_message(r)
