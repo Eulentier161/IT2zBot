@@ -1,5 +1,6 @@
 import time
 from pathlib import Path
+from typing import TypedDict
 
 import httpx
 import jwt
@@ -7,7 +8,19 @@ import yaml
 from cryptography.hazmat.primitives import serialization
 
 
-def get_config():
+class Config(TypedDict):
+    token: str
+    guild: int
+    command_prefix: str
+    admins: list[int]
+    gh_app_id: int
+    gh_installation_id: int
+    prod: bool
+    userid: str
+    authtoken: str
+
+
+def get_config() -> Config:
     with open(Path(__file__, "../../config.yaml").resolve()) as f:
         return yaml.safe_load(f)
 
