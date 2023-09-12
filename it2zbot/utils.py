@@ -21,7 +21,7 @@ class Config(TypedDict):
 
 
 def get_config() -> Config:
-    with open(Path(__file__, "../../config.yaml").resolve()) as f:
+    with open(Path("./config.yaml").resolve()) as f:
         return yaml.safe_load(f)
 
 
@@ -33,7 +33,7 @@ def _get_jwt() -> str:
         "exp": int(t + (10 * 60)),
         "iss": get_config()["gh_app_id"],
     }
-    private_key = Path(__file__, "../../gh_privkey.pem").resolve()
+    private_key = Path("./gh_privkey.pem").resolve()
     private_key = serialization.load_pem_private_key(private_key.read_bytes(), None)
     return jwt.encode(payload, private_key, "RS256")
 
