@@ -1,11 +1,61 @@
-import sqlite3
-from typing import Literal
 import random
+import sqlite3
+from dataclasses import dataclass
+from typing import Literal
 
 import discord
 import httpx
 from discord import app_commands
 from discord.ext import commands, tasks
+
+
+@dataclass
+class PlayingCard:
+    suit: Literal["hearts", "clubs", "spades", "diamonds"]
+    symbol: Literal[2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
+
+    def __repr__(self):
+        suits_map = {
+            "hearts": "\u2665\uFE0F",
+            "clubs": "\u2663\uFE0F",
+            "spades": "\u2660\uFE0F",
+            "diamonds": "\u2666\uFE0F",
+        }
+        return f"{suits_map[self.suit]}{self.symbol}"
+
+
+class Hand:
+    def __init__(self):
+        self.cards: list[PlayingCard] = []
+        self.value = 0
+
+    def _calculate_hand_value(self):
+        self.value = 0
+        aces: list[PlayingCard] = []
+
+        for card in self.cards:
+            if isinstance(card.symbol, int):
+                self.value += card.symbol
+            elif card.symbol == "A":
+                aces.append(card)
+                self.value += 11
+            else:
+                self.value += 10
+
+        # count as many aces as needed as 1 instead of 11 to get below or equal to 21
+        i = 0
+        while self.value > 21 and i < len(aces):
+            self.value -= 10
+            i += 1
+
+        return self.value
+
+    def take(self, card: PlayingCard):
+        self.cards.append(card)
+        self._calculate_hand_value()
+
+    def __repr__(self) -> str:
+        return f"({self.value}) {', '.join([str(card) for card in self.cards])}"
 
 
 class MiscCog(commands.Cog):
@@ -37,7 +87,9 @@ class MiscCog(commands.Cog):
     ):
         """get a random joke"""
         async with httpx.AsyncClient() as httpx_client:
-            res: dict = (await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}?blacklistFlags=racist,sexist,political")).json()
+            res: dict = (
+                await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}?blacklistFlags=racist,sexist,political")
+            ).json()
 
         if (type := res.get("type", None)) == "single":
             await interaction.response.send_message(f"{res['joke']}")
@@ -97,7 +149,9 @@ class MiscCog(commands.Cog):
 
     async def quote(self, interaction: discord.Interaction, message: discord.Message):
         if not message.content.strip():
-            return await interaction.response.send_message("the message does not contain plain text and is discarded", ephemeral=True)
+            return await interaction.response.send_message(
+                "the message does not contain plain text and is discarded", ephemeral=True
+            )
         try:
             with sqlite3.connect("bot.db") as connection:
                 connection.execute(
@@ -119,13 +173,17 @@ class MiscCog(commands.Cog):
                 )
         except sqlite3.IntegrityError:
             return await interaction.response.send_message(f"this message has already been saved as quote")
-        await interaction.response.send_message(f"added quote from {message.author.name} for [this message]({message.jump_url})")
+        await interaction.response.send_message(
+            f"added quote from {message.author.name} for [this message]({message.jump_url})"
+        )
 
     @app_commands.command(name="quote")
     async def get_quote(self, interaction: discord.Interaction):
         """get a random quote"""
         with sqlite3.connect("bot.db") as connection:
-            user_id, message_id, channel_id, _, content = connection.execute("SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;").fetchone()
+            user_id, message_id, channel_id, _, content = connection.execute(
+                "SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;"
+            ).fetchone()
         jump_url = (await (await self.bot.fetch_channel(int(channel_id))).fetch_message(int(message_id))).jump_url
         user_name = (await self.bot.fetch_user(int(user_id))).name
         embed = discord.Embed(url=jump_url, description=content, title=user_name, color=0x7A00FF)
@@ -174,3 +232,89 @@ class MiscCog(commands.Cog):
             r = "unreachable"
         finally:
             await interaction.response.send_message(r)
+
+    @app_commands.command(name="blackjack")
+    async def blackjack(self, interaction: discord.Interaction):
+        class HitButton(discord.ui.Button):
+            def __init__(self, disabled):
+                super().__init__(label="hit", style=discord.ButtonStyle.green, disabled=disabled)
+
+            async def callback(self, interaction: discord.Interaction):
+                view: GameView = self.view
+                await view.handle_hit_button(interaction)
+
+        class StopButton(discord.ui.Button):
+            def __init__(self, disabled):
+                super().__init__(label="stop", style=discord.ButtonStyle.red, disabled=disabled)
+
+            async def callback(self, interaction: discord.Interaction):
+                view: GameView = self.view
+                await view.handle_stop_button(interaction)
+
+        class GameView(discord.ui.View):
+            def __init__(self, player_hand: Hand, dealer_hand: Hand, deck: list[PlayingCard], embed: discord.Embed):
+                super().__init__()
+                self.hit_button = HitButton(disabled=player_hand.value == 21)
+                self.stop_button = StopButton(disabled=player_hand.value == 21)
+                self.add_item(self.hit_button)
+                self.add_item(self.stop_button)
+                self.player_hand = player_hand
+                self.dealer_hand = dealer_hand
+                self.deck = deck
+                self.embed = embed
+
+            async def handle_hit_button(self, interaction: discord.Interaction):
+                self.player_hand.take(self.deck.pop())
+                self.embed.add_field(
+                    name="hit", value=f"dealer: {self.dealer_hand}\nplayer: {self.player_hand}", inline=False
+                )
+                if self.player_hand.value == 21:
+                    return await self.dealer_turns(interaction)
+                elif self.player_hand.value > 21:
+                    self.hit_button.disabled = True
+                    self.stop_button.disabled = True
+                    self.embed.add_field(name="result", value="bust")
+                await interaction.response.edit_message(embed=self.embed, view=self)
+
+            async def handle_stop_button(self, interaction: discord.Interaction):
+                await self.dealer_turns(interaction)
+
+            async def dealer_turns(self, interaction: discord.Interaction):
+                self.hit_button.disabled = True
+                self.stop_button.disabled = True
+                while self.dealer_hand.value < 17:
+                    self.dealer_hand.take(self.deck.pop())
+                self.embed.add_field(
+                    name="dealers turn", value=f"dealer: {self.dealer_hand}\nplayer: {self.player_hand}", inline=False
+                )
+                if self.dealer_hand.value > 21:
+                    self.embed.add_field(name="result", value="dealer bust")
+                elif self.player_hand.value == self.dealer_hand.value:
+                    self.embed.add_field(name="result", value="tie")
+                elif self.player_hand.value > self.dealer_hand.value:
+                    self.embed.add_field(name="result", value="win")
+                elif self.player_hand.value < self.dealer_hand.value:
+                    self.embed.add_field(name="result", value="lose")
+                await interaction.response.edit_message(embed=self.embed, view=self)
+
+        player_hand, dealer_hand = Hand(), Hand()
+        deck = [
+            PlayingCard(suit, value)
+            for value in [*range(2, 11), *"JQKA"]
+            for suit in ["hearts", "clubs", "spades", "diamonds"]
+        ]
+        random.shuffle(deck)
+        dealer_hand.take(deck.pop())
+        player_hand.take(deck.pop())
+        player_hand.take(deck.pop())
+
+        embed = discord.Embed(title="Black Jack", url="https://en.wikipedia.org/wiki/Blackjack")
+        embed.add_field(name="starting hands", value=f"dealer: {dealer_hand}\nplayer: {player_hand}", inline=False)
+        if player_hand.value == 21:
+            embed.add_field(name="result", value="Black Jack!")
+
+        await interaction.response.send_message(
+            embed=embed,
+            view=GameView(player_hand, dealer_hand, deck, embed),
+            ephemeral=True,
+        )
