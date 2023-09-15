@@ -1,11 +1,15 @@
+from typing import TYPE_CHECKING, Optional
+
 import discord
 from discord import app_commands
 from discord.ext import commands
-from typing import Optional
+
+if TYPE_CHECKING:
+    from it2zbot.bot import MyBot
 
 
 class ChannelCog(commands.GroupCog, name="channel"):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: "MyBot") -> None:
         self.bot = bot
         super().__init__()
 

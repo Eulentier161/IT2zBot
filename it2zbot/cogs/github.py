@@ -1,9 +1,14 @@
+from typing import TYPE_CHECKING
+
 import discord
 import httpx
 from discord import app_commands
 from discord.ext import commands
 
 from it2zbot import utils
+
+if TYPE_CHECKING:
+    from it2zbot.bot import MyBot
 
 
 class Issue(discord.ui.Modal, title="Issue"):
@@ -29,7 +34,7 @@ class Issue(discord.ui.Modal, title="Issue"):
 
 
 class GithubCog(commands.GroupCog, name="github"):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: "MyBot") -> None:
         self.bot = bot
         super().__init__()
 

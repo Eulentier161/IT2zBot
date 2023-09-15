@@ -1,15 +1,19 @@
 import io
 import textwrap
 import traceback
-from contextlib import redirect_stdout
 from asyncio import TimeoutError
+from contextlib import redirect_stdout
+from typing import TYPE_CHECKING
 
 import discord
 from discord.ext import commands
 
+if TYPE_CHECKING:
+    from it2zbot.bot import MyBot
+
 
 class AdminCog(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: "MyBot"):
         self.bot = bot
         self._last_result = None
 

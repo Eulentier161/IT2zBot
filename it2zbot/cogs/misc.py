@@ -1,12 +1,15 @@
 import random
 import sqlite3
 from dataclasses import dataclass
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 import discord
 import httpx
 from discord import app_commands
 from discord.ext import commands, tasks
+
+if TYPE_CHECKING:
+    from it2zbot.bot import MyBot
 
 
 @dataclass
@@ -59,7 +62,7 @@ class Hand:
 
 
 class MiscCog(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: "MyBot") -> None:
         with sqlite3.connect("bot.db") as connection:
             connection.execute(
                 """
@@ -87,9 +90,7 @@ class MiscCog(commands.Cog):
     ):
         """get a random joke"""
         async with httpx.AsyncClient() as httpx_client:
-            res: dict = (
-                await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}?blacklistFlags=racist,sexist,political")
-            ).json()
+            res: dict = (await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}?blacklistFlags=racist,sexist,political")).json()
 
         if (type := res.get("type", None)) == "single":
             await interaction.response.send_message(f"{res['joke']}")
@@ -149,9 +150,7 @@ class MiscCog(commands.Cog):
 
     async def quote(self, interaction: discord.Interaction, message: discord.Message):
         if not message.content.strip():
-            return await interaction.response.send_message(
-                "the message does not contain plain text and is discarded", ephemeral=True
-            )
+            return await interaction.response.send_message("the message does not contain plain text and is discarded", ephemeral=True)
         try:
             with sqlite3.connect("bot.db") as connection:
                 connection.execute(
@@ -173,17 +172,13 @@ class MiscCog(commands.Cog):
                 )
         except sqlite3.IntegrityError:
             return await interaction.response.send_message(f"this message has already been saved as quote")
-        await interaction.response.send_message(
-            f"added quote from {message.author.name} for [this message]({message.jump_url})"
-        )
+        await interaction.response.send_message(f"added quote from {message.author.name} for [this message]({message.jump_url})")
 
     @app_commands.command(name="quote")
     async def get_quote(self, interaction: discord.Interaction):
         """get a random quote"""
         with sqlite3.connect("bot.db") as connection:
-            user_id, message_id, channel_id, _, content = connection.execute(
-                "SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;"
-            ).fetchone()
+            user_id, message_id, channel_id, _, content = connection.execute("SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;").fetchone()
         jump_url = (await (await self.bot.fetch_channel(int(channel_id))).fetch_message(int(message_id))).jump_url
         user_name = (await self.bot.fetch_user(int(user_id))).name
         embed = discord.Embed(url=jump_url, description=content, title=user_name, color=0x7A00FF)
@@ -265,9 +260,7 @@ class MiscCog(commands.Cog):
 
             async def handle_hit_button(self, interaction: discord.Interaction):
                 self.player_hand.take(self.deck.pop())
-                self.embed.add_field(
-                    name="hit", value=f"dealer: {self.dealer_hand}\nplayer: {self.player_hand}", inline=False
-                )
+                self.embed.add_field(name="hit", value=f"dealer: {self.dealer_hand}\nplayer: {self.player_hand}", inline=False)
                 if self.player_hand.value == 21:
                     return await self.dealer_turns(interaction)
                 elif self.player_hand.value > 21:
@@ -284,9 +277,7 @@ class MiscCog(commands.Cog):
                 self.stop_button.disabled = True
                 while self.dealer_hand.value < 17:
                     self.dealer_hand.take(self.deck.pop())
-                self.embed.add_field(
-                    name="dealers turn", value=f"dealer: {self.dealer_hand}\nplayer: {self.player_hand}", inline=False
-                )
+                self.embed.add_field(name="dealers turn", value=f"dealer: {self.dealer_hand}\nplayer: {self.player_hand}", inline=False)
                 if self.dealer_hand.value > 21:
                     self.embed.add_field(name="result", value="dealer bust")
                 elif self.player_hand.value == self.dealer_hand.value:
@@ -298,11 +289,7 @@ class MiscCog(commands.Cog):
                 await interaction.response.edit_message(embed=self.embed, view=self)
 
         player_hand, dealer_hand = Hand(), Hand()
-        deck = [
-            PlayingCard(suit, value)
-            for value in [*range(2, 11), *"JQKA"]
-            for suit in ["hearts", "clubs", "spades", "diamonds"]
-        ]
+        deck = [PlayingCard(suit, value) for value in [*range(2, 11), *"JQKA"] for suit in ["hearts", "clubs", "spades", "diamonds"]]
         random.shuffle(deck)
         dealer_hand.take(deck.pop())
         player_hand.take(deck.pop())

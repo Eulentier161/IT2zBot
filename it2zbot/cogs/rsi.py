@@ -1,10 +1,14 @@
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 import bs4
 import discord
 import httpx
 from discord import app_commands
 from discord.ext import commands
+
+if TYPE_CHECKING:
+    from it2zbot.bot import MyBot
 
 
 @dataclass
@@ -24,7 +28,7 @@ class ServerStatus:
 
 
 class RSICog(commands.GroupCog, name="rsi"):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: "MyBot") -> None:
         self.bot = bot
         self.url = "https://status.robertsspaceindustries.com/"
         self.colors = {

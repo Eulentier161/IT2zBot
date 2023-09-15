@@ -1,15 +1,17 @@
 import math
 import sqlite3
+from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
 from discord.ext import commands
 
-from it2zbot.utils import get_config
+if TYPE_CHECKING:
+    from it2zbot.bot import MyBot
 
 
 class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: "MyBot") -> None:
         with sqlite3.connect("bot.db") as connection:
             connection.execute(
                 """
@@ -22,7 +24,7 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
                 """
             )
         self.bot = bot
-        self.admins = get_config()["admins"]
+        self.admins = bot.config["admins"]
         super().__init__()
 
     @commands.Cog.listener("on_message")

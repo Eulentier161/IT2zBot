@@ -1,14 +1,17 @@
 import sqlite3
 from datetime import datetime, timedelta
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 import discord
 from discord import app_commands
 from discord.ext import commands, tasks
 
+if TYPE_CHECKING:
+    from it2zbot.bot import MyBot
+
 
 class ReminderCog(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: "MyBot") -> None:
         with sqlite3.connect("bot.db") as connection:
             connection.execute(
                 """
