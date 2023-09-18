@@ -43,11 +43,17 @@ class RolePickerView(discord.ui.View):
         custom_id="persistent_view:role_select",
     )
     async def select_roles(self, interaction: discord.Interaction, select: discord.ui.Select):
+        await interaction.response.defer(thinking=True, ephemeral=True)
         selected_roles = [interaction.guild.get_role(int(role_id)) for role_id in select.values]
         current_roles = [role for role in interaction.user.roles if role.name.startswith("projekt-")]
-        await interaction.user.remove_roles(*[role for role in current_roles if role not in selected_roles], reason="projekt-role-selector")
-        await interaction.user.add_roles(*[role for role in selected_roles if role not in current_roles], reason="projekt-role-selector")
-        return await interaction.response.send_message(f"updated your roles", ephemeral=True)
+        to_be_removed = [role for role in current_roles if role not in selected_roles]
+        to_be_added = [role for role in selected_roles if role not in current_roles]
+        await interaction.user.remove_roles(*to_be_removed, reason="projekt-role-selector")
+        await interaction.user.add_roles(*to_be_added, reason="projekt-role-selector")
+        return await interaction.followup.send(
+            f"updated your roles\nadded: {', '.join(role.mention for role in to_be_added)}\nremoved: {', '.join(role.mention for role in to_be_removed)}",
+            ephemeral=True,
+        )
 
 
 @app_commands.guild_only()
