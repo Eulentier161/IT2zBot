@@ -221,12 +221,13 @@ class MiscCog(commands.Cog):
 
     @app_commands.command(name="moodle_status")
     async def is_moodle_up_command(self, interaction: discord.Interaction):
+        await interaction.response.defer()
         try:
             r = f"reached in {round(httpx.get('https://moodle.itech-bs14.de/').elapsed.total_seconds() * 1000)}ms"
         except httpx.RequestError:
             r = "unreachable"
         finally:
-            await interaction.response.send_message(r)
+            await interaction.followup.send(r)
 
     @app_commands.command(name="blackjack")
     async def blackjack(self, interaction: discord.Interaction):
