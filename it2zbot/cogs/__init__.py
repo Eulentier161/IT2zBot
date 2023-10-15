@@ -5,5 +5,4 @@ from it2zbot.cogs.custom_reactions import CustomReactionsCog
 from it2zbot.cogs.github import GithubCog
 from it2zbot.cogs.misc import MiscCog
 from it2zbot.cogs.reminder import ReminderCog
-from it2zbot.cogs.rsi import RSICog
 from it2zbot.cogs.self_management import SelfManagementCog, RolePickerView
