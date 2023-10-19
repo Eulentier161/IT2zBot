@@ -1,11 +1,13 @@
-import math
 import sqlite3
+from datetime import datetime
+from time import mktime
 from typing import TYPE_CHECKING, Optional
 
-import feedparser
 import discord
+import feedparser
 from discord import app_commands
 from discord.ext import commands, tasks
+from markdownify import markdownify as md
 
 if TYPE_CHECKING:
     from it2zbot.bot import MyBot
@@ -65,16 +67,23 @@ class RssCog(commands.GroupCog, name="rss"):
 
     @app_commands.command(name="subscribe")
     async def subscribe_cmd(self, interaction: discord.Interaction, feed: str, channel: Optional[discord.TextChannel]):
+        await interaction.response.defer()
         d = feedparser.parse(feed)
 
         # validate feed
         if d.bozo:
-            return await interaction.response.send_message("invalid feed")
+            return await interaction.followup.send("invalid feed")
 
         # use user dms if no channel
         # TODO: split this in its own command
         if not channel:
             channel = interaction.user.dm_channel or await interaction.user.create_dm()
+        else:
+            if not interaction.user.guild_permissions.manage_channels:
+                return await interaction.followup.send(
+                    "adding a feed to a guild channel requires the `manage_channels` permission.\n"
+                    "you can still subscribe to feeds without specifying a channel to receive the feed in dms."
+                )
 
         # validate feed+channel not already set
         with sqlite3.connect(self.db) as con:
@@ -87,7 +96,7 @@ class RssCog(commands.GroupCog, name="rss"):
                 """
             ).fetchall()
             if r:
-                return await interaction.response.send_message(f"already subbed \n```py\n{r}\n```")
+                return await interaction.followup.send(f"already subbed")
 
         channel: discord.TextChannel | discord.DMChannel
 
@@ -106,9 +115,9 @@ class RssCog(commands.GroupCog, name="rss"):
             cursor.execute(f"INSERT INTO rss_feed_subscription VALUES ('{subscription_id}', '{feed_id}')")
 
         await channel.send(f"this channel is now tracking {feed}")
-        await interaction.response.send_message("ok")
+        await interaction.followup.send("✔")
 
-    @tasks.loop(minutes=30)  # TODO: reduce this!!
+    @tasks.loop(minutes=10)  # TODO: reduce this!!
     async def rss_publisher(self):
         with sqlite3.connect(self.db) as con:
             feeds = con.execute("SELECT * FROM rss_feed").fetchall()
@@ -126,7 +135,26 @@ class RssCog(commands.GroupCog, name="rss"):
                     ]
                     for channel_id in channel_ids:
                         channel = self.bot.get_channel(channel_id) or await self.bot.fetch_channel(channel_id)
-                        await channel.send(entry.id)
+
+                        # https://stackoverflow.com/a/1697907
+                        timestamp = entry.get("updated_parsed", None)
+                        if timestamp:
+                            timestamp = datetime.fromtimestamp(mktime(timestamp))
+
+                        embed = (
+                            discord.Embed(
+                                title=md(entry.get("title", "Untitled"), convert=[]),
+                                description=md(entry.get("summary", "No description available")),
+                                url=entry.get("link", None),
+                                timestamp=timestamp,
+                            )
+                            .set_thumbnail(url=d.feed.get("image", {}).get("href", self.bot.user.display_avatar.url))
+                            .set_footer(text=feed_url)
+                        )
+                        if author := entry.get("author_detail", None):
+                            embed.set_author(name=author.get("name"), url=author.get("href", None))
+
+                        await channel.send(embed=embed)
                     con.execute(f"INSERT INTO rss_entry VALUES ('{entry.id}', '{feed_id}')")
 
     @rss_publisher.before_loop
