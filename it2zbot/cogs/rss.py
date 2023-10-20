@@ -27,8 +27,8 @@ class RssCog(commands.GroupCog, name="rss"):
             connection.execute(
                 """
                 CREATE TABLE IF NOT EXISTS subscription (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    channel_id INTEGER NOT NULL
+                    id          INTEGER  PRIMARY KEY  AUTOINCREMENT,
+                    channel_id  INTEGER  NOT NULL     UNIQUE
                 );
                 """
             )
@@ -67,7 +67,7 @@ class RssCog(commands.GroupCog, name="rss"):
 
     @app_commands.command(name="subscribe")
     async def subscribe_cmd(self, interaction: discord.Interaction, feed: str, channel: Optional[discord.TextChannel]):
-        await interaction.response.defer()
+        await interaction.response.defer(ephemeral=True)
         d = feedparser.parse(feed)
 
         # validate feed
@@ -75,14 +75,13 @@ class RssCog(commands.GroupCog, name="rss"):
             return await interaction.followup.send("invalid feed")
 
         # use user dms if no channel
-        # TODO: split this in its own command
         if not channel:
             channel = interaction.user.dm_channel or await interaction.user.create_dm()
         else:
             if not interaction.user.guild_permissions.manage_channels:
                 return await interaction.followup.send(
                     "adding a feed to a guild channel requires the `manage_channels` permission.\n"
-                    "you can still subscribe to feeds without specifying a channel to receive the feed in dms."
+                    + "you can still subscribe to feeds without specifying a channel to receive the feed in dms."
                 )
 
         # validate feed+channel not already set
@@ -98,26 +97,56 @@ class RssCog(commands.GroupCog, name="rss"):
             if r:
                 return await interaction.followup.send(f"already subbed")
 
-        channel: discord.TextChannel | discord.DMChannel
+            channel: discord.TextChannel | discord.DMChannel
 
-        with sqlite3.connect(self.db) as con:
             cursor = con.cursor()
             r = cursor.execute(f"SELECT id FROM rss_feed WHERE url = '{feed}'").fetchone()
             if r:
                 feed_id = r[0]
             else:
                 cursor.execute(f"INSERT OR IGNORE INTO rss_feed (url) VALUES ('{feed}')")
-                feed_id = cursor.lastrowid
+                feed_id = cursor.execute(f"SELECT id FROM rss_feed WHERE url = '{feed}'").fetchone()[0]
                 values = [f"('{entry.id}', '{feed_id}')" for entry in d.entries]
                 cursor.execute(f"INSERT OR IGNORE INTO rss_entry VALUES {','.join(values)}")
-            cursor.execute(f"INSERT INTO subscription (channel_id) VALUES ('{channel.id}');")
-            subscription_id = cursor.lastrowid
+            cursor.execute(f"INSERT OR IGNORE INTO subscription (channel_id) VALUES ('{channel.id}');")
+            subscription_id = cursor.execute(
+                f"SELECT id FROM subscription WHERE channel_id = '{channel.id}'"
+            ).fetchone()[0]
             cursor.execute(f"INSERT INTO rss_feed_subscription VALUES ('{subscription_id}', '{feed_id}')")
 
         await channel.send(f"this channel is now tracking {feed}")
         await interaction.followup.send("✔")
 
-    @tasks.loop(minutes=10)  # TODO: reduce this!!
+    @app_commands.command(name="unsubscribe")
+    async def unsubscribe_cmd(
+        self, interaction: discord.Interaction, feed: str, channel: Optional[discord.TextChannel]
+    ):
+        if not channel:
+            channel = interaction.user.dm_channel or await interaction.user.create_dm()
+        else:
+            if not interaction.user.guild_permissions.manage_channels:
+                return await interaction.response.send_message(
+                    "removing a feed from a guild channel requires the `manage_channels` permission.\n"
+                    + "you can still unsubscribe from feeds without specifying a channel to remove the feed from your dms.",
+                    ephemeral=True,
+                )
+
+        with sqlite3.connect(self.db) as con:
+            con.execute(
+                f"""
+                DELETE FROM rss_feed_subscription
+                WHERE rss_feed_id IN (
+                    SELECT id FROM rss_feed rf
+                    WHERE rf.url = '{feed}'
+                ) AND subscription_id IN (
+                    SELECT id FROM subscription s
+                    WHERE s.channel_id = '{channel.id}'
+                )
+                """
+            )
+            await interaction.response.send_message("removed if it did exist", ephemeral=True)
+
+    @tasks.loop(minutes=10) 
     async def rss_publisher(self):
         with sqlite3.connect(self.db) as con:
             feeds = con.execute("SELECT * FROM rss_feed").fetchall()
