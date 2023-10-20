@@ -75,8 +75,26 @@ class RssCog(commands.GroupCog, name="rss"):
     def cog_unload(self):
         self.rss_publisher.cancel()
 
+    @app_commands.command(name="list")
+    async def list_cmd(self, interaction: discord.Interaction):
+        """list all feeds that the current channel has subscribed to"""
+        with sqlite3.connect(self.db) as con:
+            feeds = [
+                f[0]
+                for f in con.execute(
+                    f"""
+                    SELECT rf.url FROM rss_feed_subscription rfs 
+                    JOIN rss_feed rf ON rfs.rss_feed_id = rf.id 
+                    JOIN subscription s ON rfs.subscription_id = s.id 
+                    WHERE s.channel_id = '{interaction.channel.id}'
+                    """
+                ).fetchall()
+            ]
+        await interaction.response.send_message("None" if not feeds else "\n".join([f"- {feed}" for feed in feeds]))
+
     @app_commands.command(name="subscribe")
     async def subscribe_cmd(self, interaction: discord.Interaction, feed: str, channel: Optional[discord.TextChannel]):
+        """subscribe to an rss feed. moderators may specify a guild textchannel as second argument"""
         await interaction.response.defer(ephemeral=True)
         d = feedparser.parse(feed)
 
@@ -131,6 +149,7 @@ class RssCog(commands.GroupCog, name="rss"):
     async def unsubscribe_cmd(
         self, interaction: discord.Interaction, feed: str, channel: Optional[discord.TextChannel]
     ):
+        """unsubscribe from an rss feed. moderators may remove a feed from a guild textchannel"""
         if not channel:
             channel = interaction.user.dm_channel or await interaction.user.create_dm()
         else:
@@ -156,7 +175,7 @@ class RssCog(commands.GroupCog, name="rss"):
             )
             await interaction.response.send_message("removed if it did exist", ephemeral=True)
 
-    @tasks.loop(minutes=10) 
+    @tasks.loop(minutes=10)
     async def rss_publisher(self):
         with sqlite3.connect(self.db) as con:
             feeds = con.execute("SELECT * FROM rss_feed").fetchall()
