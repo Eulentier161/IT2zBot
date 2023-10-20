@@ -1,7 +1,8 @@
 import sqlite3
 from datetime import datetime
+from itertools import islice
 from time import mktime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Iterable, Optional
 
 import discord
 import feedparser
@@ -11,6 +12,15 @@ from markdownify import markdownify as md
 
 if TYPE_CHECKING:
     from it2zbot.bot import MyBot
+
+
+def batched(iterable: Iterable, n: int):
+    """https://docs.python.org/3/library/itertools.html#itertools.batched"""
+    if n < 1:
+        raise ValueError("n must be at least one")
+    it = iter(iterable)
+    while batch := tuple(islice(it, n)):
+        yield batch
 
 
 class RssCog(commands.GroupCog, name="rss"):
@@ -150,10 +160,11 @@ class RssCog(commands.GroupCog, name="rss"):
     async def rss_publisher(self):
         with sqlite3.connect(self.db) as con:
             feeds = con.execute("SELECT * FROM rss_feed").fetchall()
+            to_send: dict[discord.TextChannel | discord.DMChannel, list[discord.Embed]] = {}
             for feed_id, feed_url in feeds:
                 d = feedparser.parse(feed_url)
                 known = [r[0] for r in con.execute(f"SELECT id FROM rss_entry WHERE rss_feed = '{feed_id}'")]
-                for entry in d.entries:
+                for entry in d.entries[::-1]:
                     if entry.id in known:
                         continue
                     channel_ids = [
@@ -183,8 +194,16 @@ class RssCog(commands.GroupCog, name="rss"):
                         if author := entry.get("author_detail", None):
                             embed.set_author(name=author.get("name"), url=author.get("href", None))
 
-                        await channel.send(embed=embed)
+                        if not to_send.get(channel, None):
+                            to_send[channel] = [embed]
+                        else:
+                            to_send[channel].append(embed)
+
                     con.execute(f"INSERT INTO rss_entry VALUES ('{entry.id}', '{feed_id}')")
+
+            for channel, embeds in to_send.items():
+                for batch in batched(embeds, 10):
+                    await channel.send(embeds=batch)
 
     @rss_publisher.before_loop
     async def before_rss_publisher(self):
