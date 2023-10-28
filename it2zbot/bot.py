@@ -3,7 +3,19 @@ import discord
 import uvloop
 from discord.ext import commands
 
-from it2zbot.cogs import AdminCog, CalendarCog, ChannelCog, CustomReactionsCog, GithubCog, MiscCog, ReminderCog, RolePickerView, SelfManagementCog, RssCog
+from it2zbot.cogs import (
+    AdminCog,
+    CalendarCog,
+    ChannelCog,
+    CustomReactionsCog,
+    GithubCog,
+    MiscCog,
+    ReminderCog,
+    RolePickerView,
+    RssCog,
+    SelfManagementCog,
+    SimpleGameCog,
+)
 from it2zbot.utils import Config, get_config
 
 uvloop.install()
@@ -15,7 +27,7 @@ class MyBot(commands.Bot):
         super().__init__(command_prefix=config["command_prefix"], intents=intents)
 
     async def setup_hook(self):
-        for cog in [AdminCog, CalendarCog, CustomReactionsCog, GithubCog, MiscCog, ReminderCog, SelfManagementCog, ChannelCog, RssCog]:
+        for cog in [AdminCog, CalendarCog, CustomReactionsCog, GithubCog, MiscCog, ReminderCog, SelfManagementCog, ChannelCog, RssCog, SimpleGameCog]:
             await self.add_cog(cog(self))
 
         self.add_view(RolePickerView())
