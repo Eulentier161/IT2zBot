@@ -8,3 +8,4 @@ from it2zbot.cogs.reminder import ReminderCog
 from it2zbot.cogs.self_management import SelfManagementCog, RolePickerView
 from it2zbot.cogs.rss import RssCog
 from it2zbot.cogs.simple_game import SimpleGameCog
+from it2zbot.cogs.poll import PollCog

@@ -10,6 +10,7 @@ from it2zbot.cogs import (
     CustomReactionsCog,
     GithubCog,
     MiscCog,
+    PollCog,
     ReminderCog,
     RolePickerView,
     RssCog,
@@ -27,7 +28,7 @@ class MyBot(commands.Bot):
         super().__init__(command_prefix=config["command_prefix"], intents=intents)
 
     async def setup_hook(self):
-        for cog in [AdminCog, CalendarCog, CustomReactionsCog, GithubCog, MiscCog, ReminderCog, SelfManagementCog, ChannelCog, RssCog, SimpleGameCog]:
+        for cog in [AdminCog, CalendarCog, CustomReactionsCog, GithubCog, MiscCog, PollCog, ReminderCog, SelfManagementCog, ChannelCog, RssCog, SimpleGameCog]:
             await self.add_cog(cog(self))
 
         self.add_view(RolePickerView())
