@@ -88,6 +88,8 @@ class PollCog(commands.GroupCog, name="poll"):
         option9: Optional[str],
         option10: Optional[str],
     ):
+        if not interaction.guild:
+            return interaction.response.send_message("this command can only be used in guilds")
         options = [option1, option2, option3, option4, option5, option6, option7, option8, option9, option10]
         options: list[str] = [o for o in options if o is not None]
         options: list[Option] = [
