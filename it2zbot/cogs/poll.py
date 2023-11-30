@@ -40,7 +40,6 @@ class PollCog(commands.GroupCog, name="poll"):
     def __init__(self, bot: "MyBot") -> None:
         self.db = "bot.db"
         with sqlite3.connect(self.db) as connection:
-            connection.execute("DROP TABLE IF EXISTS poll;")
             connection.execute(
                 """
                 CREATE TABLE IF NOT EXISTS poll (
