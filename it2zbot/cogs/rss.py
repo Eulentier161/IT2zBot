@@ -86,8 +86,9 @@ class RssCog(commands.GroupCog, name="rss"):
                     SELECT rf.url FROM rss_feed_subscription rfs 
                     JOIN rss_feed rf ON rfs.rss_feed_id = rf.id 
                     JOIN subscription s ON rfs.subscription_id = s.id 
-                    WHERE s.channel_id = '{interaction.channel.id}'
-                    """
+                    WHERE s.channel_id = ?
+                    """,
+                    (str(interaction.channel.id),),
                 ).fetchall()
             ]
         await interaction.response.send_message("None" if not feeds else "\n".join([f"- {feed}" for feed in feeds]))
@@ -119,8 +120,9 @@ class RssCog(commands.GroupCog, name="rss"):
                 SELECT * FROM rss_feed_subscription rfs 
                 JOIN rss_feed rf ON rfs.rss_feed_id = rf.id 
                 JOIN subscription s ON rfs.subscription_id = s.id 
-                WHERE rf.url = '{feed}' AND s.channel_id = '{channel.id}'
-                """
+                WHERE rf.url = ? AND s.channel_id = ?
+                """,
+                (feed, str(channel.id)),
             ).fetchall()
             if r:
                 return await interaction.followup.send(f"already subbed")
@@ -128,27 +130,22 @@ class RssCog(commands.GroupCog, name="rss"):
             channel: discord.TextChannel | discord.DMChannel
 
             cursor = con.cursor()
-            r = cursor.execute(f"SELECT id FROM rss_feed WHERE url = '{feed}'").fetchone()
+            r = cursor.execute(f"SELECT id FROM rss_feed WHERE url = ?", (feed,)).fetchone()
             if r:
                 feed_id = r[0]
             else:
-                cursor.execute(f"INSERT OR IGNORE INTO rss_feed (url) VALUES ('{feed}')")
-                feed_id = cursor.execute(f"SELECT id FROM rss_feed WHERE url = '{feed}'").fetchone()[0]
-                values = [f"('{entry.id}', '{feed_id}')" for entry in d.entries]
-                cursor.execute(f"INSERT OR IGNORE INTO rss_entry VALUES {','.join(values)}")
-            cursor.execute(f"INSERT OR IGNORE INTO subscription (channel_id) VALUES ('{channel.id}');")
-            subscription_id = cursor.execute(
-                f"SELECT id FROM subscription WHERE channel_id = '{channel.id}'"
-            ).fetchone()[0]
-            cursor.execute(f"INSERT INTO rss_feed_subscription VALUES ('{subscription_id}', '{feed_id}')")
+                cursor.execute(f"INSERT OR IGNORE INTO rss_feed (url) VALUES (?)", (feed,))
+                feed_id = cursor.execute(f"SELECT id FROM rss_feed WHERE url = ?", (feed,)).fetchone()[0]
+                cursor.executemany(f"INSERT OR IGNORE INTO rss_entry VALUES (?, ?)", [(entry.id, feed_id) for entry in d.entries])
+            cursor.execute(f"INSERT OR IGNORE INTO subscription (channel_id) VALUES (?);", (channel.id,))
+            subscription_id = cursor.execute(f"SELECT id FROM subscription WHERE channel_id = ?", (channel.id,)).fetchone()[0]
+            cursor.execute(f"INSERT INTO rss_feed_subscription VALUES (?, ?)", (subscription_id, feed_id))
 
         await channel.send(f"this channel is now tracking {feed}")
         await interaction.followup.send("✔")
 
     @app_commands.command(name="unsubscribe")
-    async def unsubscribe_cmd(
-        self, interaction: discord.Interaction, feed: str, channel: Optional[discord.TextChannel]
-    ):
+    async def unsubscribe_cmd(self, interaction: discord.Interaction, feed: str, channel: Optional[discord.TextChannel]):
         """unsubscribe from an rss feed. moderators may remove a feed from a guild textchannel"""
         if not channel:
             channel = interaction.user.dm_channel or await interaction.user.create_dm()
@@ -166,12 +163,13 @@ class RssCog(commands.GroupCog, name="rss"):
                 DELETE FROM rss_feed_subscription
                 WHERE rss_feed_id IN (
                     SELECT id FROM rss_feed rf
-                    WHERE rf.url = '{feed}'
+                    WHERE rf.url = ?
                 ) AND subscription_id IN (
                     SELECT id FROM subscription s
-                    WHERE s.channel_id = '{channel.id}'
+                    WHERE s.channel_id = ?
                 )
-                """
+                """,
+                (feed, str(channel.id)),
             )
             await interaction.response.send_message("removed if it did exist", ephemeral=True)
 
@@ -182,14 +180,15 @@ class RssCog(commands.GroupCog, name="rss"):
             to_send: dict[discord.TextChannel | discord.DMChannel, list[discord.Embed]] = {}
             for feed_id, feed_url in feeds:
                 d = feedparser.parse(feed_url)
-                known = [r[0] for r in con.execute(f"SELECT id FROM rss_entry WHERE rss_feed = '{feed_id}'")]
+                known = [r[0] for r in con.execute(f"SELECT id FROM rss_entry WHERE rss_feed = ?", (feed_id,))]
                 for entry in d.entries[::-1]:
                     if entry.id in known:
                         continue
                     channel_ids = [
                         r[0]
                         for r in con.execute(
-                            f"SELECT s.channel_id FROM rss_feed_subscription rfs JOIN subscription s ON rfs.subscription_id = s.id WHERE rfs.rss_feed_id = '{feed_id}'"
+                            f"SELECT s.channel_id FROM rss_feed_subscription rfs JOIN subscription s ON rfs.subscription_id = s.id WHERE rfs.rss_feed_id = ?",
+                            (feed_id,),
                         )
                     ]
                     for channel_id in channel_ids:
@@ -218,7 +217,7 @@ class RssCog(commands.GroupCog, name="rss"):
                         else:
                             to_send[channel].append(embed)
 
-                    con.execute(f"INSERT INTO rss_entry VALUES ('{entry.id}', '{feed_id}')")
+                    con.execute(f"INSERT INTO rss_entry VALUES (?, ?)", (entry.id, feed_id))
 
             for channel, embeds in to_send.items():
                 for batch in batched(embeds, 10):

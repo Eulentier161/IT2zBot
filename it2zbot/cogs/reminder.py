@@ -61,9 +61,9 @@ class ReminderCog(commands.Cog):
                 f"""
                 INSERT INTO reminder (
                     user, channel, time, message, og_message_url
-                ) VALUES (
-                    '{user_id}', '{channel_id}', '{date}', '{message}', '{jump_url}'
-                )"""
+                ) VALUES (?, ?, ?, ?, ?)
+                """,
+                (user_id, channel_id, date, message, jump_url),
             )
 
     @tasks.loop(minutes=1)
@@ -73,13 +73,13 @@ class ReminderCog(commands.Cog):
                 if datetime.strptime(time, "%Y-%m-%d %H:%M:%S") > datetime.now():
                     continue  # stored date is in the future
                 user_id, channel_id, message, og_message_url = connection.execute(
-                    f"SELECT user, channel, message, og_message_url FROM reminder WHERE id = {id};"
+                    f"SELECT user, channel, message, og_message_url FROM reminder WHERE id = ?;", (id,)
                 ).fetchone()
                 user = await self.bot.fetch_user(int(user_id))
                 channel = await self.bot.fetch_channel(int(channel_id))
                 embed = discord.Embed(title="Reminder!", description=message, url=og_message_url)
                 await channel.send(content=user.mention, embed=embed)
-                connection.execute(f"DELETE FROM reminder WHERE id = {id};")
+                connection.execute(f"DELETE FROM reminder WHERE id = ?;", (id,))
 
     @remind_exceeded.before_loop
     async def before_remind_exceeded(self):

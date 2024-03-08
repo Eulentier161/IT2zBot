@@ -161,14 +161,9 @@ class MiscCog(commands.Cog):
                         channel,
                         guild,
                         content
-                    ) VALUES (
-                        '{message.author.id}',
-                        '{message.id}',
-                        '{message.channel.id}',
-                        '{message.guild.id}',
-                        '{message.content}'
-                    );
-                    """
+                    ) VALUES (?, ?, ?, ?, ?);
+                    """,
+                    (str(message.author.id), str(message.id), str(message.channel.id), str(message.guild.id), message.content),
                 )
         except sqlite3.IntegrityError:
             return await interaction.response.send_message(f"this message has already been saved as quote")

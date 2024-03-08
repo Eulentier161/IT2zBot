@@ -33,7 +33,7 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
             return
         with sqlite3.connect("bot.db") as connection:
             try:
-                if res := connection.execute(f"SELECT response FROM custom_reaction WHERE trigger = '{message.content}';").fetchone():
+                if res := connection.execute(f"SELECT response FROM custom_reaction WHERE trigger = ?;", (message.content,)).fetchone():
                     await message.reply(res[0], mention_author=False)
             except sqlite3.OperationalError:
                 pass
@@ -48,16 +48,10 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
             with sqlite3.connect("bot.db") as connection:
                 connection.execute(
                     f"""
-                    INSERT INTO custom_reaction (
-                        author,
-                        trigger,
-                        response
-                    ) VALUES (
-                        '{interaction.user.id}',
-                        '{trigger}',
-                        '{response}'
-                    );
-                    """
+                    INSERT INTO custom_reaction (author, trigger, response)
+                    VALUES (?, ?, ?);
+                    """,
+                    (interaction.user.id, trigger, response),
                 )
             await interaction.response.send_message(f"I will respond to {trigger}!")
         except sqlite3.IntegrityError:
@@ -70,7 +64,7 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
         def select(connection: sqlite3.Connection, page: int) -> list[dict]:
             return [
                 {"id": row[0], "trigger": row[1]}
-                for row in connection.execute(f"SELECT id, trigger FROM custom_reaction ORDER BY id LIMIT {(page-1)*10}, 10;").fetchall()
+                for row in connection.execute(f"SELECT id, trigger FROM custom_reaction ORDER BY id LIMIT ?, 10;", ((page - 1) * 10,)).fetchall()
             ]
 
         class PreviousButton(discord.ui.Button):
@@ -141,11 +135,11 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
     async def delete_custom_reactions(self, interaction: discord.Interaction, trigger: str):
         """delete a custom reaction"""
         with sqlite3.connect("bot.db") as connection:
-            if not (res := connection.execute(f"SELECT id, author FROM custom_reaction WHERE trigger = '{trigger}';").fetchone()):
+            if not (res := connection.execute(f"SELECT id, author FROM custom_reaction WHERE trigger = ?;", (trigger,)).fetchone()):
                 return await interaction.response.send_message(f"there is no custom reaction with `{trigger=}`", ephemeral=True)
             if not interaction.user.id == int(res[1]) and interaction.user.id not in self.admins:
                 return await interaction.response.send_message(
                     "you cant delete this reaction. only a bot-admin or the user who created this reaction may delete it", ephemeral=True
                 )
-            connection.execute(f"DELETE FROM custom_reaction WHERE id = {res[0]};")
+            connection.execute(f"DELETE FROM custom_reaction WHERE id = ?;", (res[0],))
         await interaction.response.send_message(f"i wont respond to {trigger} anymore")
