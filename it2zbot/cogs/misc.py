@@ -5,11 +5,31 @@ from typing import TYPE_CHECKING, Literal
 
 import discord
 import httpx
-from discord import app_commands
+from discord import app_commands, CustomActivity
 from discord.ext import commands, tasks
 
 if TYPE_CHECKING:
     from it2zbot.bot import MyBot
+
+
+ACTIVITIES = [
+    CustomActivity(text)
+    for text in [
+        "testhuhn",
+        "is das jetzt quasi open source for a fee?",
+        "get (user_id course_id)",
+        "open source funktioniert einfach nicht",
+        "absoluter pflad",
+        "Könnt ihr mein Steam Profil bewerten?",
+        "#freeport22",
+        "HAAAAALLLLOOOOOOOOO!!!",
+        "Stuhlkreis!",
+        "der Boden ist aus Boden gemacht.",
+        "Wenn jeder an sich denkt ist an jeden gedacht.",
+        "objectively mein bester status",
+        "Hey Leute, checkt mal meinen Podcast!",
+    ]
+]
 
 
 @dataclass
@@ -77,9 +97,13 @@ class MiscCog(commands.Cog):
                 """
             )
         self.bot = bot
+        self.set_status.start()
         self.quote_ctx_menu = app_commands.ContextMenu(name="quote", callback=self.quote)
         self.bot.tree.add_command(self.quote_ctx_menu)
         self.randomize_role_color.start()
+
+    def cog_unload(self):
+        self.set_status.cancel()
 
     @app_commands.command(name="joke")
     @app_commands.describe(category="joke category")
@@ -301,3 +325,11 @@ class MiscCog(commands.Cog):
             view=GameView(player_hand, dealer_hand, deck, embed),
             ephemeral=True,
         )
+
+    @tasks.loop(minutes=1)
+    async def set_status(self):
+        await self.bot.change_presence(activity=ACTIVITIES[1])
+
+    @set_status.before_loop
+    async def before_set_status(self):
+        await self.bot.wait_until_ready()
