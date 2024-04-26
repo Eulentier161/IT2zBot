@@ -328,7 +328,7 @@ class MiscCog(commands.Cog):
 
     @tasks.loop(minutes=1)
     async def set_status(self):
-        await self.bot.change_presence(activity=ACTIVITIES[1])
+        await self.bot.change_presence(activity=random.choice(ACTIVITIES))
 
     @set_status.before_loop
     async def before_set_status(self):
