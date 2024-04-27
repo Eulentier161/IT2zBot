@@ -12,7 +12,7 @@ python = "^3.10"
 "discord.py" = "^2.0.1"
 pyaml = "^21.10.1"
 httpx = "^0.23.0"
-uvloop = "^0.17.0"
+uvloop = "^0.19.0"
 PyJWT = { version = "^2.4.0", extras = ["crypto"] }
 beautifulsoup4 = "^4.11.2"
 certifi = "^2023.7.22"
@@ -21,11 +21,11 @@ cryptography = "^42.0.5"
 feedparser = "^6.0.10"
 markdownify = "^0.11.6"
 
-[tool.poetry.dev-dependencies]
-black = "^22.6.0"
-
 [tool.poetry.scripts]
 it2zbot = "it2zbot.bot:main"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
