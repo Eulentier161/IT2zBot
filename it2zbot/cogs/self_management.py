@@ -1,19 +1,11 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
 from discord.ext import commands
-from discord.utils import MISSING
 
 if TYPE_CHECKING:
     from it2zbot.bot import MyBot
-
-
-# class RoleSelector(discord.ui.Select):
-#     def __init__(self):
-#         super().__init__(min_values=1, max_values=10)
-#         self.add_option(label="Option 1", value=1, description="numbero uno")
-#         self.add_option(label="Option 2", value=2, description="deux")
 
 
 class RolePickerView(discord.ui.View):

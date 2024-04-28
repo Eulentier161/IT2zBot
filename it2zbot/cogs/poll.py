@@ -1,8 +1,8 @@
+import re
 import sqlite3
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Optional
 from unicodedata import lookup
-import re
 
 import discord
 from discord import app_commands

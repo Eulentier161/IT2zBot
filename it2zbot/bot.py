@@ -1,24 +1,16 @@
 #!./.venv/bin/python
 import discord
-import uvloop
 from discord.ext import commands
 
-from it2zbot.cogs import (
-    AdminCog,
-    ChannelCog,
-    CustomReactionsCog,
-    GithubCog,
-    MiscCog,
-    PollCog,
-    ReminderCog,
-    RolePickerView,
-    RssCog,
-    SelfManagementCog,
-    SimpleGameCog,
-)
+from it2zbot.cogs import COGS, RolePickerView
 from it2zbot.utils import Config, get_config
 
-uvloop.install()
+try:
+    import uvloop
+
+    uvloop.install()
+except:
+    print("failed to import uvloop, falling back to the built-in asyncio event loop")
 
 
 class MyBot(commands.Bot):
@@ -27,7 +19,7 @@ class MyBot(commands.Bot):
         super().__init__(command_prefix=config["command_prefix"], intents=intents)
 
     async def setup_hook(self):
-        for cog in [AdminCog, CustomReactionsCog, GithubCog, MiscCog, PollCog, ReminderCog, SelfManagementCog, ChannelCog, RssCog, SimpleGameCog]:
+        for cog in COGS:
             await self.add_cog(cog(self))
 
         self.add_view(RolePickerView())
