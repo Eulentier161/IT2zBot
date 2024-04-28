@@ -9,17 +9,14 @@ authors = ["Eulentier161 <eulentier161@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-"discord.py" = "^2.0.1"
-pyaml = "^21.10.1"
-httpx = "^0.23.0"
+"discord.py" = "^2.3.2"
+pyaml = "^24.4.0"
+httpx = "^0.27.0"
 uvloop = { version = "^0.19.0", markers = "sys_platform == 'linux'" }
-PyJWT = { version = "^2.4.0", extras = ["crypto"] }
-beautifulsoup4 = "^4.11.2"
-certifi = "^2023.7.22"
-aiohttp = "^3.9.3"
+PyJWT = { version = "^2.8.0", extras = ["crypto"] }
 cryptography = "^42.0.5"
-feedparser = "^6.0.10"
-markdownify = "^0.11.6"
+feedparser = "^6.0.11"
+markdownify = "^0.12.1"
 
 [tool.poetry.scripts]
 it2zbot = "it2zbot.bot:main"
