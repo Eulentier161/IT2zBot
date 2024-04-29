@@ -1,6 +1,9 @@
+import asyncio
 import random
+import re
 import sqlite3
 from dataclasses import dataclass
+from datetime import timedelta
 from typing import TYPE_CHECKING, Literal
 
 import discord
@@ -333,3 +336,36 @@ class MiscCog(commands.Cog):
     @set_status.before_loop
     async def before_set_status(self):
         await self.bot.wait_until_ready()
+
+    @commands.Cog.listener("on_message")
+    async def jesus_tanz(self, message: discord.Message):
+        if message.author.id != 414138605133627396:
+            return
+        jesus_ids = ["LSyT7s8XC3g", "wqrh2FWvUBI", "-0I_By13FOA", "XpLpbetC6MA", "rKIMXXaUu7U", "A34KSjPWNsY", "7mI5yKC34E4"]
+        links = re.findall(r"(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-&?=%.]+", message.content)
+        if not links:
+            return
+        jesus_wurde_betanzt = False
+
+        async with httpx.AsyncClient() as client:
+            for link in links:
+                try:
+                    request = await client.get(link, follow_redirects=True)
+                except:
+                    continue
+                query = request.url.query.decode("utf-8")
+                if jesus_wurde_betanzt := any([jesus_id in query for jesus_id in jesus_ids]):
+                    break
+
+        if not jesus_wurde_betanzt:
+            return
+
+        try:
+            await message.author.timeout(timedelta(minutes=1))
+        except discord.errors.Forbidden:
+            pass
+
+        await asyncio.gather(
+            message.delete(),
+            message.channel.send(f"{message.author.mention} es hat sich ausgejesustanzt! <:pepeevil:1079434494165135360>"),
+        )
