@@ -1,7 +1,7 @@
 .venv/
+.idea/
 .vscode/
 __pycache__/
 bot.db
 config.yaml
-poetry.lock
 *.pem
