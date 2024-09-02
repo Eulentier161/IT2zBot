@@ -9,4 +9,4 @@ from it2zbot.cogs.rss import RssCog
 from it2zbot.cogs.self_management import RolePickerView, SelfManagementCog
 from it2zbot.cogs.simple_game import SimpleGameCog
 
-COGS = [AdminCog, ChannelCog, CustomReactionsCog, GithubCog, MiscCog, PollCog, ReminderCog, RssCog, SelfManagementCog, SimpleGameCog]
+COGS = [AdminCog, ChannelCog, CustomReactionsCog, GithubCog, MiscCog, PollCog, ReminderCog, SelfManagementCog, SimpleGameCog]
