@@ -109,6 +109,7 @@ class MiscCog(commands.Cog):
         self.set_status.cancel()
 
     @app_commands.command(name="joke")
+    @app_commands.allowed_installs(guilds=True, users=True)
     @app_commands.describe(category="joke category")
     async def joke_command(
         self,
