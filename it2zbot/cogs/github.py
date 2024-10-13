@@ -41,7 +41,7 @@ class GithubCog(commands.GroupCog, name="github"):
     @app_commands.command(name="repo")
     async def repo(self, interaction: discord.Interaction):
         """code where?!"""
-        await interaction.response.send_message("https://eule.wtf/it2zbot")
+        await interaction.response.send_message("https://git.eule.wtf/itech/IT2zBot")
 
     @app_commands.command(name="issue")
     async def issue(self, interaction: discord.Interaction):
