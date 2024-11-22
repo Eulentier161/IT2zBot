@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Literal
 
 import discord
 import httpx
-from discord import CustomActivity, app_commands
+from discord import CustomActivity, app_commands, Streaming
 from discord.ext import commands, tasks
 
 if TYPE_CHECKING:
@@ -16,22 +16,29 @@ if TYPE_CHECKING:
 
 
 ACTIVITIES = [
-    CustomActivity(text)
-    for text in [
-        "testhuhn",
-        "is das jetzt quasi open source for a fee?",
-        "get (user_id course_id)",
-        "open source funktioniert einfach nicht",
-        "absoluter pflad",
-        "Könnt ihr mein Steam Profil bewerten?",
-        "#freeport22",
-        "HAAAAALLLLOOOOOOOOO!!!",
-        "Stuhlkreis!",
-        "der Boden ist aus Boden gemacht.",
-        "Wenn jeder an sich denkt ist an jeden gedacht.",
-        "objectively mein bester status",
-        "Hey Leute, checkt mal meinen Podcast!",
-    ]
+    *[
+        CustomActivity(text)
+        for text in [
+            "testhuhn",
+            "is das jetzt quasi open source for a fee?",
+            "get (user_id course_id)",
+            "open source funktioniert einfach nicht",
+            "absoluter pflad",
+            "Könnt ihr mein Steam Profil bewerten?",
+            "#freeport22",
+            "HAAAAALLLLOOOOOOOOO!!!",
+            "Stuhlkreis!",
+            "der Boden ist aus Boden gemacht.",
+            "Wenn jeder an sich denkt ist an jeden gedacht.",
+            "objectively mein bester status",
+            "Hey Leute, checkt mal meinen Podcast!",
+        ],
+        Streaming(
+            name="dramaonair",
+            url="https://twitch.tv/dramaonair",
+            platform="Twitch",
+        ),
+    ],
 ]
 
 
