@@ -5,3 +5,4 @@ __pycache__/
 bot.db
 config.yaml
 *.pem
+*.mo
