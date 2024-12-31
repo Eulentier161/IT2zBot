@@ -38,12 +38,10 @@ class GithubCog(commands.GroupCog, name="github"):
         self.bot = bot
         super().__init__()
 
-    @app_commands.command(name="repo")
+    @app_commands.command(name="repo", description="code where?!")
     async def repo(self, interaction: discord.Interaction):
-        """code where?!"""
         await interaction.response.send_message("https://git.eule.wtf/Eulentier161/IT2zBot")
 
-    @app_commands.command(name="issue")
+    @app_commands.command(name="issue", description="create an issue for this project on github")
     async def issue(self, interaction: discord.Interaction):
-        """create an issue for this project on github"""
         await interaction.response.send_modal(Issue())
