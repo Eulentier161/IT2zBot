@@ -1,0 +1,8 @@
+msgid ""
+msgstr ""
+
+msgid "WELCOME"
+msgstr "Welcome!"
+
+msgid "BYE"
+msgstr "Bye!"
