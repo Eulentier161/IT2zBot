@@ -10,13 +10,3 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.9.2\n"
-
-msgid "WELCOME"
-msgstr "いらっしゃいませ！"
-
-msgid "BYE"
-msgstr "さようなら！"
-
-msgid "ANIMALRACE"
-msgid_plural "ANIMALRACE_plural"
-msgstr[0] "動物のレース"

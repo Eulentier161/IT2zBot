@@ -10,14 +10,3 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.9.2\n"
-
-msgid "WELCOME"
-msgstr "Wilkommen!"
-
-msgid "BYE"
-msgstr "Auf Wiedersehen!"
-
-msgid "ANIMALRACE"
-msgid_plural "ANIMALRACE_plural"
-msgstr[0] "Tierrennen"
-msgstr[1] "Tierrennen"

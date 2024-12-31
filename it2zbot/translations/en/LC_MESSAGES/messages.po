@@ -14,13 +14,32 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.9.2\n"
 
-msgid "WELCOME"
-msgstr "Welcome!"
+msgid "Issue"
+msgstr "Issue"
 
-msgid "BYE"
-msgstr "Bye!"
+msgid "Title"
+msgstr "Title"
 
-msgid "ANIMALRACE"
-msgid_plural "ANIMALRACE_plural"
-msgstr[0] "animal race"
-msgstr[1] "animal races"
+msgid "help, owls are too cute and awesome"
+msgstr "help, owls are too cute and awesome"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "owls are too cute, pls fix!?"
+msgstr "owls are too cute, pls fix!?"
+
+msgid "Thanks for your feedback!"
+msgstr "Thanks for your feedback!"
+
+msgid "Oops! Something went wrong."
+msgstr "Oops! Something went wrong."
+
+msgid "issue"
+msgstr "issue"
+
+msgid "code where?!"
+msgstr "code where?!"
+
+msgid "create an issue for this project on github"
+msgstr "create an issue for this project on github"
