@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-12-31 09:46+0000\n"
+"PO-Revision-Date: 2024-12-31 09:53+0000\n"
 "Last-Translator: Weblate Admin <yannik@eule.wtf>\n"
 "Language-Team: Japanese <https://weblate.eule.wtf/projects/it2zbot/it2zbot/"
 "ja/>\n"
@@ -16,3 +16,7 @@ msgstr "いらっしゃいませ！"
 
 msgid "BYE"
 msgstr "さようなら！"
+
+msgid "ANIMALRACE"
+msgid_plural "ANIMALRACE_plural"
+msgstr[0] "動物のレース"
