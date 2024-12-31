@@ -24,6 +24,3 @@ msgid "ANIMALRACE"
 msgid_plural "ANIMALRACE_plural"
 msgstr[0] "animal race"
 msgstr[1] "animal races"
-
-msgid "CUSTOM_REACTIONS"
-msgstr "custom_reactions"
