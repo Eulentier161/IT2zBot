@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-12-31 18:14+0000\n"
+"PO-Revision-Date: 2025-01-01 21:33+0000\n"
 "Last-Translator: Weblate Admin <yannik@eule.wtf>\n"
 "Language-Team: German <https://weblate.eule.wtf/projects/it2zbot/it2zbot/de/>"
 "\n"
@@ -40,3 +40,275 @@ msgstr "Danke für deine Rückmeldung!"
 
 msgid "Oops! Something went wrong."
 msgstr "Ups! Etwas ist schiefgelaufen."
+
+#: it2zbot/cogs/custom_reactions.py:167
+msgid ""
+"you can't delete this reaction. only a bot-admin or the user who created "
+"this reaction may delete it"
+msgstr ""
+"Du kannst diese Reaktion nicht löschen. Nur der Bot-Administrator oder der "
+"Nutzer welcher diese Reaktion erstellt hat, kann sie löschen"
+
+#: it2zbot/cogs/channel.py:20 it2zbot/cogs/channel.py:33
+msgid "Guild Channel to target. Defaults to current channel."
+msgstr ""
+"Serverkanal welcher als Ziel gefasst wird. Fällt zurück auf den momentanen "
+"Kanal falls nicht spezifiziert."
+
+#: it2zbot/cogs/misc.py:325 it2zbot/cogs/misc.py:340 it2zbot/cogs/misc.py:342
+#: it2zbot/cogs/misc.py:344 it2zbot/cogs/misc.py:346 it2zbot/cogs/misc.py:363
+msgid "result"
+msgstr "ergebnis"
+
+#: it2zbot/cogs/custom_reactions.py:68
+msgid "there is already a custom reaction with this trigger"
+msgstr "Es besteht bereits ein Eintrag für dieses Kennwort"
+
+#: it2zbot/cogs/misc.py:285
+msgid "play a game of blackjack"
+msgstr "spiele eine Runde Schwarzer Jack"
+
+#: it2zbot/cogs/misc.py:289
+msgid "hit"
+msgstr "hit"
+
+#: it2zbot/cogs/misc.py:297
+msgid "stop"
+msgstr "stop"
+
+#: it2zbot/cogs/misc.py:325
+msgid "bust"
+msgstr "bust"
+
+#: it2zbot/cogs/misc.py:337
+msgid "dealers turn"
+msgstr "Dealers Zug"
+
+#: it2zbot/cogs/misc.py:340
+msgid "dealer bust"
+msgstr "Dealer bust"
+
+#: it2zbot/cogs/misc.py:342
+msgid "tie"
+msgstr "unentschieden"
+
+#: it2zbot/cogs/misc.py:344
+msgid "win"
+msgstr "gewonnen"
+
+#: it2zbot/cogs/misc.py:346
+msgid "lose"
+msgstr "verloren"
+
+#: it2zbot/cogs/misc.py:360
+msgid "Black Jack"
+msgstr "Schwarzer Jack"
+
+#: it2zbot/cogs/misc.py:361
+msgid "starting hands"
+msgstr "starthände"
+
+#: it2zbot/cogs/misc.py:363
+msgid "Black Jack!"
+msgstr "Schwarzer Jack!"
+
+#: it2zbot/cogs/custom_reactions.py:16
+msgid "custom_reactions"
+msgstr "maßgeschneiderte_reaktionen"
+
+#: it2zbot/cogs/custom_reactions.py:46
+msgid "create"
+msgstr "erstellen"
+
+#: it2zbot/cogs/custom_reactions.py:46
+msgid "create a new custom reaction"
+msgstr "erstelle eine neue maßgeschneiderte Reaktion"
+
+#: it2zbot/cogs/custom_reactions.py:48
+msgid "text that triggers this custom reaction"
+msgstr "Text der diese maßgeschneiderte Reaktion aufruft"
+
+#: it2zbot/cogs/custom_reactions.py:48
+msgid "response for this custom reaction"
+msgstr "Antwort für diese maßgeschneiderte Reaktion"
+
+#: it2zbot/cogs/custom_reactions.py:71
+msgid "list"
+msgstr "liste"
+
+#: it2zbot/cogs/custom_reactions.py:71
+msgid "list all custom reactions"
+msgstr "liste alle maßgeschneiderten Reaktionen auf"
+
+#: it2zbot/cogs/misc.py:114 it2zbot/cogs/misc.py:228
+msgid "quote"
+msgstr "zitat"
+
+#: it2zbot/cogs/misc.py:121
+msgid "joke"
+msgstr "witz"
+
+#: it2zbot/cogs/misc.py:121
+msgid "get a random joke"
+msgstr "erhalte einen zufälligen Witz"
+
+#: it2zbot/cogs/misc.py:123
+msgid "joke category"
+msgstr "Witzkategorie"
+
+#: it2zbot/cogs/misc.py:125
+msgid "Any"
+msgstr "Beliebig"
+
+#: it2zbot/cogs/misc.py:126
+msgid "Misc"
+msgstr "Sonstiges"
+
+#: it2zbot/cogs/misc.py:127
+msgid "Programming"
+msgstr "Programmierung"
+
+#: it2zbot/cogs/misc.py:128
+msgid "Dark"
+msgstr "Dunkel"
+
+#: it2zbot/cogs/misc.py:129
+msgid "Pun"
+msgstr "Wortspiel"
+
+#: it2zbot/cogs/misc.py:130
+msgid "Spooky"
+msgstr "Gruselig"
+
+#: it2zbot/cogs/misc.py:131
+msgid "Christmas"
+msgstr "Weihnachten"
+
+#: it2zbot/cogs/misc.py:150
+msgid "button"
+msgstr "knopf"
+
+#: it2zbot/cogs/misc.py:150
+msgid "get a button to click"
+msgstr "erhalte einen Knopf zum drücken"
+
+#: it2zbot/cogs/misc.py:159
+msgid "You did press the Button!! Yay!!"
+msgstr "Du hast den Knopf gedrückt!! Juhu!!"
+
+#: it2zbot/cogs/misc.py:161
+msgid "Press the Button!!"
+msgstr "Drück den Knopf!!"
+
+#: it2zbot/cogs/misc.py:163
+msgid "shorten"
+msgstr "kürzen"
+
+#: it2zbot/cogs/misc.py:163
+msgid "shorten a url with the worlds famous eule.wtf TM service"
+msgstr "kürze eine URL mit dem Weltbekannten eule.wtf TM Dienst"
+
+#: it2zbot/cogs/misc.py:164
+msgid "the big url to shorten"
+msgstr "die große URL, welche zu kürzen ist"
+
+#: it2zbot/cogs/misc.py:164
+msgid "the slug in 'https://eule.wtf/slug'"
+msgstr "der Slug in 'https://eule.wtf/slug'"
+
+#: it2zbot/cogs/misc.py:190
+msgid "avatar"
+msgstr "profilbild"
+
+#: it2zbot/cogs/misc.py:190
+msgid "get a users avatar"
+msgstr "erhalte das Profilbild eine Benutzers"
+
+#: it2zbot/cogs/misc.py:200
+msgid "the message does not contain plain text and is discarded"
+msgstr "die Nachricht enthält keinen einfachen Text und wurde aussortiert"
+
+#: it2zbot/cogs/misc.py:223
+msgid "this message has already been saved as quote"
+msgstr "diese Nachricht wurde bereits als Zitat gespeichert"
+
+#: it2zbot/cogs/misc.py:228
+msgid "get a random quote"
+msgstr "erhalte ein zufälliges Zitat"
+
+#: it2zbot/cogs/misc.py:267
+msgid "say"
+msgstr "sag"
+
+#: it2zbot/cogs/misc.py:267
+msgid "make the bot say something in a channel"
+msgstr "lass den bot eine Nachricht in einem Kanal senden"
+
+#: it2zbot/cogs/misc.py:270
+msgid "the channel to send the message to"
+msgstr "der Kanal in dem die Nachricht gesendet wird"
+
+#: it2zbot/cogs/misc.py:270
+msgid "the message to send"
+msgstr "die Nachricht welche gesendet wird"
+
+#: it2zbot/cogs/misc.py:275
+msgid "moodle_status"
+msgstr "moodle_status"
+
+#: it2zbot/cogs/misc.py:281
+msgid "unreachable"
+msgstr "unerreichbar"
+
+#: it2zbot/cogs/misc.py:285
+msgid "blackjack"
+msgstr "schwarzerjack"
+
+#: it2zbot/cogs/custom_reactions.py:91 it2zbot/cogs/custom_reactions.py:109
+#: it2zbot/cogs/custom_reactions.py:148
+msgid "Custom Reactions"
+msgstr "Maßgeschneiderte Reaktionen"
+
+#: it2zbot/cogs/custom_reactions.py:154
+msgid "delete"
+msgstr "löschen"
+
+#: it2zbot/cogs/custom_reactions.py:154
+msgid "delete a custom reaction"
+msgstr "lösche eine maßgeschneiderte Reaktion"
+
+#: it2zbot/cogs/channel.py:14
+msgid "channel"
+msgstr "kanal"
+
+#: it2zbot/cogs/channel.py:19
+msgid "set_topic"
+msgstr "setze_thema"
+
+#: it2zbot/cogs/channel.py:19
+msgid "set a new channel topic"
+msgstr "setzt ein neues Kanalthema"
+
+#: it2zbot/cogs/channel.py:20
+msgid "the new topic"
+msgstr "das neue Thema"
+
+#: it2zbot/cogs/channel.py:28 it2zbot/cogs/channel.py:37
+msgid "failure"
+msgstr "fehlschlag"
+
+#: it2zbot/cogs/channel.py:32
+msgid "get_topic"
+msgstr "erhalte_thema"
+
+#: it2zbot/cogs/channel.py:32
+msgid "get a channel topic"
+msgstr "erhalte das Kanalthema"
+
+#: it2zbot/cogs/github.py:51
+msgid "github"
+msgstr "Github"
+
+#: it2zbot/cogs/github.py:56
+msgid "source"
+msgstr "Quelle"
