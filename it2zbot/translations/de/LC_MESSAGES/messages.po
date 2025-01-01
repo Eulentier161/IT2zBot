@@ -309,4 +309,4 @@ msgstr "github"
 
 #: it2zbot/cogs/github.py:56
 msgid "source"
-msgstr "Quelle"
+msgstr "quelle"
