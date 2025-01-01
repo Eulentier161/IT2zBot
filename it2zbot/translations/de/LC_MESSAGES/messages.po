@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-01 21:37+0000\n"
+"PO-Revision-Date: 2025-01-01 21:41+0000\n"
 "Last-Translator: Weblate Admin <yannik@eule.wtf>\n"
 "Language-Team: German <https://weblate.eule.wtf/projects/it2zbot/it2zbot/de/>"
 "\n"
@@ -305,7 +305,7 @@ msgstr "erhalte das Kanalthema"
 
 #: it2zbot/cogs/github.py:51
 msgid "github"
-msgstr "Github"
+msgstr "github"
 
 #: it2zbot/cogs/github.py:56
 msgid "source"
