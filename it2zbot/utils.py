@@ -1,3 +1,4 @@
+import subprocess
 import time
 from pathlib import Path
 from typing import TypedDict
@@ -43,3 +44,14 @@ def get_access_token() -> dict:
         f"https://api.github.com/app/installations/{get_config()['gh_installation_id']}/access_tokens",
         headers={"Authorization": f"Bearer {_get_jwt()}"},
     ).json()["token"]
+
+
+def compile_mo_files():
+    localedir = Path(__file__, "../translations").resolve()
+    for root, dirs, files in localedir.walk():
+        for file in files:
+            if file.endswith(".po"):
+                po_file = Path(root, file)
+                mo_file = Path(root, f"{po_file.stem}.mo")
+                subprocess.run(["msgfmt", "-o", str(mo_file.absolute()), str(po_file.absolute())])
+                print(f"Compiled {po_file.relative_to(localedir)} to {mo_file.relative_to(localedir)}")

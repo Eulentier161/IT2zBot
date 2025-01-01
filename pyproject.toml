@@ -26,6 +26,7 @@ dependencies = [
 
 [project.scripts]
 it2zbot = "it2zbot.bot:main"
+compile_translations = "it2zbot.utils:compile_mo_files"
 
 [dependency-groups]
 dev = [
