@@ -3,19 +3,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-01 22:05+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2025-01-01 21:33+0000\n"
+"Last-Translator: Weblate Admin <yannik@eule.wtf>\n"
+"Language-Team: English <https://weblate.eule.wtf/projects/it2zbot/it2zbot/en/"
+">\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: it2zbot/cogs/github.py:61
 msgid "issue"
@@ -283,6 +285,8 @@ msgid ""
 "you can't delete this reaction. only a bot-admin or the user who created "
 "this reaction may delete it"
 msgstr ""
+"you can't delete this reaction. only a bot-admin or the user who created "
+"this reaction may delete it"
 
 #: it2zbot/cogs/channel.py:14
 msgid "channel"
