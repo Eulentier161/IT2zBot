@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-01 21:33+0000\n"
+"PO-Revision-Date: 2025-01-01 21:37+0000\n"
 "Last-Translator: Weblate Admin <yannik@eule.wtf>\n"
 "Language-Team: German <https://weblate.eule.wtf/projects/it2zbot/it2zbot/de/>"
 "\n"
@@ -51,9 +51,7 @@ msgstr ""
 
 #: it2zbot/cogs/channel.py:20 it2zbot/cogs/channel.py:33
 msgid "Guild Channel to target. Defaults to current channel."
-msgstr ""
-"Serverkanal welcher als Ziel gefasst wird. Fällt zurück auf den momentanen "
-"Kanal falls nicht spezifiziert."
+msgstr "Serverkanal welcher als Ziel gefasst wird."
 
 #: it2zbot/cogs/misc.py:325 it2zbot/cogs/misc.py:340 it2zbot/cogs/misc.py:342
 #: it2zbot/cogs/misc.py:344 it2zbot/cogs/misc.py:346 it2zbot/cogs/misc.py:363
