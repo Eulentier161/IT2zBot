@@ -1,6 +1,9 @@
 [tool.black]
 line-length = 120
 
+[tool.isort]
+profile = "black"
+
 [project]
 name = "IT2zBot"
 version = "0.1.0"
@@ -27,6 +30,7 @@ it2zbot = "it2zbot.bot:main"
 [dependency-groups]
 dev = [
     "black<25.0.0,>=24.4.0",
+    "isort>=5.13.2",
 ]
 
 [build-system]

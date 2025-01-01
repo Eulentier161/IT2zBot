@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Literal
 
 import discord
 import httpx
-from discord import CustomActivity, app_commands, Streaming
+from discord import CustomActivity, Streaming, app_commands
 from discord.ext import commands, tasks
 
 if TYPE_CHECKING:

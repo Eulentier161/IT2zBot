@@ -7,22 +7,29 @@ from discord.app_commands import locale_str
 from discord.ext import commands
 
 from it2zbot import utils
+from it2zbot.translations import translate
 
 if TYPE_CHECKING:
     from it2zbot.bot import MyBot
 
 
-class Issue(discord.ui.Modal, title="Issue"):
-    issue_title = discord.ui.TextInput(
-        label="Title", placeholder="help, owls are too cute and awesome", max_length=256
-    )
-    issue_body = discord.ui.TextInput(
-        label="Description",
-        style=discord.TextStyle.long,
-        placeholder="owls are too cute, pls fix!?",
-        required=False,
-        max_length=4000,
-    )
+class Issue(discord.ui.Modal):
+    def __init__(self, interaction: discord.Interaction):
+        super().__init__(title=translate("Issue", interaction))
+        self.issue_title = discord.ui.TextInput(
+            label=translate("Title", interaction),
+            placeholder=translate("help, owls are too cute and awesome", interaction),
+            max_length=256,
+        )
+        self.issue_body = discord.ui.TextInput(
+            label=translate("Description", interaction),
+            style=discord.TextStyle.long,
+            placeholder=translate("owls are too cute, pls fix!?", interaction),
+            required=False,
+            max_length=4000,
+        )
+        self.add_item(self.issue_title)
+        self.add_item(self.issue_body)
 
     async def on_submit(self, interaction: discord.Interaction):
         res = httpx.post(
@@ -34,11 +41,11 @@ class Issue(discord.ui.Modal, title="Issue"):
             },
         ).json()
         await interaction.response.send_message(
-            f"Thanks for your feedback! {res['html_url']}", ephemeral=False
+            f"{translate('Thanks for your feedback!', interaction)} {res['html_url']}", ephemeral=False
         )
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
-        await interaction.response.send_message("Oops! Something went wrong.", ephemeral=True)
+        await interaction.response.send_message(translate("Oops! Something went wrong.", interaction), ephemeral=True)
 
 
 class GithubCog(commands.GroupCog, name="github"):
@@ -54,4 +61,4 @@ class GithubCog(commands.GroupCog, name="github"):
         name=locale_str("issue"), description=locale_str("create an issue for this project on github")
     )
     async def issue(self, interaction: discord.Interaction):
-        await interaction.response.send_modal(Issue())
+        await interaction.response.send_modal(Issue(interaction=interaction))

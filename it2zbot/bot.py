@@ -3,8 +3,8 @@ import discord
 from discord.ext import commands
 
 from it2zbot.cogs import COGS, RolePickerView
+from it2zbot.translations import MyTranslator, compile_mo_files
 from it2zbot.utils import Config, get_config
-from it2zbot.translations import MyTranslator
 
 try:
     import uvloop
@@ -35,6 +35,7 @@ class MyBot(commands.Bot):
 
 
 def main():
+    compile_mo_files()
     config = get_config()
     bot = MyBot(config, discord.Intents.all())
     bot.run(config["token"])

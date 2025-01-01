@@ -19,3 +19,24 @@ msgstr "wo Quelltext?!"
 
 msgid "create an issue for this project on github"
 msgstr "erstelle ein Problem für dieses Projekt auf Github"
+
+msgid "Issue"
+msgstr "Problem"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "help, owls are too cute and awesome"
+msgstr "hilfe, Eulen sind zu süß und toll"
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid "owls are too cute, pls fix!?"
+msgstr "Eulen sind zu süß, bitte beheben!?"
+
+msgid "Thanks for your feedback!"
+msgstr "Danke für deine Rückmeldung!"
+
+msgid "Oops! Something went wrong."
+msgstr "Ups! Etwas ist schiefgelaufen."

@@ -19,3 +19,24 @@ msgstr "code where?!"
 
 msgid "create an issue for this project on github"
 msgstr "create an issue for this project on github"
+
+msgid "Issue"
+msgstr "Issue"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "help, owls are too cute and awesome"
+msgstr "help, owls are too cute and awesome"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "owls are too cute, pls fix!?"
+msgstr "owls are too cute, pls fix!?"
+
+msgid "Thanks for your feedback!"
+msgstr "Thanks for your feedback!"
+
+msgid "Oops! Something went wrong."
+msgstr "Oops! Something went wrong."
