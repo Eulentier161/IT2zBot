@@ -51,7 +51,14 @@ class AdminCog(commands.Cog):
                 await ctx.message.clear_reactions()
 
         if isinstance(ctx.channel, discord.DMChannel):
-            env = {"bot": self.bot, "ctx": ctx, "channel": ctx.channel, "author": ctx.author, "message": ctx.message, "_": self._last_result}
+            env = {
+                "bot": self.bot,
+                "ctx": ctx,
+                "channel": ctx.channel,
+                "author": ctx.author,
+                "message": ctx.message,
+                "_": self._last_result,
+            }
 
         if isinstance(ctx.channel, discord.TextChannel):
             env = {

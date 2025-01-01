@@ -11,27 +11,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.9.2\n"
 
-msgid "Issue"
-msgstr "Problem"
-
-msgid "Title"
-msgstr "Titel"
-
-msgid "help, owls are too cute and awesome"
-msgstr "hilfe, eulen sind zu süß und toll"
-
-msgid "Description"
-msgstr "Beschreibung"
-
-msgid "owls are too cute, pls fix!?"
-msgstr "Eulen sind zu süß, bitte beheben!?"
-
-msgid "Thanks for your feedback!"
-msgstr "Danke für deine Rückmeldung!"
-
-msgid "Oops! Something went wrong."
-msgstr "Ups! Irgendwas ist schiefgelaufen."
-
 msgid "issue"
 msgstr "problem"
 

@@ -1,39 +1,15 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-31 09:53+0000\n"
 "PO-Revision-Date: 2024-12-31 15:12+0000\n"
 "Last-Translator: Weblate Admin <yannik@eule.wtf>\n"
-"Language-Team: English <https://weblate.eule.wtf/projects/it2zbot/it2zbot/en/"
-">\n"
+"Language-Team: English <https://weblate.eule.wtf/projects/it2zbot/it2zbot/en/>"
+"\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.9.2\n"
-
-msgid "Issue"
-msgstr "Issue"
-
-msgid "Title"
-msgstr "Title"
-
-msgid "help, owls are too cute and awesome"
-msgstr "help, owls are too cute and awesome"
-
-msgid "Description"
-msgstr "Description"
-
-msgid "owls are too cute, pls fix!?"
-msgstr "owls are too cute, pls fix!?"
-
-msgid "Thanks for your feedback!"
-msgstr "Thanks for your feedback!"
-
-msgid "Oops! Something went wrong."
-msgstr "Oops! Something went wrong."
 
 msgid "issue"
 msgstr "issue"

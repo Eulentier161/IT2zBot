@@ -136,16 +136,22 @@ class RssCog(commands.GroupCog, name="rss"):
             else:
                 cursor.execute(f"INSERT OR IGNORE INTO rss_feed (url) VALUES (?)", (feed,))
                 feed_id = cursor.execute(f"SELECT id FROM rss_feed WHERE url = ?", (feed,)).fetchone()[0]
-                cursor.executemany(f"INSERT OR IGNORE INTO rss_entry VALUES (?, ?)", [(entry.id, feed_id) for entry in d.entries])
+                cursor.executemany(
+                    f"INSERT OR IGNORE INTO rss_entry VALUES (?, ?)", [(entry.id, feed_id) for entry in d.entries]
+                )
             cursor.execute(f"INSERT OR IGNORE INTO subscription (channel_id) VALUES (?);", (channel.id,))
-            subscription_id = cursor.execute(f"SELECT id FROM subscription WHERE channel_id = ?", (channel.id,)).fetchone()[0]
+            subscription_id = cursor.execute(
+                f"SELECT id FROM subscription WHERE channel_id = ?", (channel.id,)
+            ).fetchone()[0]
             cursor.execute(f"INSERT INTO rss_feed_subscription VALUES (?, ?)", (subscription_id, feed_id))
 
         await channel.send(f"this channel is now tracking {feed}")
         await interaction.followup.send("✔")
 
     @app_commands.command(name="unsubscribe")
-    async def unsubscribe_cmd(self, interaction: discord.Interaction, feed: str, channel: Optional[discord.TextChannel]):
+    async def unsubscribe_cmd(
+        self, interaction: discord.Interaction, feed: str, channel: Optional[discord.TextChannel]
+    ):
         """unsubscribe from an rss feed. moderators may remove a feed from a guild textchannel"""
         if not channel:
             channel = interaction.user.dm_channel or await interaction.user.create_dm()

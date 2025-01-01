@@ -58,7 +58,9 @@ class ChoiceButton(discord.ui.Button):
 
         elif self.label.startswith("Pfad "):
             if self.label.endswith("links"):
-                content += "In der Höhle begegnet die Ein Goblin der dich angreift! Du schaffst es gerade noch zu fliehen\n"
+                content += (
+                    "In der Höhle begegnet die Ein Goblin der dich angreift! Du schaffst es gerade noch zu fliehen\n"
+                )
                 if random.randint(1, 20) <= 5:
                     content += "Du hast den Angriff abgewehrt und keine Lebenspunkte verloren\n\n"
                 else:
@@ -72,7 +74,9 @@ class ChoiceButton(discord.ui.Button):
                         for button in view.children:
                             button.disabled = True
                         view.stop()
-                        return await interaction.response.edit_message(content=f"`gold: {view.gold}`\n`life: {view.life}`\n{content}", view=view)
+                        return await interaction.response.edit_message(
+                            content=f"`gold: {view.gold}`\n`life: {view.life}`\n{content}", view=view
+                        )
 
             elif self.label.endswith("rechts"):
                 content += "Der Pfad endet hier. du musst zurück um Anfang um den rest zu Erkunden!\n"
@@ -80,7 +84,9 @@ class ChoiceButton(discord.ui.Button):
             view.firstChoiceButton.label, view.secondChoiceButton.label = "Weiter laufen", "Eingang Erkunden"
             content += "Du stehst in einem Wald mit einer Taschenlampe. Vor dir ist ein Mysteriöser Eingang."
 
-        await interaction.response.edit_message(content=f"`gold: {view.gold}`\n`life: {view.life}`\n{content}", view=view)
+        await interaction.response.edit_message(
+            content=f"`gold: {view.gold}`\n`life: {view.life}`\n{content}", view=view
+        )
 
 
 class SimpleGameView(discord.ui.View):

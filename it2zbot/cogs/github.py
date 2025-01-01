@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 import discord
 import httpx
 from discord import app_commands
+from discord.app_commands import locale_str
 from discord.ext import commands
 
 from it2zbot import utils
@@ -12,7 +13,9 @@ if TYPE_CHECKING:
 
 
 class Issue(discord.ui.Modal, title="Issue"):
-    issue_title = discord.ui.TextInput(label="Title", placeholder="help, owls are too cute and awesome", max_length=256)
+    issue_title = discord.ui.TextInput(
+        label="Title", placeholder="help, owls are too cute and awesome", max_length=256
+    )
     issue_body = discord.ui.TextInput(
         label="Description",
         style=discord.TextStyle.long,
@@ -25,9 +28,14 @@ class Issue(discord.ui.Modal, title="Issue"):
         res = httpx.post(
             "https://api.github.com/repos/eulentier161/it2zbot/issues",
             headers={"Authorization": f"Bearer {utils.get_access_token()}"},
-            json={"title": self.issue_title.value, "body": self.issue_body.value + "\n\n" + interaction.user.name + f" ({interaction.user.id})"},
+            json={
+                "title": self.issue_title.value,
+                "body": self.issue_body.value + "\n\n" + interaction.user.name + f" ({interaction.user.id})",
+            },
         ).json()
-        await interaction.response.send_message(f"Thanks for your feedback! {res['html_url']}", ephemeral=False)
+        await interaction.response.send_message(
+            f"Thanks for your feedback! {res['html_url']}", ephemeral=False
+        )
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message("Oops! Something went wrong.", ephemeral=True)
@@ -38,10 +46,12 @@ class GithubCog(commands.GroupCog, name="github"):
         self.bot = bot
         super().__init__()
 
-    @app_commands.command(name="repo", description="code where?!")
+    @app_commands.command(name="repo", description=locale_str("code where?!"))
     async def repo(self, interaction: discord.Interaction):
         await interaction.response.send_message("https://git.eule.wtf/Eulentier161/IT2zBot")
 
-    @app_commands.command(name="issue", description="create an issue for this project on github")
+    @app_commands.command(
+        name=locale_str("issue"), description=locale_str("create an issue for this project on github")
+    )
     async def issue(self, interaction: discord.Interaction):
         await interaction.response.send_modal(Issue())

@@ -17,7 +17,9 @@ class ChannelCog(commands.GroupCog, name="channel"):
     @app_commands.describe(topic="the new topic", channel="Guild Channel to target. Defaults to current channel.")
     @app_commands.default_permissions(manage_channels=True)
     @app_commands.checks.has_permissions(manage_channels=True)
-    async def set_topic(self, interaction: discord.Interaction, topic: str, channel: Optional[discord.TextChannel] = None):
+    async def set_topic(
+        self, interaction: discord.Interaction, topic: str, channel: Optional[discord.TextChannel] = None
+    ):
         """set a new channel topic"""
         channel = channel or interaction.channel
         if not isinstance(channel, discord.TextChannel):

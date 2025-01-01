@@ -4,6 +4,7 @@ from discord.ext import commands
 
 from it2zbot.cogs import COGS, RolePickerView
 from it2zbot.utils import Config, get_config
+from it2zbot.translations import MyTranslator
 
 try:
     import uvloop
@@ -23,6 +24,7 @@ class MyBot(commands.Bot):
             await self.add_cog(cog(self))
 
         self.add_view(RolePickerView())
+        await self.tree.set_translator(MyTranslator())
 
         if self.config["prod"]:
             await self.tree.sync()

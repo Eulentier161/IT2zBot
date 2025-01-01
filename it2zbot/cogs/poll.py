@@ -93,7 +93,8 @@ class PollCog(commands.GroupCog, name="poll"):
         options = [option1, option2, option3, option4, option5, option6, option7, option8, option9, option10]
         options: list[str] = [o for o in options if o is not None]
         options: list[Option] = [
-            Option(text=f"{o}\n\t- {get_bar(0, 0)}", emote=lookup(f"REGIONAL INDICATOR SYMBOL LETTER {chr(i+97)}")) for i, o in enumerate(options)
+            Option(text=f"{o}\n\t- {get_bar(0, 0)}", emote=lookup(f"REGIONAL INDICATOR SYMBOL LETTER {chr(i+97)}"))
+            for i, o in enumerate(options)
         ]
 
         embed = discord.Embed(title=question, description="\n".join(option.as_list_item() for option in options))
@@ -111,7 +112,9 @@ class PollCog(commands.GroupCog, name="poll"):
         if payload.user_id == self.bot.user.id:
             return
 
-        if payload.emoji.name not in [lookup(f"REGIONAL INDICATOR SYMBOL LETTER {chr(i+97)}") for i in range(10)] + ["❌"]:
+        if payload.emoji.name not in [lookup(f"REGIONAL INDICATOR SYMBOL LETTER {chr(i+97)}") for i in range(10)] + [
+            "❌"
+        ]:
             return
 
         if not (poll := self.get_db_poll(payload)):
@@ -138,11 +141,18 @@ class PollCog(commands.GroupCog, name="poll"):
         if not isinstance(current_embed, discord.Embed):
             return
 
-        total_votes = sum(r.count - 1 for r in message.reactions if r.emoji in re.findall(r"- (.+?):", current_embed.description))
+        total_votes = sum(
+            r.count - 1 for r in message.reactions if r.emoji in re.findall(r"- (.+?):", current_embed.description)
+        )
 
         options = [
-            Option(emote=o[0], text=f"{o[1]}\n\t- {get_bar([r.count-1 for r in message.reactions if r.emoji==o[0]][0], total_votes)}")
+            Option(
+                emote=o[0],
+                text=f"{o[1]}\n\t- {get_bar([r.count-1 for r in message.reactions if r.emoji==o[0]][0], total_votes)}",
+            )
             for o in re.findall(r"- (.+?): (.+?)\n", current_embed.description)
         ]
-        embed = discord.Embed(title=current_embed.title, description="\n".join(option.as_list_item() for option in options))
+        embed = discord.Embed(
+            title=current_embed.title, description="\n".join(option.as_list_item() for option in options)
+        )
         await message.edit(embed=embed)
