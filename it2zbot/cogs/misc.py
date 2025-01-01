@@ -9,7 +9,10 @@ from typing import TYPE_CHECKING, Literal
 import discord
 import httpx
 from discord import CustomActivity, Streaming, app_commands
+from discord.app_commands import Choice, locale_str
 from discord.ext import commands, tasks
+
+from it2zbot.translations import translate
 
 if TYPE_CHECKING:
     from it2zbot.bot import MyBot
@@ -108,22 +111,32 @@ class MiscCog(commands.Cog):
             )
         self.bot = bot
         self.set_status.start()
-        self.quote_ctx_menu = app_commands.ContextMenu(name="quote", callback=self.quote)
+        self.quote_ctx_menu = app_commands.ContextMenu(name=locale_str("quote"), callback=self.quote)
         self.bot.tree.add_command(self.quote_ctx_menu)
         self.randomize_role_color.start()
 
     def cog_unload(self):
         self.set_status.cancel()
 
-    @app_commands.command(name="joke")
+    @app_commands.command(name=locale_str("joke"), description=locale_str("get a random joke"))
     @app_commands.allowed_installs(guilds=True, users=True)
-    @app_commands.describe(category="joke category")
+    @app_commands.describe(category=locale_str("joke category"))
+    @app_commands.choices(
+        category=[
+            Choice(name=locale_str("Any"), value="Any"),
+            Choice(name=locale_str("Misc"), value="Misc"),
+            Choice(name=locale_str("Programming"), value="Programming"),
+            Choice(name=locale_str("Dark"), value="Dark"),
+            Choice(name=locale_str("Pun"), value="Pun"),
+            Choice(name=locale_str("Spooky"), value="Spooky"),
+            Choice(name=locale_str("Christmas"), value="Christmas"),
+        ]
+    )
     async def joke_command(
         self,
         interaction: discord.Interaction,
-        category: Literal["Any", "Misc", "Programming", "Dark", "Pun", "Spooky", "Christmas"],
+        category: app_commands.Choice[str],
     ):
-        """get a random joke"""
         async with httpx.AsyncClient() as httpx_client:
             res: dict = (
                 await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category}?blacklistFlags=racist,sexist,political")
@@ -134,11 +147,12 @@ class MiscCog(commands.Cog):
         elif type == "twopart":
             await interaction.response.send_message(f"{res['setup']}\n\n||{res['delivery']}||")
         else:
-            await interaction.response.send_message(f"something went wrong ¯\\_(ツ)_/¯", ephemeral=True)
+            await interaction.response.send_message(
+                f"{translate('something went wrong', interaction)} ¯\\_(ツ)_/¯", ephemeral=True
+            )
 
-    @app_commands.command(name="button")
+    @app_commands.command(name=locale_str("button"), description=locale_str("get a button to click"))
     async def button_command(self, interaction: discord.Interaction):
-        """get a button to click :)"""
 
         class ClickableButton(discord.ui.View):
             @discord.ui.button(label=":(", style=discord.ButtonStyle.red)
@@ -146,14 +160,21 @@ class MiscCog(commands.Cog):
                 button.disabled = True
                 button.style = discord.ButtonStyle.green
                 button.label = ":)"
-                await interaction.response.edit_message(content="You did press the Button!! Yay!!", view=self)
+                await interaction.response.edit_message(
+                    content=translate("You did press the Button!! Yay!!", interaction), view=self
+                )
 
-        await interaction.response.send_message(content="Press the Button!!", view=ClickableButton(), ephemeral=True)
+        await interaction.response.send_message(
+            content=translate("Press the Button!!", interaction), view=ClickableButton(), ephemeral=True
+        )
 
-    @app_commands.command(name="shorten")
-    @app_commands.describe(url="the big url to shorten", slug="the slug in 'https://eule.wtf/slug'")
+    @app_commands.command(
+        name=locale_str("shorten"), description=locale_str("shorten a url with the worlds famous eule.wtf TM service")
+    )
+    @app_commands.describe(
+        url=locale_str("the big url to shorten"), slug=locale_str("the slug in 'https://eule.wtf/slug'")
+    )
     async def shorten_cmd(self, interaction: discord.Interaction, url: str, slug: str):
-        """shorten a url with the worlds famous eule.wtf TM service"""
         async with httpx.AsyncClient() as client:
             res = await client.post("https://eule.wtf/api", json={"slug": slug, "destination": url})
         if res.status_code != 200:
@@ -178,7 +199,7 @@ class MiscCog(commands.Cog):
 
         await message.reply(linked_message.content, embeds=linked_message.embeds, files=files)
 
-    @app_commands.command(name="avatar")
+    @app_commands.command(name=locale_str("avatar"), description=locale_str("get a users avatar"))
     async def avatar_cmd(self, interaction: discord.Interaction, user: discord.User):
         await interaction.response.send_message(file=(await user.display_avatar.to_file()), ephemeral=True)
 
@@ -188,7 +209,7 @@ class MiscCog(commands.Cog):
     async def quote(self, interaction: discord.Interaction, message: discord.Message):
         if not message.content.strip():
             return await interaction.response.send_message(
-                "the message does not contain plain text and is discarded", ephemeral=True
+                translate("the message does not contain plain text and is discarded", interaction), ephemeral=True
             )
         try:
             with sqlite3.connect("bot.db") as connection:
@@ -211,14 +232,13 @@ class MiscCog(commands.Cog):
                     ),
                 )
         except sqlite3.IntegrityError:
-            return await interaction.response.send_message(f"this message has already been saved as quote")
-        await interaction.response.send_message(
-            f"added quote from {message.author.name} for [this message]({message.jump_url})"
-        )
+            return await interaction.response.send_message(
+                translate("this message has already been saved as quote", interaction)
+            )
+        await interaction.response.send_message(f"{translate('quote added', interaction)}: {message.jump_url}")
 
-    @app_commands.command(name="quote")
+    @app_commands.command(name=locale_str("quote"), description=locale_str("get a random quote"))
     async def get_quote(self, interaction: discord.Interaction):
-        """get a random quote"""
         with sqlite3.connect("bot.db") as connection:
             user_id, message_id, channel_id, _, content = connection.execute(
                 "SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;"
@@ -256,28 +276,33 @@ class MiscCog(commands.Cog):
     async def before_randomize_role_color(self):
         await self.bot.wait_until_ready()
 
-    @app_commands.command(name="say")
+    @app_commands.command(name=locale_str("say"), description=locale_str("make the bot say something in a channel"))
     @app_commands.default_permissions(manage_messages=True)
     @app_commands.checks.has_permissions(manage_messages=True)
+    @app_commands.describe(
+        channel=locale_str("the channel to send the message to"), message=locale_str("the message to send")
+    )
     async def say_command(self, interaction: discord.Interaction, channel: discord.TextChannel, message: str):
         await channel.send(message)
         await interaction.response.send_message("✅", ephemeral=True)
 
-    @app_commands.command(name="moodle_status")
+    @app_commands.command(name=locale_str("moodle_status"))
     async def is_moodle_up_command(self, interaction: discord.Interaction):
         await interaction.response.defer()
         try:
-            r = f"reached in {round(httpx.get('https://moodle.itech-bs14.de/').elapsed.total_seconds() * 1000)}ms"
+            r = f"{translate('reached in', interaction)} {round(httpx.get('https://moodle.itech-bs14.de/').elapsed.total_seconds() * 1000)} {translate('milliseconds', interaction)}"
         except httpx.RequestError:
-            r = "unreachable"
+            r = translate("unreachable", interaction)
         finally:
             await interaction.followup.send(r)
 
-    @app_commands.command(name="blackjack")
+    @app_commands.command(name=locale_str("blackjack"), description=locale_str("play a game of blackjack"))
     async def blackjack(self, interaction: discord.Interaction):
         class HitButton(discord.ui.Button):
             def __init__(self, disabled):
-                super().__init__(label="hit", style=discord.ButtonStyle.green, disabled=disabled)
+                super().__init__(
+                    label=translate("hit", interaction), style=discord.ButtonStyle.green, disabled=disabled
+                )
 
             async def callback(self, interaction: discord.Interaction):
                 view: GameView = self.view
@@ -285,7 +310,7 @@ class MiscCog(commands.Cog):
 
         class StopButton(discord.ui.Button):
             def __init__(self, disabled):
-                super().__init__(label="stop", style=discord.ButtonStyle.red, disabled=disabled)
+                super().__init__(label=translate("stop", interaction), style=discord.ButtonStyle.red, disabled=disabled)
 
             async def callback(self, interaction: discord.Interaction):
                 view: GameView = self.view
@@ -306,14 +331,16 @@ class MiscCog(commands.Cog):
             async def handle_hit_button(self, interaction: discord.Interaction):
                 self.player_hand.take(self.deck.pop())
                 self.embed.add_field(
-                    name="hit", value=f"dealer: {self.dealer_hand}\nplayer: {self.player_hand}", inline=False
+                    name="hit",
+                    value=f"{translate('dealer', interaction)}: {self.dealer_hand}\n{translate('player', interaction)}: {self.player_hand}",
+                    inline=False,
                 )
                 if self.player_hand.value == 21:
                     return await self.dealer_turns(interaction)
                 elif self.player_hand.value > 21:
                     self.hit_button.disabled = True
                     self.stop_button.disabled = True
-                    self.embed.add_field(name="result", value="bust")
+                    self.embed.add_field(name=translate("result", interaction), value=translate("bust", interaction))
                 await interaction.response.edit_message(embed=self.embed, view=self)
 
             async def handle_stop_button(self, interaction: discord.Interaction):
@@ -325,16 +352,20 @@ class MiscCog(commands.Cog):
                 while self.dealer_hand.value < 17:
                     self.dealer_hand.take(self.deck.pop())
                 self.embed.add_field(
-                    name="dealers turn", value=f"dealer: {self.dealer_hand}\nplayer: {self.player_hand}", inline=False
+                    name=translate("dealers turn", interaction),
+                    value=f"{translate('dealer', interaction)}: {self.dealer_hand}\n{translate('player', interaction)}: {self.player_hand}",
+                    inline=False,
                 )
                 if self.dealer_hand.value > 21:
-                    self.embed.add_field(name="result", value="dealer bust")
+                    self.embed.add_field(
+                        name=translate("result", interaction), value=translate("dealer bust", interaction)
+                    )
                 elif self.player_hand.value == self.dealer_hand.value:
-                    self.embed.add_field(name="result", value="tie")
+                    self.embed.add_field(name=translate("result", interaction), value=translate("tie", interaction))
                 elif self.player_hand.value > self.dealer_hand.value:
-                    self.embed.add_field(name="result", value="win")
+                    self.embed.add_field(name=translate("result", interaction), value=translate("win", interaction))
                 elif self.player_hand.value < self.dealer_hand.value:
-                    self.embed.add_field(name="result", value="lose")
+                    self.embed.add_field(name=translate("result", interaction), value=translate("lose", interaction))
                 await interaction.response.edit_message(embed=self.embed, view=self)
 
         player_hand, dealer_hand = Hand(), Hand()
@@ -348,10 +379,14 @@ class MiscCog(commands.Cog):
         player_hand.take(deck.pop())
         player_hand.take(deck.pop())
 
-        embed = discord.Embed(title="Black Jack", url="https://en.wikipedia.org/wiki/Blackjack")
-        embed.add_field(name="starting hands", value=f"dealer: {dealer_hand}\nplayer: {player_hand}", inline=False)
+        embed = discord.Embed(title=translate("Black Jack", interaction), url="https://en.wikipedia.org/wiki/Blackjack")
+        embed.add_field(
+            name=translate("starting hands", interaction),
+            value=f"{translate('dealer', interaction)}: {dealer_hand}\n{translate('player', interaction)}: {player_hand}",
+            inline=False,
+        )
         if player_hand.value == 21:
-            embed.add_field(name="result", value="Black Jack!")
+            embed.add_field(name=translate("result", interaction), value=translate("Black Jack!", interaction))
 
         await interaction.response.send_message(
             embed=embed,

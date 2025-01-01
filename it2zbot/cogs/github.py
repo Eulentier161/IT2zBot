@@ -48,12 +48,12 @@ class Issue(discord.ui.Modal):
         await interaction.response.send_message(translate("Oops! Something went wrong.", interaction), ephemeral=True)
 
 
-class GithubCog(commands.GroupCog, name="github"):
+class GithubCog(commands.GroupCog, name=locale_str("github")):
     def __init__(self, bot: "MyBot") -> None:
         self.bot = bot
         super().__init__()
 
-    @app_commands.command(name="repo", description=locale_str("code where?!"))
+    @app_commands.command(name=locale_str("source"), description=locale_str("code where?!"))
     async def repo(self, interaction: discord.Interaction):
         await interaction.response.send_message("https://git.eule.wtf/Eulentier161/IT2zBot")
 

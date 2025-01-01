@@ -4,13 +4,16 @@ from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
+from discord.app_commands import locale_str
 from discord.ext import commands
+
+from it2zbot.translations import translate
 
 if TYPE_CHECKING:
     from it2zbot.bot import MyBot
 
 
-class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
+class CustomReactionsCog(commands.GroupCog, name=locale_str("custom_reactions")):
     def __init__(self, bot: "MyBot") -> None:
         with sqlite3.connect("bot.db") as connection:
             connection.execute(
@@ -40,9 +43,10 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
             except sqlite3.OperationalError:
                 pass
 
-    @app_commands.command(name="create")
+    @app_commands.command(name=locale_str("create"), description=locale_str("create a new custom reaction"))
     @app_commands.describe(
-        trigger="text that triggers this custom reaction", response="response for this custom reaction"
+        trigger=locale_str("text that triggers this custom reaction"),
+        response=locale_str("response for this custom reaction"),
     )
     async def create_custom_reaction(
         self,
@@ -50,7 +54,6 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
         trigger: app_commands.Range[str, 1, 100],
         response: app_commands.Range[str, 1, 2000],
     ):
-        """create a new custom reaction"""
         try:
             with sqlite3.connect("bot.db") as connection:
                 connection.execute(
@@ -60,16 +63,14 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
                     """,
                     (interaction.user.id, trigger, response),
                 )
-            await interaction.response.send_message(f"I will respond to {trigger}!")
+            await interaction.response.send_message(f"{translate('I will respond to', interaction)} `{trigger}`")
         except sqlite3.IntegrityError:
             await interaction.response.send_message(
-                "there is already a custom reaction with this trigger", ephemeral=True
+                translate("there is already a custom reaction with this trigger", interaction), ephemeral=True
             )
 
-    @app_commands.command(name="list")
+    @app_commands.command(name=locale_str("list"), description=locale_str("list all custom reactions"))
     async def list_custom_reactions(self, interaction: discord.Interaction):
-        """list all custom reactions"""
-
         def select(connection: sqlite3.Connection, page: int) -> list[dict]:
             return [
                 {"id": row[0], "trigger": row[1]}
@@ -88,12 +89,12 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
                 with sqlite3.connect("bot.db") as connection:
                     custom_reactions = select(connection, page=page)
                 embed = discord.Embed(
-                    title="Custom Reactions",
+                    title=translate("Custom Reactions", interaction),
                     description="\n".join(
                         [f"{reaction['id']}. **{reaction['trigger']}**" for reaction in custom_reactions]
                     ),
                 )
-                embed.set_footer(text=f"page {view.page}/{view.last_page}")
+                embed.set_footer(text=f"{translate('page', interaction)} {view.page}/{view.last_page}")
                 await interaction.response.edit_message(embed=embed, view=view)
 
         class NextButton(discord.ui.Button):
@@ -106,12 +107,12 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
                 with sqlite3.connect("bot.db") as connection:
                     custom_reactions = select(connection, page=page)
                 embed = discord.Embed(
-                    title="Custom Reactions",
+                    title=translate("Custom Reactions", interaction),
                     description="\n".join(
                         [f"{reaction['id']}. **{reaction['trigger']}**" for reaction in custom_reactions]
                     ),
                 )
-                embed.set_footer(text=f"page {view.page}/{view.last_page}")
+                embed.set_footer(text=f"{translate('page', interaction)} {view.page}/{view.last_page}")
                 await interaction.response.edit_message(embed=embed, view=view)
 
         class ListView(discord.ui.View):
@@ -138,22 +139,21 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
                 self.handle_button_disabled()
                 return self.page
 
-        # TODO: this will break if the response body reaches discords message length limit
+        # TODO: this will break if the response body reaches discords message length limit. custom reactions would need to be limited.
         with sqlite3.connect("bot.db") as connection:
             last_page = max(
                 1, math.ceil(connection.execute("SELECT COUNT(*) FROM custom_reaction;").fetchone()[0] / 10)
             )
             custom_reactions = select(connection, page=1)
         embed = discord.Embed(
-            title="Custom Reactions",
+            title=translate("Custom Reactions", interaction),
             description="\n".join([f"{reaction['id']}. **{reaction['trigger']}**" for reaction in custom_reactions]),
         )
-        embed.set_footer(text=f"page 1/{last_page}")
+        embed.set_footer(text=f"{translate('page', interaction)} 1/{last_page}")
         await interaction.response.send_message(embed=embed, view=ListView(last_page), ephemeral=True)
 
-    @app_commands.command(name="delete")
+    @app_commands.command(name=locale_str("delete"), description=locale_str("delete a custom reaction"))
     async def delete_custom_reactions(self, interaction: discord.Interaction, trigger: str):
-        """delete a custom reaction"""
         with sqlite3.connect("bot.db") as connection:
             if not (
                 res := connection.execute(
@@ -161,12 +161,15 @@ class CustomReactionsCog(commands.GroupCog, name="custom_reactions"):
                 ).fetchone()
             ):
                 return await interaction.response.send_message(
-                    f"there is no custom reaction with `{trigger=}`", ephemeral=True
+                    f"{translate('there is no custom reaction with', interaction)} `{trigger=}`", ephemeral=True
                 )
             if not interaction.user.id == int(res[1]) and interaction.user.id not in self.admins:
                 return await interaction.response.send_message(
-                    "you cant delete this reaction. only a bot-admin or the user who created this reaction may delete it",
+                    translate(
+                        "you can't delete this reaction. only a bot-admin or the user who created this reaction may delete it",
+                        interaction,
+                    ),
                     ephemeral=True,
                 )
             connection.execute(f"DELETE FROM custom_reaction WHERE id = ?;", (res[0],))
-        await interaction.response.send_message(f"i wont respond to {trigger} anymore")
+        await interaction.response.send_message(f"{translate('i will stop responding to', interaction)} `{trigger}`")
