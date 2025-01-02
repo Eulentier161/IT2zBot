@@ -3,19 +3,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-02 22:16+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2025-01-02 21:25+0000\n"
+"Last-Translator: Weblate Admin <yannik@eule.wtf>\n"
+"Language-Team: English <https://weblate.eule.wtf/projects/it2zbot/it2zbot/en/"
+">\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: it2zbot/cogs/misc.py:125 it2zbot\cogs\misc.py:127
 msgid "Any"
@@ -27,6 +29,8 @@ msgid ""
 "Etwas weiter geradeaus befindet sich ein zwielichtiger Pfad nach links und "
 "ein beleuchteter Pfad nach rechts."
 msgstr ""
+"When you enter the entrance you find a coin!\n"
+"A little further ahead is a dim path to the left and a lit path to the right."
 
 #: it2zbot/cogs/misc.py:360 it2zbot\cogs\misc.py:386
 msgid "Black Jack"
@@ -55,14 +59,17 @@ msgid ""
 "Das ist der Wald.\n"
 "Das Spiel endet Hier."
 msgstr ""
+"This is the forest.\n"
+"The game ends here."
 
 #: it2zbot\cogs\reminder.py:50
 msgid "Days"
-msgstr ""
+msgstr "Days"
 
 #: it2zbot\cogs\simple_game.py:105
 msgid "Der Pfad endet hier. du musst zurück um Anfang um den rest zu Erkunden!"
 msgstr ""
+"The path ends here. You have to go back to the beginning to explore the rest!"
 
 #: it2zbot/cogs/github.py:25
 msgid "Description"
@@ -73,16 +80,20 @@ msgid ""
 "Du bist gestorben :(\n"
 "  ---GAME OVER---)"
 msgstr ""
+"You died :(\n"
+"  ---GAME OVER---)"
 
 #: it2zbot\cogs\simple_game.py:76
 msgid "Du hast den Angriff abgewehrt und keine Lebenspunkte verloren"
-msgstr ""
+msgstr "You blocked the attack and did not lose any life points"
 
 #: it2zbot\cogs\simple_game.py:113 it2zbot\cogs\simple_game.py:148
 msgid ""
 "Du stehst in einem Wald mit einer Taschenlampe. Vor dir ist ein Mysteriöser "
 "Eingang."
 msgstr ""
+"You are standing in a forest with a flashlight. In front of you is a "
+"mysterious entrance."
 
 #: it2zbot\cogs\simple_game.py:85
 #, python-brace-format
@@ -91,11 +102,14 @@ msgid ""
 "Dir wurden {dmg} Lebenspunkte abgezogen.\n"
 "Du hast noch: {life} Lebenspunkte."
 msgstr ""
+"You were hit!\n"
+"You lost {dmg} health.\n"
+"You have {life} health left."
 
 #: it2zbot\cogs\simple_game.py:56 it2zbot\cogs\simple_game.py:111
 #: it2zbot\cogs\simple_game.py:132
 msgid "Eingang Erkunden"
-msgstr ""
+msgstr "Explore Entrance"
 
 #: it2zbot/cogs/channel.py:20 it2zbot/cogs/channel.py:33
 #: it2zbot\cogs\channel.py:21 it2zbot\cogs\channel.py:36
@@ -104,18 +118,19 @@ msgstr "Guild Channel to target. Defaults to current channel."
 
 #: it2zbot\cogs\reminder.py:49
 msgid "Hours"
-msgstr ""
+msgstr "Hours"
 
 #: it2zbot\cogs\reminder.py:73
 #, python-brace-format
 msgid "I'll remind {name} in {amount} {unit}"
-msgstr ""
+msgstr "I'll remind {name} in {amount} {unit}"
 
 #: it2zbot\cogs\simple_game.py:69
 msgid ""
 "In der Höhle begegnet die Ein Goblin der dich angreift! Du schaffst es "
 "gerade noch zu fliehen"
 msgstr ""
+"In the cave you encounter a goblin who attacks you! You just manage to escape"
 
 #: it2zbot/cogs/github.py:18
 msgid "Issue"
@@ -123,7 +138,7 @@ msgstr "Issue"
 
 #: it2zbot\cogs\reminder.py:48
 msgid "Minutes"
-msgstr ""
+msgstr "Minutes"
 
 #: it2zbot/cogs/misc.py:126 it2zbot\cogs\misc.py:128
 msgid "Misc"
@@ -136,7 +151,7 @@ msgstr "Oops! Something went wrong."
 #: it2zbot\cogs\simple_game.py:62 it2zbot\cogs\simple_game.py:63
 #: it2zbot\cogs\simple_game.py:65
 msgid "Pfad"
-msgstr ""
+msgstr "Path"
 
 #: it2zbot/cogs/misc.py:161 it2zbot\cogs\misc.py:171
 msgid "Press the Button!!"
@@ -164,7 +179,7 @@ msgstr "Title"
 #: it2zbot\cogs\simple_game.py:23 it2zbot\cogs\simple_game.py:110
 #: it2zbot\cogs\simple_game.py:131
 msgid "Weiter laufen"
-msgstr ""
+msgstr "Keep running"
 
 #: it2zbot/cogs/misc.py:159 it2zbot\cogs\misc.py:167
 msgid "You did press the Button!! Yay!!"
@@ -172,11 +187,11 @@ msgstr "You did press the Button!! Yay!!"
 
 #: it2zbot\cogs\self_management.py:100
 msgid "You dont have a custom color"
-msgstr ""
+msgstr "You dont have a custom color"
 
 #: it2zbot\cogs\self_management.py:106
 msgid "Your custom color has been deleted"
-msgstr ""
+msgstr "Your custom color has been deleted"
 
 #: it2zbot\cogs\simple_game.py:96 it2zbot\cogs\simple_game.py:117
 #: it2zbot\cogs\simple_game.py:145
@@ -185,18 +200,20 @@ msgid ""
 "`gold: {gold}`\n"
 "`life: {life}`"
 msgstr ""
+"`gold: {gold}`\n"
+"`life: {life}`"
 
 #: it2zbot\cogs\reminder.py:38
 msgid "a message to be reminded of"
-msgstr ""
+msgstr "a message to be reminded of"
 
 #: it2zbot\cogs\reminder.py:42
 msgid "amount"
-msgstr ""
+msgstr "amount"
 
 #: it2zbot\cogs\self_management.py:62
 msgid "assign a custom color-role to yourself or change your color"
-msgstr ""
+msgstr "assign a custom color-role to yourself or change your color"
 
 #: it2zbot/cogs/misc.py:190 it2zbot\cogs\misc.py:206
 msgid "avatar"
@@ -216,7 +233,7 @@ msgstr "button"
 
 #: it2zbot\cogs\misc.py:124
 msgid "category"
-msgstr ""
+msgstr "category"
 
 #: it2zbot/cogs/channel.py:14 it2zbot\cogs\channel.py:14
 #: it2zbot\cogs\channel.py:23
@@ -229,7 +246,7 @@ msgstr "code where?!"
 
 #: it2zbot\cogs\self_management.py:65
 msgid "color"
-msgstr ""
+msgstr "color"
 
 #: it2zbot/cogs/custom_reactions.py:46 it2zbot\cogs\custom_reactions.py:46
 #: it2zbot\cogs\poll.py:78
@@ -242,7 +259,7 @@ msgstr "create a new custom reaction"
 
 #: it2zbot\cogs\reminder.py:33
 msgid "create a reminder"
-msgstr ""
+msgstr "create a reminder"
 
 #: it2zbot/cogs/github.py:61
 msgid "create an issue for this project on github"
@@ -270,11 +287,11 @@ msgstr "delete a custom reaction"
 
 #: it2zbot\cogs\self_management.py:93
 msgid "delete your custom color role from the guild"
-msgstr ""
+msgstr "delete your custom color role from the guild"
 
 #: it2zbot\cogs\self_management.py:93
 msgid "delete_custom_color"
-msgstr ""
+msgstr "delete_custom_color"
 
 #: it2zbot/cogs/channel.py:28 it2zbot/cogs/channel.py:37
 #: it2zbot\cogs\channel.py:31 it2zbot\cogs\channel.py:40
@@ -319,11 +336,11 @@ msgstr "hit"
 
 #: it2zbot\cogs\reminder.py:36 it2zbot\cogs\reminder.py:37
 msgid "how long from now?"
-msgstr ""
+msgstr "how long from now?"
 
 #: it2zbot\cogs\self_management.py:110
 msgid "init_role_picker"
-msgstr ""
+msgstr "init_role_picker"
 
 #: it2zbot/cogs/github.py:61
 msgid "issue"
@@ -339,7 +356,7 @@ msgstr "joke category"
 
 #: it2zbot\cogs\simple_game.py:62 it2zbot\cogs\simple_game.py:66
 msgid "links"
-msgstr ""
+msgstr "left"
 
 #: it2zbot/cogs/custom_reactions.py:71 it2zbot\cogs\custom_reactions.py:73
 msgid "list"
@@ -359,7 +376,7 @@ msgstr "make the bot say something in a channel"
 
 #: it2zbot\cogs\reminder.py:44
 msgid "message"
-msgstr ""
+msgstr "message"
 
 #: it2zbot/cogs/misc.py:275 it2zbot\cogs\misc.py:293
 msgid "moodle_status"
@@ -375,7 +392,7 @@ msgstr "play a game of blackjack"
 
 #: it2zbot\cogs\poll.py:42
 msgid "poll"
-msgstr ""
+msgstr "poll"
 
 #: it2zbot/cogs/misc.py:114 it2zbot/cogs/misc.py:228 it2zbot\cogs\misc.py:114
 #: it2zbot\cogs\misc.py:244
@@ -384,15 +401,15 @@ msgstr "quote"
 
 #: it2zbot\cogs\simple_game.py:63 it2zbot\cogs\simple_game.py:103
 msgid "rechts"
-msgstr ""
+msgstr "right"
 
 #: it2zbot\cogs\reminder.py:33
 msgid "remind"
-msgstr ""
+msgstr "remind"
 
 #: it2zbot\cogs\custom_reactions.py:51
 msgid "response"
-msgstr ""
+msgstr "response"
 
 #: it2zbot/cogs/custom_reactions.py:48 it2zbot\cogs\custom_reactions.py:49
 msgid "response for this custom reaction"
@@ -411,7 +428,7 @@ msgstr "say"
 
 #: it2zbot\cogs\self_management.py:55
 msgid "self_management"
-msgstr ""
+msgstr "self_management"
 
 #: it2zbot/cogs/channel.py:19 it2zbot\cogs\channel.py:19
 msgid "set a new channel topic"
@@ -419,7 +436,7 @@ msgstr "set a new channel topic"
 
 #: it2zbot\cogs\self_management.py:61
 msgid "set_custom_color"
-msgstr ""
+msgstr "set_custom_color"
 
 #: it2zbot/cogs/channel.py:19 it2zbot\cogs\channel.py:19
 msgid "set_topic"
@@ -435,15 +452,15 @@ msgstr "shorten a url with the worlds famous eule.wtf TM service"
 
 #: it2zbot\cogs\simple_game.py:137
 msgid "simple_game"
-msgstr ""
+msgstr "simple_game"
 
 #: it2zbot\cogs\misc.py:180
 msgid "slug"
-msgstr ""
+msgstr "slug"
 
 #: it2zbot\cogs\self_management.py:108
 msgid "something went wrong"
-msgstr ""
+msgstr "something went wrong"
 
 #: it2zbot/cogs/github.py:56
 msgid "source"
@@ -451,7 +468,7 @@ msgstr "source"
 
 #: it2zbot\cogs\simple_game.py:142
 msgid "start"
-msgstr ""
+msgstr "start"
 
 #: it2zbot/cogs/misc.py:361 it2zbot\cogs\misc.py:388
 msgid "starting hands"
@@ -475,7 +492,7 @@ msgstr "the channel to send the message to"
 
 #: it2zbot\cogs\self_management.py:64
 msgid "the color you want to set"
-msgstr ""
+msgstr "the color you want to set"
 
 #: it2zbot/cogs/misc.py:200 it2zbot\cogs\misc.py:216
 msgid "the message does not contain plain text and is discarded"
@@ -499,7 +516,7 @@ msgstr "there is already a custom reaction with this trigger"
 
 #: it2zbot\cogs\poll.py:96
 msgid "this command can only be used in guilds"
-msgstr ""
+msgstr "this command can only be used in guilds"
 
 #: it2zbot/cogs/misc.py:223 it2zbot\cogs\misc.py:240
 msgid "this message has already been saved as quote"
@@ -511,15 +528,15 @@ msgstr "tie"
 
 #: it2zbot\cogs\channel.py:23
 msgid "topic"
-msgstr ""
+msgstr "topic"
 
 #: it2zbot\cogs\custom_reactions.py:51
 msgid "trigger"
-msgstr ""
+msgstr "trigger"
 
 #: it2zbot\cogs\reminder.py:43
 msgid "unit"
-msgstr ""
+msgstr "unit"
 
 #: it2zbot/cogs/misc.py:281 it2zbot\cogs\misc.py:299
 msgid "unreachable"
@@ -527,15 +544,15 @@ msgstr "unreachable"
 
 #: it2zbot\cogs\misc.py:180
 msgid "url"
-msgstr ""
+msgstr "url"
 
 #: it2zbot\cogs\reminder.py:41
 msgid "who"
-msgstr ""
+msgstr "who"
 
 #: it2zbot\cogs\reminder.py:35
 msgid "who should be mentioned?"
-msgstr ""
+msgstr "who should be mentioned?"
 
 #: it2zbot/cogs/misc.py:344 it2zbot\cogs\misc.py:370
 msgid "win"
@@ -543,7 +560,7 @@ msgstr "win"
 
 #: it2zbot\cogs\reminder.py:71
 msgid "you"
-msgstr ""
+msgstr "you"
 
 #: it2zbot/cogs/custom_reactions.py:167 it2zbot\cogs\custom_reactions.py:170
 msgid ""
