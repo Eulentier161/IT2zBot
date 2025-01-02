@@ -96,7 +96,7 @@ class ChoiceButton(discord.ui.Button):
                             content=translate("`gold: {gold}`\n`life: {life}`", interaction).format(
                                 gold=view.gold, life=view.life, content=content
                             )
-                            + "\n{content}",
+                            + f"\n{content}",
                             view=view,
                         )
 
