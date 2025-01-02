@@ -107,7 +107,7 @@ class SelfManagementCog(commands.GroupCog, name=locale_str("self_management")):
                 )
         await interaction.response.send_message(translate("something went wrong", interaction), ephemeral=True)
 
-    @commands.command(name=locale_str("init_role_picker"))
+    @commands.command(name="init_role_picker")
     @commands.is_owner()
     async def init_role_picker(self, ctx: commands.Context, message: str):
         channel = await self.bot.fetch_channel(1152327496184889364)
