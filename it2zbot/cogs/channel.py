@@ -20,6 +20,7 @@ class ChannelCog(commands.GroupCog, name=locale_str("channel")):
     @app_commands.describe(
         topic=locale_str("the new topic"), channel=locale_str("Guild Channel to target. Defaults to current channel.")
     )
+    @app_commands.rename(topic=locale_str("topic"), channel=locale_str("channel"))
     @app_commands.default_permissions(manage_channels=True)
     @app_commands.checks.has_permissions(manage_channels=True)
     async def set_topic(

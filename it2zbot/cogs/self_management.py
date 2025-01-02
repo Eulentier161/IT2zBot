@@ -3,6 +3,9 @@ from typing import TYPE_CHECKING
 import discord
 from discord import app_commands
 from discord.ext import commands
+from discord.app_commands import locale_str
+
+from it2zbot.translations import translate
 
 if TYPE_CHECKING:
     from it2zbot.bot import MyBot
@@ -49,28 +52,28 @@ class RolePickerView(discord.ui.View):
 
 
 @app_commands.guild_only()
-class SelfManagementCog(commands.GroupCog, name="self_management"):
+class SelfManagementCog(commands.GroupCog, name=locale_str("self_management")):
     def __init__(self, bot: "MyBot") -> None:
         self.bot = bot
         super().__init__()
 
-    @app_commands.command(name="set_custom_color")
+    @app_commands.command(
+        name=locale_str("set_custom_color"),
+        description=locale_str("assign a custom color-role to yourself or change your color"),
+    )
+    @app_commands.describe(color=locale_str("the color you want to set"))
+    @app_commands.rename(color=locale_str("color"))
     async def set_custom_color_command(self, interaction: discord.Interaction, color: str):
-        """assign a custom color-role to yourself or change your color"""
         try:
             color = discord.Colour.from_str(color)
         except ValueError:
             return await interaction.response.send_message(
-                "\n".join(
-                    [
-                        "color must be in one of the following format",
-                        "- `0x<hex>`",
-                        "- `#<hex>`",
-                        "- `0x#<hex>`",
-                        "- `rgb(<number>, <number>, <number>)`",
-                        "Like CSS, `<number>` can be either 0-255 or 0-100% and `<hex>` can be either a 6 digit hex number or a 3 digit hex shortcut (e.g. #fff).",
-                    ]
-                ),
+                f"{translate('color must be in one of the following format', interaction)}\n"
+                "- `0x<hex>`\n"
+                "- `#<hex>`\n"
+                "- `0x#<hex>`\n"
+                "- `rgb(<number>, <number>, <number>)`\n"
+                f"{translate('Like CSS, `<number>` can be either 0-255 or 0-100% and `<hex>` can be either a 6 digit hex number or a 3 digit hex shortcut (e.g. #fff).',interaction)}",
                 ephemeral=True,
             )
         uid = str(interaction.user.id)
@@ -86,20 +89,25 @@ class SelfManagementCog(commands.GroupCog, name="self_management"):
             await interaction.user.add_roles(role)
         await interaction.response.send_message(role.mention, ephemeral=True)
 
-    @app_commands.command(name="delete_custom_color")
+    @app_commands.command(
+        name=locale_str("delete_custom_color"), description=locale_str("delete your custom color role from the guild")
+    )
     async def delete_custom_color_command(self, interaction: discord.Interaction):
-        """delete your custom color role from the guild"""
         uid = str(interaction.user.id)
         existing_roles = await interaction.guild.fetch_roles()
         if not uid in [role.name for role in existing_roles]:
-            return await interaction.response.send_message("You dont have a custom color", ephemeral=True)
+            return await interaction.response.send_message(
+                translate("You dont have a custom color", interaction), ephemeral=True
+            )
         for role in existing_roles:
             if role.name == uid:
                 await role.delete()
-                return await interaction.response.send_message("Your custom color has been deleted", ephemeral=True)
-        await interaction.response.send_message("something went wrong", ephemeral=True)
+                return await interaction.response.send_message(
+                    translate("Your custom color has been deleted", interaction), ephemeral=True
+                )
+        await interaction.response.send_message(translate("something went wrong", interaction), ephemeral=True)
 
-    @commands.command(name="init_role_picker")
+    @commands.command(name=locale_str("init_role_picker"))
     @commands.is_owner()
     async def init_role_picker(self, ctx: commands.Context, message: str):
         channel = await self.bot.fetch_channel(1152327496184889364)

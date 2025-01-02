@@ -5,6 +5,9 @@ from typing import TYPE_CHECKING, Literal
 import discord
 from discord import app_commands
 from discord.ext import commands, tasks
+from discord.app_commands import locale_str, Choice, Range
+
+from it2zbot.translations import translate
 
 if TYPE_CHECKING:
     from it2zbot.bot import MyBot
@@ -27,34 +30,50 @@ class ReminderCog(commands.Cog):
         self.bot = bot
         self.remind_exceeded.start()
 
-    @app_commands.command(name="remind")
+    @app_commands.command(name=locale_str("remind"), description=locale_str("create a reminder"))
     @app_commands.describe(
-        who="who should be mentioned?",
-        amount="how long from now?",
-        unit="how long from now?",
-        message="a message to be reminded of",
+        who=locale_str("who should be mentioned?"),
+        amount=locale_str("how long from now?"),
+        unit=locale_str("how long from now?"),
+        message=locale_str("a message to be reminded of"),
+    )
+    @app_commands.rename(
+        who=locale_str("who"),
+        amount=locale_str("amount"),
+        unit=locale_str("unit"),
+        message=locale_str("message"),
+    )
+    @app_commands.choices(
+        unit=[
+            Choice(locale_str("Minutes"), "Minutes"),
+            Choice(locale_str("Hours"), "Hours"),
+            Choice(locale_str("Days"), "Days"),
+        ]
     )
     async def remind_me_command(
         self,
         interaction: discord.Interaction,
         who: discord.User,
-        amount: app_commands.Range[int, 1, 365],
-        unit: Literal["Minutes", "Hours", "Days"],
-        message: app_commands.Range[str, 1, 1000],
+        amount: Range[int, 1, 365],
+        unit: Choice[str],
+        message: Range[str, 1, 1000],
     ):
-        """create a reminder"""
         channel_id, user_id = str(interaction.channel_id), str(who.id)
-        if unit == "Minutes":
+        if unit.value == "Minutes":
             delta = timedelta(minutes=amount)
-        elif unit == "Hours":
+        elif unit.value == "Hours":
             delta = timedelta(hours=amount)
-        elif unit == "Days":
+        elif unit.value == "Days":
             delta = timedelta(days=amount)
 
         date = datetime.now() + delta
         date = date.strftime("%Y-%m-%d %H:%M:%S")
-        name = "you" if interaction.user == who else who.display_name
-        await interaction.response.send_message(f"I'll remind {name} here in {amount} {unit}")
+        name = translate("you", interaction) if interaction.user == who else who.display_name
+        await interaction.response.send_message(
+            translate("I'll remind {name} in {amount} {unit}", interaction).format(
+                name=name, amount=amount, unit=unit.value
+            )
+        )
         jump_url = (await interaction.original_response()).jump_url
         with sqlite3.connect("bot.db") as connection:
             connection.execute(

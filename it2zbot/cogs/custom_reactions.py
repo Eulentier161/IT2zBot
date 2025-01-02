@@ -48,6 +48,7 @@ class CustomReactionsCog(commands.GroupCog, name=locale_str("custom_reactions"))
         trigger=locale_str("text that triggers this custom reaction"),
         response=locale_str("response for this custom reaction"),
     )
+    @app_commands.rename(trigger=locale_str("trigger"), response=locale_str("response"))
     async def create_custom_reaction(
         self,
         interaction: discord.Interaction,

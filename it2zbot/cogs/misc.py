@@ -121,6 +121,7 @@ class MiscCog(commands.Cog):
     @app_commands.command(name=locale_str("joke"), description=locale_str("get a random joke"))
     @app_commands.allowed_installs(guilds=True, users=True)
     @app_commands.describe(category=locale_str("joke category"))
+    @app_commands.rename(category=locale_str("category"))
     @app_commands.choices(
         category=[
             Choice(name=locale_str("Any"), value="Any"),
@@ -139,7 +140,9 @@ class MiscCog(commands.Cog):
     ):
         async with httpx.AsyncClient() as httpx_client:
             res: dict = (
-                await httpx_client.get(f"https://v2.jokeapi.dev/joke/{category.value}?blacklistFlags=racist,sexist,political")
+                await httpx_client.get(
+                    f"https://v2.jokeapi.dev/joke/{category.value}?blacklistFlags=racist,sexist,political"
+                )
             ).json()
 
         if (type := res.get("type", None)) == "single":
@@ -174,6 +177,7 @@ class MiscCog(commands.Cog):
     @app_commands.describe(
         url=locale_str("the big url to shorten"), slug=locale_str("the slug in 'https://eule.wtf/slug'")
     )
+    @app_commands.rename(url=locale_str("url"), slug=locale_str("slug"))
     async def shorten_cmd(self, interaction: discord.Interaction, url: str, slug: str):
         async with httpx.AsyncClient() as client:
             res = await client.post("https://eule.wtf/api", json={"slug": slug, "destination": url})

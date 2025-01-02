@@ -7,6 +7,9 @@ from unicodedata import lookup
 import discord
 from discord import app_commands
 from discord.ext import commands
+from discord.app_commands import locale_str
+
+from it2zbot.translations import translate
 
 if TYPE_CHECKING:
     from it2zbot.bot import MyBot
@@ -36,7 +39,7 @@ class Poll:
     author_id: int
 
 
-class PollCog(commands.GroupCog, name="poll"):
+class PollCog(commands.GroupCog, name=locale_str("poll")):
     def __init__(self, bot: "MyBot") -> None:
         self.db = "bot.db"
         with sqlite3.connect(self.db) as connection:
@@ -72,7 +75,7 @@ class PollCog(commands.GroupCog, name="poll"):
 
         return None if not res else Poll(*res)
 
-    @app_commands.command(name="create")
+    @app_commands.command(name=locale_str("create"))
     async def create_poll(
         self,
         interaction: discord.Interaction,
@@ -89,7 +92,9 @@ class PollCog(commands.GroupCog, name="poll"):
         option10: Optional[str],
     ):
         if not interaction.guild:
-            return await interaction.response.send_message("this command can only be used in guilds")
+            return await interaction.response.send_message(
+                translate("this command can only be used in guilds", interaction)
+            )
         options = [option1, option2, option3, option4, option5, option6, option7, option8, option9, option10]
         options: list[str] = [o for o in options if o is not None]
         options: list[Option] = [
