@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-02 13:52+0000\n"
+"PO-Revision-Date: 2025-01-02 22:26+0000\n"
 "Last-Translator: Weblate Admin <yannik@eule.wtf>\n"
 "Language-Team: German <https://weblate.eule.wtf/projects/it2zbot/it2zbot/de/>"
 "\n"
@@ -310,3 +310,239 @@ msgstr "github"
 #: it2zbot/cogs/github.py:56
 msgid "source"
 msgstr "quelle"
+
+#: it2zbot\cogs\simple_game.py:69
+msgid ""
+"In der Höhle begegnet die Ein Goblin der dich angreift! Du schaffst es "
+"gerade noch zu fliehen"
+msgstr ""
+"In der Höhle begegnet die Ein Goblin der dich angreift! Du schaffst es "
+"gerade noch zu fliehen"
+
+#: it2zbot\cogs\self_management.py:93
+msgid "delete your custom color role from the guild"
+msgstr "Lösche deine maßgeschneiderte Farbenrolle von dem Server"
+
+#: it2zbot\cogs\poll.py:96
+msgid "this command can only be used in guilds"
+msgstr "dieser Befehl kann nur in Servern genutzt werden"
+
+#: it2zbot\cogs\self_management.py:55
+msgid "self_management"
+msgstr "selbst_management"
+
+#: it2zbot\cogs\reminder.py:36 it2zbot\cogs\reminder.py:37
+msgid "how long from now?"
+msgstr "wie lange von jetzt?"
+
+#: it2zbot\cogs\simple_game.py:113 it2zbot\cogs\simple_game.py:148
+msgid ""
+"Du stehst in einem Wald mit einer Taschenlampe. Vor dir ist ein Mysteriöser "
+"Eingang."
+msgstr ""
+"Du stehst in einem Wald mit einer Taschenlampe. Vor dir ist ein Mysteriöser "
+"Eingang."
+
+#: it2zbot\cogs\simple_game.py:59
+msgid ""
+"Beim betreten des Einganges findest du eine Münze!\n"
+"Etwas weiter geradeaus befindet sich ein zwielichtiger Pfad nach links und "
+"ein beleuchteter Pfad nach rechts."
+msgstr ""
+"Beim betreten des Einganges findest du eine Münze!\n"
+"Etwas weiter geradeaus befindet sich ein zwielichtiger Pfad nach links und "
+"ein beleuchteter Pfad nach rechts."
+
+#: it2zbot\cogs\simple_game.py:24
+msgid ""
+"Das ist der Wald.\n"
+"Das Spiel endet Hier."
+msgstr ""
+"Das ist der Wald.\n"
+"Das Spiel endet Hier."
+
+#: it2zbot\cogs\reminder.py:50
+msgid "Days"
+msgstr "Tage"
+
+#: it2zbot\cogs\simple_game.py:105
+msgid "Der Pfad endet hier. du musst zurück um Anfang um den rest zu Erkunden!"
+msgstr "Der Pfad endet hier. du musst zurück um Anfang um den rest zu Erkunden!"
+
+#: it2zbot\cogs\simple_game.py:91
+msgid ""
+"Du bist gestorben :(\n"
+"  ---GAME OVER---)"
+msgstr ""
+"Du bist gestorben :(\n"
+"  ---GAME OVER---)"
+
+#: it2zbot\cogs\simple_game.py:76
+msgid "Du hast den Angriff abgewehrt und keine Lebenspunkte verloren"
+msgstr "Du hast den Angriff abgewehrt und keine Lebenspunkte verloren"
+
+#: it2zbot\cogs\simple_game.py:85
+#, python-brace-format
+msgid ""
+"Du wurdest getroffen!\n"
+"Dir wurden {dmg} Lebenspunkte abgezogen.\n"
+"Du hast noch: {life} Lebenspunkte."
+msgstr ""
+"Du wurdest getroffen!\n"
+"Dir wurden {dmg} Lebenspunkte abgezogen.\n"
+"Du hast noch: {life} Lebenspunkte."
+
+#: it2zbot\cogs\simple_game.py:56 it2zbot\cogs\simple_game.py:111
+#: it2zbot\cogs\simple_game.py:132
+msgid "Eingang Erkunden"
+msgstr "Eingang Erkunden"
+
+#: it2zbot\cogs\reminder.py:49
+msgid "Hours"
+msgstr "Stunden"
+
+#: it2zbot\cogs\reminder.py:73
+#, python-brace-format
+msgid "I'll remind {name} in {amount} {unit}"
+msgstr "Ich werde {name} in {amount} {unit} erinnern"
+
+#: it2zbot\cogs\reminder.py:48
+msgid "Minutes"
+msgstr "Minuten"
+
+#: it2zbot\cogs\simple_game.py:62 it2zbot\cogs\simple_game.py:63
+#: it2zbot\cogs\simple_game.py:65
+msgid "Pfad"
+msgstr "Pfad"
+
+#: it2zbot\cogs\simple_game.py:23 it2zbot\cogs\simple_game.py:110
+#: it2zbot\cogs\simple_game.py:131
+msgid "Weiter laufen"
+msgstr "Weiter laufen"
+
+#: it2zbot\cogs\self_management.py:100
+msgid "You dont have a custom color"
+msgstr "Du hast keine maßgeschneiderte Rollenfarbe"
+
+#: it2zbot\cogs\self_management.py:106
+msgid "Your custom color has been deleted"
+msgstr "Deine maßgeschneiderte Rollenfarbe wurde gelöscht"
+
+#: it2zbot\cogs\simple_game.py:96 it2zbot\cogs\simple_game.py:117
+#: it2zbot\cogs\simple_game.py:145
+#, python-brace-format
+msgid ""
+"`gold: {gold}`\n"
+"`life: {life}`"
+msgstr ""
+"`Gold: {gold}`\n"
+"`Leben: {life}`"
+
+#: it2zbot\cogs\reminder.py:38
+msgid "a message to be reminded of"
+msgstr "eine Nachricht an die erinnert wird"
+
+#: it2zbot\cogs\reminder.py:42
+msgid "amount"
+msgstr "menge"
+
+#: it2zbot\cogs\self_management.py:62
+msgid "assign a custom color-role to yourself or change your color"
+msgstr ""
+"Setze eine maßgeschneiderte Rollenfarbe für dich selbst oder ändere die Farbe"
+
+#: it2zbot\cogs\misc.py:124
+msgid "category"
+msgstr "kategorie"
+
+#: it2zbot\cogs\self_management.py:65
+msgid "color"
+msgstr "farbe"
+
+#: it2zbot\cogs\reminder.py:33
+msgid "create a reminder"
+msgstr "Erststelle eine Erinnerung"
+
+#: it2zbot\cogs\self_management.py:93
+msgid "delete_custom_color"
+msgstr "lösche_maßgeschneiderte_farbe"
+
+#: it2zbot\cogs\self_management.py:110
+msgid "init_role_picker"
+msgstr "init_rollen_wähler"
+
+#: it2zbot\cogs\simple_game.py:62 it2zbot\cogs\simple_game.py:66
+msgid "links"
+msgstr "links"
+
+#: it2zbot\cogs\reminder.py:44
+msgid "message"
+msgstr "nachricht"
+
+#: it2zbot\cogs\poll.py:42
+msgid "poll"
+msgstr "umfrage"
+
+#: it2zbot\cogs\simple_game.py:63 it2zbot\cogs\simple_game.py:103
+msgid "rechts"
+msgstr "rechts"
+
+#: it2zbot\cogs\reminder.py:33
+msgid "remind"
+msgstr "erinnern"
+
+#: it2zbot\cogs\custom_reactions.py:51
+msgid "response"
+msgstr "antwort"
+
+#: it2zbot\cogs\self_management.py:61
+msgid "set_custom_color"
+msgstr "setze_maßgeschneiderte_farbe"
+
+#: it2zbot\cogs\simple_game.py:137
+msgid "simple_game"
+msgstr "einfaches_spiel"
+
+#: it2zbot\cogs\misc.py:180
+msgid "slug"
+msgstr "slug"
+
+#: it2zbot\cogs\self_management.py:108
+msgid "something went wrong"
+msgstr "irgendwas ist schiefgelaufen"
+
+#: it2zbot\cogs\simple_game.py:142
+msgid "start"
+msgstr "start"
+
+#: it2zbot\cogs\self_management.py:64
+msgid "the color you want to set"
+msgstr "die farbe welche du setzen willst"
+
+#: it2zbot\cogs\channel.py:23
+msgid "topic"
+msgstr "thema"
+
+#: it2zbot\cogs\custom_reactions.py:51
+msgid "trigger"
+msgstr "auslöser"
+
+#: it2zbot\cogs\reminder.py:43
+msgid "unit"
+msgstr "einheit"
+
+#: it2zbot\cogs\misc.py:180
+msgid "url"
+msgstr "url"
+
+#: it2zbot\cogs\reminder.py:41
+msgid "who"
+msgstr "wer"
+
+#: it2zbot\cogs\reminder.py:35
+msgid "who should be mentioned?"
+msgstr "wer soll benachrichtigt werden?"
+
+#: it2zbot\cogs\reminder.py:71
+msgid "you"
+msgstr "dich"
