@@ -45,9 +45,9 @@ class ReminderCog(commands.Cog):
     )
     @app_commands.choices(
         unit=[
-            Choice(locale_str("Minutes"), "Minutes"),
-            Choice(locale_str("Hours"), "Hours"),
-            Choice(locale_str("Days"), "Days"),
+            Choice(name=locale_str("Minutes"), value="Minutes"),
+            Choice(name=locale_str("Hours"), value="Hours"),
+            Choice(name=locale_str("Days"), value="Days"),
         ]
     )
     async def remind_me_command(
