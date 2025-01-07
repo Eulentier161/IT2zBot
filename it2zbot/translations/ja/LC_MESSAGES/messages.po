@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-01 16:37+0000\n"
-"Last-Translator: Weblate Admin <yannik@eule.wtf>\n"
+"PO-Revision-Date: 2025-01-07 20:55+0000\n"
+"Last-Translator: Weblate Admin <git@eule.wtf>\n"
 "Language-Team: Japanese <https://weblate.eule.wtf/projects/it2zbot/it2zbot/"
 "ja/>\n"
 "Language: ja\n"
@@ -13,3 +13,546 @@ msgstr ""
 
 msgid "help, owls are too cute and awesome"
 msgstr "助けて、フクロウは可愛くて素晴らしい"
+
+#: it2zbot\cogs\simple_game.py:59
+msgid ""
+"Beim betreten des Einganges findest du eine Münze!\n"
+"Etwas weiter geradeaus befindet sich ein zwielichtiger Pfad nach links und "
+"ein beleuchteter Pfad nach rechts."
+msgstr ""
+"入り口に入るとコインが見つかります！\n"
+"もう少し進むと左側に暗い道、右側に明るい道があります。"
+
+#: it2zbot/cogs/github.py:25
+msgid "Description"
+msgstr "説明"
+
+#: it2zbot\cogs\simple_game.py:76
+msgid "Du hast den Angriff abgewehrt und keine Lebenspunkte verloren"
+msgstr "攻撃をブロックし、ライフポイントを失わなかった"
+
+#: it2zbot\cogs\simple_game.py:85
+#, python-brace-format
+msgid ""
+"Du wurdest getroffen!\n"
+"Dir wurden {dmg} Lebenspunkte abgezogen.\n"
+"Du hast noch: {life} Lebenspunkte."
+msgstr ""
+"攻撃を受けました！\n"
+"体力が {dmg} 減りました。\n"
+"体力が {life} 残っています。"
+
+#: it2zbot/cogs/github.py:18
+msgid "Issue"
+msgstr "問題"
+
+#: it2zbot/cogs/github.py:48
+msgid "Oops! Something went wrong."
+msgstr "おっと！問題が発生しました。"
+
+msgid "Thanks for your feedback!"
+msgstr "フィードバックありがとうございます!"
+
+#: it2zbot/cogs/github.py:20
+msgid "Title"
+msgstr "タイトル"
+
+#: it2zbot\cogs\self_management.py:62
+msgid "assign a custom color-role to yourself or change your color"
+msgstr "自分にカスタムカラーロールを割り当てたり、色を変更したりします"
+
+#: it2zbot/cogs/github.py:56
+msgid "code where?!"
+msgstr "コードはどこですか？！"
+
+#: it2zbot/cogs/github.py:61
+msgid "issue"
+msgstr "問題"
+
+#: it2zbot/cogs/github.py:27
+msgid "owls are too cute, pls fix!?"
+msgstr "フクロウが可愛すぎるので、直してください！？"
+
+#: it2zbot\cogs\poll.py:42
+msgid "poll"
+msgstr "投票"
+
+#: it2zbot\cogs\self_management.py:108
+msgid "something went wrong"
+msgstr "問題が発生しました"
+
+#: it2zbot/cogs/channel.py:14 it2zbot\cogs\channel.py:14
+#: it2zbot\cogs\channel.py:23
+msgid "channel"
+msgstr "チャネル"
+
+#: it2zbot/cogs/custom_reactions.py:154 it2zbot\cogs\custom_reactions.py:156
+msgid "delete a custom reaction"
+msgstr "カスタム反応を削除する"
+
+#: it2zbot\cogs\simple_game.py:96 it2zbot\cogs\simple_game.py:117
+#: it2zbot\cogs\simple_game.py:145
+#, python-brace-format
+msgid ""
+"`gold: {gold}`\n"
+"`life: {life}`"
+msgstr ""
+"`ゴールド: {gold}`\n"
+"`ライフ: {life}`"
+
+#: it2zbot/cogs/github.py:61
+msgid "create an issue for this project on github"
+msgstr "githubでこのプロジェクトの問題を作成する"
+
+#: it2zbot/cogs/misc.py:228 it2zbot\cogs\misc.py:244
+msgid "get a random quote"
+msgstr "ランダムな見積もりを取得する"
+
+#: it2zbot\cogs\simple_game.py:62 it2zbot\cogs\simple_game.py:66
+msgid "links"
+msgstr "左"
+
+#: it2zbot/cogs/misc.py:200 it2zbot\cogs\misc.py:216
+msgid "the message does not contain plain text and is discarded"
+msgstr "メッセージにはプレーンテキストが含まれていないため破棄されます"
+
+#: it2zbot/cogs/misc.py:125 it2zbot\cogs\misc.py:127
+msgid "Any"
+msgstr "何なり"
+
+#: it2zbot/cogs/misc.py:131 it2zbot\cogs\misc.py:133
+msgid "Christmas"
+msgstr "クリスマス"
+
+#: it2zbot/cogs/misc.py:114 it2zbot/cogs/misc.py:228 it2zbot\cogs\misc.py:114
+#: it2zbot\cogs\misc.py:244
+msgid "quote"
+msgstr "引用"
+
+#: it2zbot/cogs/misc.py:325 it2zbot/cogs/misc.py:340 it2zbot/cogs/misc.py:342
+#: it2zbot/cogs/misc.py:344 it2zbot/cogs/misc.py:346 it2zbot/cogs/misc.py:363
+#: it2zbot\cogs\misc.py:347 it2zbot\cogs\misc.py:365 it2zbot\cogs\misc.py:368
+#: it2zbot\cogs\misc.py:370 it2zbot\cogs\misc.py:372 it2zbot\cogs\misc.py:393
+msgid "result"
+msgstr "結果"
+
+#: it2zbot/cogs/misc.py:360 it2zbot\cogs\misc.py:386
+msgid "Black Jack"
+msgstr "ブラックジャック"
+
+#: it2zbot/cogs/misc.py:363 it2zbot\cogs\misc.py:393
+msgid "Black Jack!"
+msgstr "ブラックジャック！"
+
+#: it2zbot/cogs/custom_reactions.py:91 it2zbot/cogs/custom_reactions.py:109
+#: it2zbot/cogs/custom_reactions.py:148 it2zbot\cogs\custom_reactions.py:93
+#: it2zbot\cogs\custom_reactions.py:111 it2zbot\cogs\custom_reactions.py:150
+msgid "Custom Reactions"
+msgstr "カスタム反応"
+
+#: it2zbot/cogs/misc.py:128 it2zbot\cogs\misc.py:130
+msgid "Dark"
+msgstr "ブラックユーモア"
+
+#: it2zbot\cogs\simple_game.py:24
+msgid ""
+"Das ist der Wald.\n"
+"Das Spiel endet Hier."
+msgstr ""
+"ここが森です。\n"
+"ゲームはここで終わります。"
+
+#: it2zbot\cogs\reminder.py:50
+msgid "Days"
+msgstr "日"
+
+#: it2zbot\cogs\simple_game.py:105
+msgid "Der Pfad endet hier. du musst zurück um Anfang um den rest zu Erkunden!"
+msgstr "道はここで終わります。残りの部分を探索するには、最初に戻る必要があります！"
+
+#: it2zbot\cogs\simple_game.py:91
+msgid ""
+"Du bist gestorben :(\n"
+"  ---GAME OVER---)"
+msgstr ""
+"あなたは死んだ (╥﹏╥)\n"
+" ---GAME OVER---)"
+
+#: it2zbot\cogs\simple_game.py:113 it2zbot\cogs\simple_game.py:148
+msgid ""
+"Du stehst in einem Wald mit einer Taschenlampe. Vor dir ist ein Mysteriöser "
+"Eingang."
+msgstr "あなたは懐中電灯を持って森の中に立っています。目の前には不思議な入り口があり"
+"ます。"
+
+#: it2zbot\cogs\simple_game.py:56 it2zbot\cogs\simple_game.py:111
+#: it2zbot\cogs\simple_game.py:132
+msgid "Eingang Erkunden"
+msgstr "入り口を探索"
+
+#: it2zbot/cogs/channel.py:20 it2zbot/cogs/channel.py:33
+#: it2zbot\cogs\channel.py:21 it2zbot\cogs\channel.py:36
+msgid "Guild Channel to target. Defaults to current channel."
+msgstr "ターゲットとするギルド チャネル。デフォルトは現在のチャネルです。"
+
+#: it2zbot\cogs\reminder.py:49
+msgid "Hours"
+msgstr "時間"
+
+#: it2zbot\cogs\reminder.py:73
+#, python-brace-format
+msgid "I'll remind {name} in {amount} {unit}"
+msgstr "{name} に {amount} {unit} でリマインダーを送ります"
+
+#: it2zbot\cogs\simple_game.py:69
+msgid ""
+"In der Höhle begegnet die Ein Goblin der dich angreift! Du schaffst es "
+"gerade noch zu fliehen"
+msgstr "洞窟の中でゴブリンに遭遇し、攻撃を受けます。なんとか逃げ切ります"
+
+#: it2zbot\cogs\reminder.py:48
+msgid "Minutes"
+msgstr "分"
+
+#: it2zbot/cogs/misc.py:126 it2zbot\cogs\misc.py:128
+msgid "Misc"
+msgstr "その他"
+
+#: it2zbot\cogs\simple_game.py:62 it2zbot\cogs\simple_game.py:63
+#: it2zbot\cogs\simple_game.py:65
+msgid "Pfad"
+msgstr "径路"
+
+#: it2zbot/cogs/misc.py:161 it2zbot\cogs\misc.py:171
+msgid "Press the Button!!"
+msgstr "ボタンを押してください!!"
+
+#: it2zbot/cogs/misc.py:127 it2zbot\cogs\misc.py:129
+msgid "Programming"
+msgstr "プログラミング"
+
+#: it2zbot/cogs/misc.py:129 it2zbot\cogs\misc.py:131
+msgid "Pun"
+msgstr "駄洒落"
+
+#: it2zbot/cogs/misc.py:130 it2zbot\cogs\misc.py:132
+msgid "Spooky"
+msgstr "不気味な"
+
+#: it2zbot\cogs\simple_game.py:23 it2zbot\cogs\simple_game.py:110
+#: it2zbot\cogs\simple_game.py:131
+msgid "Weiter laufen"
+msgstr "走り続ける"
+
+#: it2zbot/cogs/misc.py:159 it2zbot\cogs\misc.py:167
+msgid "You did press the Button!! Yay!!"
+msgstr "ボタンを押しましたね！！やったー！！"
+
+#: it2zbot\cogs\self_management.py:100
+msgid "You dont have a custom color"
+msgstr "カスタムカラーがありません"
+
+#: it2zbot\cogs\self_management.py:106
+msgid "Your custom color has been deleted"
+msgstr "カスタムカラーが削除されました"
+
+#: it2zbot/cogs/misc.py:275 it2zbot\cogs\misc.py:293
+msgid "moodle_status"
+msgstr "moodle_状態"
+
+#: it2zbot\cogs\reminder.py:38
+msgid "a message to be reminded of"
+msgstr "思い出すべきメッセージ"
+
+#: it2zbot\cogs\reminder.py:42
+msgid "amount"
+msgstr "分量"
+
+#: it2zbot/cogs/misc.py:190 it2zbot\cogs\misc.py:206
+msgid "avatar"
+msgstr "プロフィール写真"
+
+#: it2zbot/cogs/misc.py:285 it2zbot\cogs\misc.py:303
+msgid "blackjack"
+msgstr "ブラックジャック"
+
+#: it2zbot/cogs/misc.py:325 it2zbot\cogs\misc.py:347
+msgid "bust"
+msgstr "破綻"
+
+#: it2zbot/cogs/misc.py:150 it2zbot\cogs\misc.py:157
+msgid "button"
+msgstr "抓み"
+
+#: it2zbot\cogs\misc.py:124
+msgid "category"
+msgstr "種類"
+
+#: it2zbot\cogs\self_management.py:65
+msgid "color"
+msgstr "色"
+
+#: it2zbot/cogs/custom_reactions.py:46 it2zbot\cogs\custom_reactions.py:46
+#: it2zbot\cogs\poll.py:78
+msgid "create"
+msgstr "作成する"
+
+#: it2zbot/cogs/custom_reactions.py:46 it2zbot\cogs\custom_reactions.py:46
+msgid "create a new custom reaction"
+msgstr "新しいカスタム反応を作成する"
+
+#: it2zbot\cogs\reminder.py:33
+msgid "create a reminder"
+msgstr "リマインダーを作成する"
+
+#: it2zbot/cogs/custom_reactions.py:16 it2zbot\cogs\custom_reactions.py:16
+msgid "custom_reactions"
+msgstr "カスタム反応"
+
+#: it2zbot/cogs/misc.py:340 it2zbot\cogs\misc.py:365
+msgid "dealer bust"
+msgstr "ディーラーの破産"
+
+#: it2zbot/cogs/misc.py:337 it2zbot\cogs\misc.py:359
+msgid "dealers turn"
+msgstr "ディーラーは"
+
+#: it2zbot/cogs/custom_reactions.py:154 it2zbot\cogs\custom_reactions.py:156
+msgid "delete"
+msgstr "消去"
+
+#: it2zbot\cogs\self_management.py:93
+msgid "delete your custom color role from the guild"
+msgstr "ギルドからカスタムカラーロールを削除する"
+
+#: it2zbot\cogs\self_management.py:93
+msgid "delete_custom_color"
+msgstr "カスタムカラーを削除する"
+
+#: it2zbot/cogs/channel.py:28 it2zbot/cogs/channel.py:37
+#: it2zbot\cogs\channel.py:31 it2zbot\cogs\channel.py:40
+msgid "failure"
+msgstr "故障"
+
+#: it2zbot/cogs/misc.py:150 it2zbot\cogs\misc.py:157
+msgid "get a button to click"
+msgstr "クリックするボタンを取得する"
+
+#: it2zbot/cogs/channel.py:32 it2zbot\cogs\channel.py:35
+msgid "get a channel topic"
+msgstr "チャンネルトピックを取得する"
+
+#: it2zbot/cogs/misc.py:121 it2zbot\cogs\misc.py:121
+msgid "get a random joke"
+msgstr "ランダムなジョークを言う"
+
+#: it2zbot/cogs/misc.py:190 it2zbot\cogs\misc.py:206
+msgid "get a users avatar"
+msgstr "ユーザーのアバターを取得する"
+
+#: it2zbot/cogs/channel.py:32 it2zbot\cogs\channel.py:35
+msgid "get_topic"
+msgstr "トピックを取得"
+
+#: it2zbot/cogs/github.py:51
+msgid "github"
+msgstr "github"
+
+#: it2zbot/cogs/misc.py:289 it2zbot\cogs\misc.py:308
+msgid "hit"
+msgstr "ヒット"
+
+#: it2zbot\cogs\reminder.py:36 it2zbot\cogs\reminder.py:37
+msgid "how long from now?"
+msgstr "今からどれくらいですか?"
+
+#: it2zbot\cogs\self_management.py:110
+msgid "init_role_picker"
+msgstr "ロールピッカーの初期化"
+
+#: it2zbot/cogs/misc.py:121 it2zbot\cogs\misc.py:121
+msgid "joke"
+msgstr "ジョーク"
+
+#: it2zbot/cogs/misc.py:123 it2zbot\cogs\misc.py:123
+msgid "joke category"
+msgstr "ジョークカテゴリー"
+
+#: it2zbot/cogs/custom_reactions.py:71 it2zbot\cogs\custom_reactions.py:73
+msgid "list"
+msgstr "リスト"
+
+#: it2zbot/cogs/custom_reactions.py:71 it2zbot\cogs\custom_reactions.py:73
+msgid "list all custom reactions"
+msgstr "すべてのカスタム反応を一覧表示する"
+
+#: it2zbot/cogs/misc.py:346 it2zbot\cogs\misc.py:372
+msgid "lose"
+msgstr "負ける"
+
+#: it2zbot/cogs/misc.py:267 it2zbot\cogs\misc.py:283
+msgid "make the bot say something in a channel"
+msgstr "ボットにチャンネルで何かを言わせる"
+
+#: it2zbot\cogs\reminder.py:44
+msgid "message"
+msgstr "メッセージ"
+
+#: it2zbot\cogs\reminder.py:41
+msgid "who"
+msgstr "誰"
+
+#: it2zbot/cogs/misc.py:285 it2zbot\cogs\misc.py:303
+msgid "play a game of blackjack"
+msgstr "ブラックジャックをする"
+
+#: it2zbot\cogs\simple_game.py:63 it2zbot\cogs\simple_game.py:103
+msgid "rechts"
+msgstr "右"
+
+#: it2zbot\cogs\reminder.py:33
+msgid "remind"
+msgstr "思い出させる"
+
+#: it2zbot\cogs\custom_reactions.py:51
+msgid "response"
+msgstr "応答"
+
+#: it2zbot/cogs/custom_reactions.py:48 it2zbot\cogs\custom_reactions.py:49
+msgid "response for this custom reaction"
+msgstr "このカスタム反応に対する応答"
+
+#: it2zbot/cogs/misc.py:267 it2zbot\cogs\misc.py:283
+msgid "say"
+msgstr "云う"
+
+#: it2zbot\cogs\self_management.py:55
+msgid "self_management"
+msgstr "自己管理"
+
+#: it2zbot/cogs/channel.py:19 it2zbot\cogs\channel.py:19
+msgid "set a new channel topic"
+msgstr "新しいチャンネルトピックを設定する"
+
+#: it2zbot\cogs\self_management.py:61
+msgid "set_custom_color"
+msgstr "カスタムカラーを設定する"
+
+#: it2zbot/cogs/channel.py:19 it2zbot\cogs\channel.py:19
+msgid "set_topic"
+msgstr "トピックを設定する"
+
+#: it2zbot/cogs/misc.py:163 it2zbot\cogs\misc.py:175
+msgid "shorten"
+msgstr "短くする"
+
+#: it2zbot/cogs/misc.py:163 it2zbot\cogs\misc.py:175
+msgid "shorten a url with the worlds famous eule.wtf TM service"
+msgstr "世界的に有名なeule.wtf TMサービスでリンクを短縮する"
+
+#: it2zbot\cogs\simple_game.py:137
+msgid "simple_game"
+msgstr "シンプルなゲーム"
+
+#: it2zbot\cogs\misc.py:180
+msgid "slug"
+msgstr "ナメクジ"
+
+#: it2zbot/cogs/github.py:56
+msgid "source"
+msgstr "ソース"
+
+#: it2zbot\cogs\simple_game.py:142
+msgid "start"
+msgstr "開始"
+
+#: it2zbot/cogs/misc.py:361 it2zbot\cogs\misc.py:388
+msgid "starting hands"
+msgstr "スターティングハンド"
+
+#: it2zbot/cogs/misc.py:297 it2zbot\cogs\misc.py:317
+msgid "stop"
+msgstr "停止"
+
+#: it2zbot/cogs/custom_reactions.py:48 it2zbot\cogs\custom_reactions.py:48
+msgid "text that triggers this custom reaction"
+msgstr "このカスタム反応をトリガーするテキスト"
+
+#: it2zbot/cogs/misc.py:164 it2zbot\cogs\misc.py:178
+msgid "the big url to shorten"
+msgstr "短縮するための大きなリンク"
+
+#: it2zbot/cogs/misc.py:270 it2zbot\cogs\misc.py:287
+msgid "the channel to send the message to"
+msgstr "メッセージを送信するチャネル"
+
+#: it2zbot\cogs\self_management.py:64
+msgid "the color you want to set"
+msgstr "設定したい色"
+
+#: it2zbot/cogs/misc.py:270 it2zbot\cogs\misc.py:287
+msgid "the message to send"
+msgstr "送信するメッセージ"
+
+#: it2zbot/cogs/channel.py:20 it2zbot\cogs\channel.py:21
+msgid "the new topic"
+msgstr "新しいトピック"
+
+#: it2zbot/cogs/misc.py:164 it2zbot\cogs\misc.py:178
+msgid "the slug in 'https://eule.wtf/slug'"
+msgstr "「https://eule.wtf/slug」のスラッグ"
+
+#: it2zbot/cogs/custom_reactions.py:68 it2zbot\cogs\custom_reactions.py:70
+msgid "there is already a custom reaction with this trigger"
+msgstr "このトリガーには既にカスタム反応があります"
+
+#: it2zbot\cogs\poll.py:96
+msgid "this command can only be used in guilds"
+msgstr "このコマンドはギルド内でのみ使用できます"
+
+#: it2zbot/cogs/misc.py:223 it2zbot\cogs\misc.py:240
+msgid "this message has already been saved as quote"
+msgstr "このメッセージはすでに引用として保存されています"
+
+#: it2zbot/cogs/misc.py:342 it2zbot\cogs\misc.py:368
+msgid "tie"
+msgstr "同点"
+
+#: it2zbot\cogs\channel.py:23
+msgid "topic"
+msgstr "トピック"
+
+#: it2zbot\cogs\custom_reactions.py:51
+msgid "trigger"
+msgstr "トリガー"
+
+#: it2zbot\cogs\reminder.py:43
+msgid "unit"
+msgstr "ユニット"
+
+#: it2zbot/cogs/misc.py:281 it2zbot\cogs\misc.py:299
+msgid "unreachable"
+msgstr "到達不能"
+
+#: it2zbot\cogs\misc.py:180
+msgid "url"
+msgstr "ハイパーリンク"
+
+#: it2zbot\cogs\reminder.py:35
+msgid "who should be mentioned?"
+msgstr "誰について言及すべきでしょうか?"
+
+#: it2zbot/cogs/misc.py:344 it2zbot\cogs\misc.py:370
+msgid "win"
+msgstr "勝つ"
+
+#: it2zbot\cogs\reminder.py:71
+msgid "you"
+msgstr "君"
+
+#: it2zbot/cogs/custom_reactions.py:167 it2zbot\cogs\custom_reactions.py:170
+msgid ""
+"you can't delete this reaction. only a bot-admin or the user who created "
+"this reaction may delete it"
+msgstr "このリアクションは削除できません。ボット管理者またはこのリアクションを作成し"
+"たユーザーのみが削除できます"
