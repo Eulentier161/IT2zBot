@@ -35,6 +35,7 @@ ACTIVITIES = [
             "Wenn jeder an sich denkt ist an jeden gedacht.",
             "objectively mein bester status",
             "Hey Leute, checkt mal meinen Podcast!",
+            "Das magische Dreieck",
         ]
     ],
     Streaming(
