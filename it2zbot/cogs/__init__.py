@@ -6,6 +6,7 @@ from it2zbot.cogs.misc import MiscCog
 from it2zbot.cogs.poll import PollCog
 from it2zbot.cogs.reminder import ReminderCog
 from it2zbot.cogs.rss import RssCog
+from it2zbot.cogs.rsi import RsiCog
 from it2zbot.cogs.self_management import RolePickerView, SelfManagementCog
 from it2zbot.cogs.simple_game import SimpleGameCog
 
@@ -19,4 +20,5 @@ COGS = [
     ReminderCog,
     SelfManagementCog,
     SimpleGameCog,
+    RsiCog,
 ]

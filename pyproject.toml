@@ -13,7 +13,7 @@ authors = [
 ]
 requires-python = "<4.0,>=3.10"
 dependencies = [
-    "discord.py<3.0.0,>=2.3.2",
+    "discord.py>=2.5.2,<3.0.0",
     "pyaml<25.0.0,>=24.4.0",
     "httpx<1.0.0,>=0.27.0",
     "uvloop<1.0.0,>=0.19.0 ; sys_platform == 'linux' or sys_platform == 'darwin'",
