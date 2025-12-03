@@ -2,6 +2,7 @@ import asyncio
 import random
 import re
 import sqlite3
+import json
 from dataclasses import dataclass
 from datetime import timedelta
 from typing import TYPE_CHECKING, Literal
@@ -182,8 +183,9 @@ class MiscCog(commands.Cog):
     async def shorten_cmd(self, interaction: discord.Interaction, url: str, slug: str):
         async with httpx.AsyncClient() as client:
             res = await client.post("https://eule.wtf/api", json={"slug": slug, "url": url})
-        if res.status_code != 200:
-            return await interaction.response.send_message(res.json()["message"], ephemeral=True)
+        if res.status_code != 201:
+            d = res.json()
+            return await interaction.response.send_message(json.dumps({"errors": d.get("errors", []), "properties": d.get("properties", {})}), ephemeral=True)
         return await interaction.response.send_message(res.json()["url"], ephemeral=True)
 
     @commands.Cog.listener("on_message")
