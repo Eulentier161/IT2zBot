@@ -181,7 +181,7 @@ class MiscCog(commands.Cog):
     @app_commands.rename(url=locale_str("url"), slug=locale_str("slug"))
     async def shorten_cmd(self, interaction: discord.Interaction, url: str, slug: str):
         async with httpx.AsyncClient() as client:
-            res = await client.post("https://eule.wtf/api", json={"slug": slug, "destination": url})
+            res = await client.post("https://eule.wtf/api", json={"slug": slug, "url": url})
         if res.status_code != 200:
             return await interaction.response.send_message(res.json()["message"], ephemeral=True)
         return await interaction.response.send_message(res.json()["url"], ephemeral=True)
