@@ -37,6 +37,7 @@ ACTIVITIES = [
             "objectively mein bester status",
             "Hey Leute, checkt mal meinen Podcast!",
             "Das magische Dreieck",
+            "Aha! Connection Ferused!",
         ]
     ],
     Streaming(
