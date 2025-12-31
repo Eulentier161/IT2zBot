@@ -55,10 +55,10 @@ class PlayingCard:
 
     def __repr__(self):
         suits_map = {
-            "hearts": "\u2665\uFE0F",
-            "clubs": "\u2663\uFE0F",
-            "spades": "\u2660\uFE0F",
-            "diamonds": "\u2666\uFE0F",
+            "hearts": "\u2665\ufe0f",
+            "clubs": "\u2663\ufe0f",
+            "spades": "\u2660\ufe0f",
+            "diamonds": "\u2666\ufe0f",
         }
         return f"{suits_map[self.suit]}{self.symbol}"
 
@@ -117,9 +117,6 @@ class MiscCog(commands.Cog):
         self.quote_ctx_menu = app_commands.ContextMenu(name=locale_str("quote"), callback=self.quote)
         self.bot.tree.add_command(self.quote_ctx_menu)
         self.randomize_role_color.start()
-
-    def cog_unload(self):
-        self.set_status.cancel()
 
     @app_commands.command(name=locale_str("joke"), description=locale_str("get a random joke"))
     @app_commands.allowed_installs(guilds=True, users=True)
@@ -186,7 +183,9 @@ class MiscCog(commands.Cog):
             res = await client.post("https://eule.wtf/api", json={"slug": slug, "url": url})
         if res.status_code != 201:
             d = res.json()
-            return await interaction.response.send_message(json.dumps({"errors": d.get("errors", []), "properties": d.get("properties", {})}), ephemeral=True)
+            return await interaction.response.send_message(
+                json.dumps({"errors": d.get("errors", []), "properties": d.get("properties", {})}), ephemeral=True
+            )
         return await interaction.response.send_message(res.json()["url"], ephemeral=True)
 
     @commands.Cog.listener("on_message")
@@ -210,9 +209,6 @@ class MiscCog(commands.Cog):
     @app_commands.command(name=locale_str("avatar"), description=locale_str("get a users avatar"))
     async def avatar_cmd(self, interaction: discord.Interaction, user: discord.User):
         await interaction.response.send_message(file=(await user.display_avatar.to_file()), ephemeral=True)
-
-    async def cog_unload(self) -> None:
-        self.bot.tree.remove_command(self.quote_ctx_menu.name, type=self.quote_ctx_menu.type)
 
     async def quote(self, interaction: discord.Interaction, message: discord.Message):
         if not message.content.strip():
@@ -269,6 +265,8 @@ class MiscCog(commands.Cog):
             await message.add_reaction(reaction)
 
     def cog_unload(self):
+        self.set_status.cancel()
+        self.bot.tree.remove_command(self.quote_ctx_menu.name, type=self.quote_ctx_menu.type)
         self.randomize_role_color.cancel()
 
     @tasks.loop(minutes=5.0)
