@@ -10,6 +10,7 @@ from it2zbot.cogs.rsi import RsiCog
 from it2zbot.cogs.self_management import RolePickerView, SelfManagementCog
 from it2zbot.cogs.simple_game import SimpleGameCog
 from it2zbot.cogs.precepts import PreceptsCog
+from it2zbot.cogs.wikipedia import WikipediaCog
 
 COGS = [
     AdminCog,
@@ -23,4 +24,5 @@ COGS = [
     SimpleGameCog,
     RsiCog,
     PreceptsCog,
+    WikipediaCog,
 ]
