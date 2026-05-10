@@ -34,12 +34,12 @@ class AdminCog(commands.Cog):
             if ctx.guild is None:
                 return
 
-            for r in ["\u2705", "\u274C"]:
+            for r in ["\u2705", "\u274c"]:
                 await ctx.message.add_reaction(r)
 
             def check(reaction: discord.Reaction, user: discord.User):
                 is_owner = user.id == 958611742118785125
-                if is_owner and reaction.emoji == "\u274C":
+                if is_owner and reaction.emoji == "\u274c":
                     raise TimeoutError
                 return is_owner and reaction.emoji == "\u2705"
 

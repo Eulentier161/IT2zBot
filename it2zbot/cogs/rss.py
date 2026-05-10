@@ -28,47 +28,34 @@ class RssCog(commands.GroupCog, name="rss"):
         self.db = "bot.db"
         self.bot = bot
         with sqlite3.connect(self.db) as connection:
-            # connection.execute("DROP TABLE IF EXISTS rss_entry")
-            # connection.execute("DROP TABLE IF EXISTS rss_feed_subscription")
-            # connection.execute("DROP TABLE IF EXISTS rss_feed")
-            # connection.execute("DROP TABLE IF EXISTS subscription")
-
             connection.execute("PRAGMA foreign_keys = ON;")
-            connection.execute(
-                """
+            connection.execute("""
                 CREATE TABLE IF NOT EXISTS subscription (
                     id          INTEGER  PRIMARY KEY  AUTOINCREMENT,
                     channel_id  INTEGER  NOT NULL     UNIQUE
                 );
-                """
-            )
-            connection.execute(
-                """
+                """)
+            connection.execute("""
                 CREATE TABLE IF NOT EXISTS rss_feed (
                     id       INTEGER  PRIMARY KEY  AUTOINCREMENT,
                     url      TEXT     NOT NULL     UNIQUE
                 );
-                """
-            )
-            connection.execute(
-                """
+                """)
+            connection.execute("""
                 CREATE TABLE IF NOT EXISTS rss_feed_subscription (
                     subscription_id INTEGER NOT NULL,
                     rss_feed_id INTEGER NOT NULL,
                     FOREIGN KEY (subscription_id) REFERENCES subscription(id) ON DELETE CASCADE,
                     FOREIGN KEY (rss_feed_id) REFERENCES rss_feed(id) ON DELETE CASCADE
                 );
-                """
-            )
-            connection.execute(
-                """
+                """)
+            connection.execute("""
                 CREATE TABLE IF NOT EXISTS rss_entry (
                     id        TEXT     PRIMARY KEY,
                     rss_feed  INTEGER  NOT NULL,
                     FOREIGN KEY (rss_feed) REFERENCES rss_feed(id) ON DELETE CASCADE
                 );
-                """
-            )
+                """)
         self.rss_publisher.start()
         super().__init__()
 

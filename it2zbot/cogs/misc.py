@@ -55,10 +55,10 @@ class PlayingCard:
 
     def __repr__(self):
         suits_map = {
-            "hearts": "\u2665\uFE0F",
-            "clubs": "\u2663\uFE0F",
-            "spades": "\u2660\uFE0F",
-            "diamonds": "\u2666\uFE0F",
+            "hearts": "\u2665\ufe0f",
+            "clubs": "\u2663\ufe0f",
+            "spades": "\u2660\ufe0f",
+            "diamonds": "\u2666\ufe0f",
         }
         return f"{suits_map[self.suit]}{self.symbol}"
 
@@ -100,8 +100,7 @@ class Hand:
 class MiscCog(commands.Cog):
     def __init__(self, bot: "MyBot") -> None:
         with sqlite3.connect("bot.db") as connection:
-            connection.execute(
-                """
+            connection.execute("""
                 CREATE TABLE IF NOT EXISTS quotes (
                     author  VARCHAR(25),
                     message VARCHAR(25),
@@ -110,8 +109,7 @@ class MiscCog(commands.Cog):
                     content VARCHAR(2000),
                     PRIMARY KEY (author, message, channel, guild)
                 );
-                """
-            )
+                """)
         self.bot = bot
         self.set_status.start()
         self.quote_ctx_menu = app_commands.ContextMenu(name=locale_str("quote"), callback=self.quote)
@@ -186,7 +184,9 @@ class MiscCog(commands.Cog):
             res = await client.post("https://eule.wtf/api", json={"slug": slug, "url": url})
         if res.status_code != 201:
             d = res.json()
-            return await interaction.response.send_message(json.dumps({"errors": d.get("errors", []), "properties": d.get("properties", {})}), ephemeral=True)
+            return await interaction.response.send_message(
+                json.dumps({"errors": d.get("errors", []), "properties": d.get("properties", {})}), ephemeral=True
+            )
         return await interaction.response.send_message(res.json()["url"], ephemeral=True)
 
     @commands.Cog.listener("on_message")

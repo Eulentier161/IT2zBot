@@ -16,8 +16,7 @@ if TYPE_CHECKING:
 class ReminderCog(commands.Cog):
     def __init__(self, bot: "MyBot") -> None:
         with sqlite3.connect("bot.db") as connection:
-            connection.execute(
-                """
+            connection.execute("""
                 CREATE TABLE IF NOT EXISTS reminder (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     user VARCHAR(25),
@@ -25,8 +24,7 @@ class ReminderCog(commands.Cog):
                     time DATETIME,
                     message VARCHAR(1000),
                     og_message_url VARCHAR(100)
-                );"""
-            )
+                );""")
         self.bot = bot
         self.remind_exceeded.start()
 

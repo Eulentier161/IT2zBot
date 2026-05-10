@@ -43,8 +43,7 @@ class PollCog(commands.GroupCog, name=locale_str("poll")):
     def __init__(self, bot: "MyBot") -> None:
         self.db = "bot.db"
         with sqlite3.connect(self.db) as connection:
-            connection.execute(
-                """
+            connection.execute("""
                 CREATE TABLE IF NOT EXISTS poll (
                     poll_id     INTEGER  PRIMARY KEY  AUTOINCREMENT,
                     guild_id    INTEGER,
@@ -53,8 +52,7 @@ class PollCog(commands.GroupCog, name=locale_str("poll")):
                     author_id   INTEGER,
                     UNIQUE (guild_id, channel_id, message_id) ON CONFLICT IGNORE
                 );
-                """
-            )
+                """)
         self.bot = bot
         super().__init__()
 
