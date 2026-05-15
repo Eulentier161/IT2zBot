@@ -448,3 +448,10 @@ class MiscCog(commands.Cog):
                 f"{message.author.mention} es hat sich ausgejesustanzt! <:pepeevil:1079434494165135360>"
             ),
         )
+
+    @app_commands.context_menu(name="egal")
+    async def egal_message(self, interaction: discord.Interaction, message: discord.Message):
+        await message.reply("https://public.eule.wtf/egal.mp4")
+        await interaction.response.send_message(
+            translate("Successfully told the author that you do not care.", interaction), ephemeral=True
+        )
