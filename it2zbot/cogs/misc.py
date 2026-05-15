@@ -113,7 +113,9 @@ class MiscCog(commands.Cog):
         self.bot = bot
         self.set_status.start()
         self.quote_ctx_menu = app_commands.ContextMenu(name=locale_str("quote"), callback=self.quote)
+        self.egal_ctx_menu = app_commands.ContextMenu(name="egal", callback=self.egal_message)
         self.bot.tree.add_command(self.quote_ctx_menu)
+        self.bot.tree.add_command(self.egal_ctx_menu)
         self.randomize_role_color.start()
 
     @app_commands.command(name=locale_str("joke"), description=locale_str("get a random joke"))
@@ -265,6 +267,7 @@ class MiscCog(commands.Cog):
     def cog_unload(self):
         self.set_status.cancel()
         self.bot.tree.remove_command(self.quote_ctx_menu.name, type=self.quote_ctx_menu.type)
+        self.bot.tree.remove_command(self.egal_ctx_menu.name, type=self.egal_ctx_menu.type)
         self.randomize_role_color.cancel()
 
     @tasks.loop(minutes=5.0)
@@ -449,7 +452,6 @@ class MiscCog(commands.Cog):
             ),
         )
 
-    @app_commands.context_menu(name="egal")
     async def egal_message(self, interaction: discord.Interaction, message: discord.Message):
         await message.reply("https://public.eule.wtf/egal.mp4")
         await interaction.response.send_message(
