@@ -74,11 +74,13 @@ class PreceptsCog(commands.GroupCog, name="precepts"):
         super().__init__()
 
     @app_commands.command(name="random")
+    @app_commands.allowed_installs(guilds=True, users=True)
     async def precept(self, interaction: Interaction):
         precept = random.choice(PRECEPTS)
         await interaction.response.send_message(precept)
 
     @app_commands.command(name="get")
+    @app_commands.allowed_installs(guilds=True, users=True)
     async def get_precept(self, interaction: Interaction, number: app_commands.Range[int, 1, 57]):
         if not 1 <= number <= 57:
             return await interaction.response.send_message(f"Please choose a number between 1 and 57.")

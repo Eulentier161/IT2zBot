@@ -546,3 +546,15 @@ msgstr "wer soll benachrichtigt werden?"
 #: it2zbot\cogs\reminder.py:71
 msgid "you"
 msgstr "dich"
+
+msgid "economy"
+msgstr "ökonomie"
+
+msgid "hourly"
+msgstr "stündlich"
+
+msgid "economy_hourly_success"
+msgstr "Du hast {amount} Münzen erhalten! Dein Vermögen beträgt nun {total} Münzen."
+
+msgid "economy_hourly_on_cooldown"
+msgstr "Du kannst diesen Befehl in {seconds:.2f} Sekunden erneut verwenden."

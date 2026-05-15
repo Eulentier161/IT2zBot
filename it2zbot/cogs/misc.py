@@ -100,8 +100,7 @@ class Hand:
 class MiscCog(commands.Cog):
     def __init__(self, bot: "MyBot") -> None:
         with sqlite3.connect("bot.db") as connection:
-            connection.execute(
-                """
+            connection.execute("""
                 CREATE TABLE IF NOT EXISTS quotes (
                     author  VARCHAR(25),
                     message VARCHAR(25),
@@ -110,8 +109,7 @@ class MiscCog(commands.Cog):
                     content VARCHAR(2000),
                     PRIMARY KEY (author, message, channel, guild)
                 );
-                """
-            )
+                """)
         self.bot = bot
         self.set_status.start()
         self.quote_ctx_menu = app_commands.ContextMenu(name=locale_str("quote"), callback=self.quote)

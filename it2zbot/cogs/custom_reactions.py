@@ -16,16 +16,14 @@ if TYPE_CHECKING:
 class CustomReactionsCog(commands.GroupCog, name=locale_str("custom_reactions")):
     def __init__(self, bot: "MyBot") -> None:
         with sqlite3.connect("bot.db") as connection:
-            connection.execute(
-                """
+            connection.execute("""
                 CREATE TABLE IF NOT EXISTS custom_reaction (
                     id       INTEGER       PRIMARY KEY AUTOINCREMENT,
                     author   VARCHAR(25),
                     trigger  VARCHAR(100)  UNIQUE,
                     response VARCHAR(2000)
                 );
-                """
-            )
+                """)
         self.bot = bot
         self.admins = bot.config["admins"]
         super().__init__()

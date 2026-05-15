@@ -569,3 +569,15 @@ msgid ""
 msgstr ""
 "you can't delete this reaction. only a bot-admin or the user who created "
 "this reaction may delete it"
+
+msgid "economy"
+msgstr "economy"
+
+msgid "hourly"
+msgstr "hourly"
+
+msgid "economy_hourly_success"
+msgstr "You have received {amount} coins! Your total wealth is now {total} coins."
+
+msgid "economy_hourly_on_cooldown"
+msgstr "You can use this command again in {seconds:.2f} seconds."
