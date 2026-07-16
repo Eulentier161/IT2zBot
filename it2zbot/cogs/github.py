@@ -36,16 +36,17 @@ class Issue(discord.ui.Modal):
         self.add_item(self.issue_body)
 
     async def on_submit(self, interaction: discord.Interaction):
-        res = httpx.post(
-            "https://api.github.com/repos/eulentier161/it2zbot/issues",
-            headers={"Authorization": f"Bearer {utils.get_access_token()}"},
-            json={
-                "title": self.issue_title.value,
-                "body": self.issue_body.value + "\n\n" + interaction.user.name + f" ({interaction.user.id})",
-            },
-        ).json()
+        async with httpx.AsyncClient() as client:
+            res = await client.post(
+                "https://api.github.com/repos/eulentier161/it2zbot/issues",
+                headers={"Authorization": f"Bearer {utils.get_access_token()}"},
+                json={
+                    "title": self.issue_title.value,
+                    "body": self.issue_body.value + "\n\n" + interaction.user.name + f" ({interaction.user.id})",
+                },
+            )
         await interaction.response.send_message(
-            f"{translate('Thanks for your feedback!', interaction)} {res['html_url']}", ephemeral=False
+            f"{translate('Thanks for your feedback!', interaction)} {res.json()['html_url']}", ephemeral=False
         )
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:

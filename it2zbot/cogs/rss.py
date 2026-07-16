@@ -1,3 +1,4 @@
+import asyncio
 import sqlite3
 from datetime import datetime
 from itertools import islice
@@ -6,6 +7,7 @@ from typing import TYPE_CHECKING, Iterable, Optional
 
 import discord
 import feedparser
+import httpx
 from discord import app_commands
 from discord.ext import commands, tasks
 from markdownify import markdownify as md
@@ -27,6 +29,7 @@ class RssCog(commands.GroupCog, name="rss"):
     def __init__(self, bot: "MyBot") -> None:
         self.db = "bot.db"
         self.bot = bot
+        self.http_client = httpx.AsyncClient()
         with sqlite3.connect(self.db) as connection:
             connection.execute("PRAGMA foreign_keys = ON;")
             connection.execute("""
@@ -61,6 +64,7 @@ class RssCog(commands.GroupCog, name="rss"):
 
     def cog_unload(self):
         self.rss_publisher.cancel()
+        asyncio.create_task(self.http_client.aclose())
 
     @app_commands.command(name="list")
     async def list_cmd(self, interaction: discord.Interaction):
@@ -84,7 +88,8 @@ class RssCog(commands.GroupCog, name="rss"):
     async def subscribe_cmd(self, interaction: discord.Interaction, feed: str, channel: Optional[discord.TextChannel]):
         """subscribe to an rss feed. moderators may specify a guild textchannel as second argument"""
         await interaction.response.defer(ephemeral=True)
-        d = feedparser.parse(feed)
+        res = await self.http_client.get(feed)
+        d = feedparser.parse(res.text)
 
         # validate feed
         if d.bozo:
@@ -172,7 +177,8 @@ class RssCog(commands.GroupCog, name="rss"):
             feeds = con.execute("SELECT * FROM rss_feed").fetchall()
             to_send: dict[discord.TextChannel | discord.DMChannel, list[discord.Embed]] = {}
             for feed_id, feed_url in feeds:
-                d = feedparser.parse(feed_url)
+                res = await self.http_client.get(feed_url)
+                d = feedparser.parse(res.text)
                 known = [r[0] for r in con.execute(f"SELECT id FROM rss_entry WHERE rss_feed = ?", (feed_id,))]
                 for entry in d.entries[::-1]:
                     if entry.id in known:
