@@ -12,6 +12,7 @@ from it2zbot.cogs.simple_game import SimpleGameCog
 from it2zbot.cogs.precepts import PreceptsCog
 from it2zbot.cogs.wikipedia import WikipediaCog
 from it2zbot.cogs.economy import EconomyCog
+from it2zbot.cogs.afd import AfdCog
 
 COGS = [
     AdminCog,
@@ -27,4 +28,5 @@ COGS = [
     PreceptsCog,
     WikipediaCog,
     EconomyCog,
+    AfdCog,
 ]
